@@ -26,7 +26,7 @@ const tabNavigator = createBottomTabNavigator(
       screen: AgendaTab,
       path: "/agenda",
       navigationOptions: ({ navigation }) => ({
-        tabBarLabel: "Agenda",
+        tabBarLabel: "Pacientes",
         tabBarIcon: ({ tintColor, focused }) => (
           <TabBarIcon
             focused={focused}

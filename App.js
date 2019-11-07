@@ -14,7 +14,16 @@ export default function App() {
       require("assets/logo.png")
     ]);
 
-    const fontAssets = cacheFonts([...vectorFonts]);
+    const fontAssets = cacheFonts([
+      ...vectorFonts,
+      { georgia: require('assets/fonts/Georgia.ttf') },
+      { regular: require('assets/fonts/Montserrat-Regular.ttf') },
+      { light: require('assets/fonts/Montserrat-Light.ttf') },
+      { bold: require('assets/fonts/Montserrat-Bold.ttf') },
+      { UbuntuLight: require('assets/fonts/Ubuntu-Light.ttf') },
+      { UbuntuBold: require('assets/fonts/Ubuntu-Bold.ttf') },
+      { UbuntuLightItalic: require('assets/fonts/Ubuntu-Light-Italic.ttf') },
+    ]);
 
     await Promise.all([...imageAssets, ...fontAssets]);
   };
