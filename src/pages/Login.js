@@ -58,8 +58,8 @@ class LoginScreen extends Component {
     this.login = this.login.bind(this);
     this.signUp = this.signUp.bind(this);
 
-    AsyncStorage.getItem("user").then(user => {
-      if (user) {
+    AsyncStorage.getItem("auth").then(auth => {
+      if (auth) {
         this.props.navigation.navigate("Home");
       }
     });
@@ -73,7 +73,8 @@ class LoginScreen extends Component {
       isEmailValid: true,
       isPasswordValid: true,
       isConfirmationValid: true,
-      isCrfaValid: true
+      isCrfaValid: true,
+      errorsMessages:{}
     });
   }
 
@@ -99,35 +100,91 @@ class LoginScreen extends Component {
       api
         .post("/login", { email, password })
         .then(res => {
-          const { user } = res.data;
-          AsyncStorage.setItem("user", user);
+          const { user, access_token, token_type, expires_in } = res.data;
+          const auth = { user, access_token, token_type, expires_in };
+
+          AsyncStorage.setItem("auth", user);
         })
         .catch(e => {
-          Alert.alert("Falha no login", "login ou senha inválidos", [{ text: "OK" }], {
-            cancelable: false
-          });
+          Alert.alert(
+            "Falha no login",
+            "login ou senha inválidos",
+            [{ text: "OK" }],
+            {
+              cancelable: false
+            }
+          );
         })
         .finally(() => {
-           this.setState({ isLoading: false });
+          this.setState({ isLoading: false });
         });
     }
   }
 
   signUp() {
     const { email, password, passwordConfirmation, Crfa } = this.state;
+
     this.setState({ isLoading: true });
-    // Simulate an API call
-    setTimeout(() => {
-      LayoutAnimation.easeInEaseOut();
-      this.setState({
-        isLoading: false,
-        isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-        isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
-        isCrfaValid: Crfa.length == 6 || this.CrfaInput.shake(),
-        isConfirmationValid:
-          password === passwordConfirmation || this.confirmationInput.shake()
-      });
-    }, 1500);
+    // first simulation
+    // setTimeout(() => {
+    LayoutAnimation.easeInEaseOut();
+    this.setState({
+      isLoading: false,
+      isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
+      isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+      isCrfaValid: Crfa.length == 6 || this.CrfaInput.shake(),
+      isConfirmationValid:
+        password === passwordConfirmation || this.confirmationInput.shake()
+    });
+    // }, 1000);
+
+    if (
+      this.state.isEmailValid &&
+      this.state.isPasswordValid &&
+      this.state.isConfirmationValid &&
+      this.state.isCrfaValid
+    ) {
+      this.setState({ isLoading: true });
+      
+      const password_confirmation = passwordConfirmation
+      const register = Crfa
+      api
+        .post("/register", { email, password, password_confirmation, register })
+        .then(res => {
+          const { user } = res.data;
+          AsyncStorage.setItem("user", user);
+        })
+        .catch(e => {
+          if (error.response) {
+            this.setState({
+              isLoading: false,
+              isCrfaValid:
+                !error.response.data.errors.register || this.CrfaInput.shake(),
+              isEmailValid:
+                !error.response.data.errors.email || this.emailInput.shake(),
+              isPasswordValid:
+                !error.response.data.errors.password ||
+                this.passwordInput.shake(), 
+              isConfirmationValid:
+                !error.response.data.errors.password_confirmation ||
+                this.confirmationInput.shake(),
+              errorsMessages: error.response.data.errors || {}
+            });
+          } else {
+            Alert.alert(
+              "Erro no servidor",
+              "Aguarde alguns instantes e tente novamente",
+              [{ text: "OK" }],
+              {
+                cancelable: false
+              }
+            );
+          }
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
+    }
   }
 
   render() {
@@ -236,13 +293,16 @@ class LoginScreen extends Component {
                     ref={input => (this.CrfaInput = input)}
                     onSubmitEditing={this.signUp}
                     onChangeText={Crfa => {
+                      if (Crfa.length == 6) this.emailInput.focus();
                       if (/^\d+$/.test(Crfa) || Crfa === "")
                         this.setState({ Crfa });
                     }}
                     errorMessage={
                       isCrfaValid
                         ? null
-                        : "Digite apenas os 6 números do seu Crfa"
+                        : errorsMessages.register
+                        ? errorsMessages.register[0]
+                        : "Digite apenas os 6 números do seu Crf-a"
                     }
                   />
                 )}
@@ -273,7 +333,9 @@ class LoginScreen extends Component {
                   onSubmitEditing={() => this.passwordInput.focus()}
                   onChangeText={email => this.setState({ email })}
                   errorMessage={
-                    isEmailValid ? null : "Digite um e-mail válido."
+                    isEmailValid ? null : (errorsMessages.email
+                        ? "Este e-mail já está sendo usado."
+                        : "Digite um e-mail válido.")
                   }
                 />
                 <Input
