@@ -44,6 +44,7 @@ class LoginScreen extends Component {
     super(props);
 
     this.state = {
+      Crfa: "",
       email: "",
       password: "",
       selectedCategory: 0,
@@ -71,7 +72,8 @@ class LoginScreen extends Component {
       isLoading: false,
       isEmailValid: true,
       isPasswordValid: true,
-      isConfirmationValid: true
+      isConfirmationValid: true,
+      isCrfaValid: true
     });
   }
 
@@ -112,7 +114,7 @@ class LoginScreen extends Component {
   }
 
   signUp() {
-    const { email, password, passwordConfirmation } = this.state;
+    const { email, password, passwordConfirmation, Crfa } = this.state;
     this.setState({ isLoading: true });
     // Simulate an API call
     setTimeout(() => {
@@ -121,6 +123,7 @@ class LoginScreen extends Component {
         isLoading: false,
         isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
         isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+        isCrfaValid: Crfa.length == 6 || this.CrfaInput.shake(),
         isConfirmationValid:
           password === passwordConfirmation || this.confirmationInput.shake()
       });
@@ -134,9 +137,11 @@ class LoginScreen extends Component {
       isEmailValid,
       isPasswordValid,
       isConfirmationValid,
+      isCrfaValid,
       email,
       password,
-      passwordConfirmation
+      passwordConfirmation,
+      Crfa
     } = this.state;
     const isLoginPage = selectedCategory === 0;
     const isSignUpPage = selectedCategory === 1;
@@ -202,6 +207,46 @@ class LoginScreen extends Component {
                 <TabSelector selected={isSignUpPage} />
               </View>
               <View style={styles.formContainer}>
+                {isSignUpPage && (
+                  <Input
+                    leftIcon={
+                      <Icon
+                        name="id-card"
+                        type="font-awesome"
+                        color="rgba(0, 0, 0, 0.38)"
+                        size={25}
+                        style={{ backgroundColor: "transparent" }}
+                      />
+                    }
+                    value={Crfa}
+                    autoFocus={true}
+                    maxLength={6}
+                    keyboardAppearance="light"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="numeric"
+                    returnKeyType="next"
+                    blurOnSubmit={true}
+                    containerStyle={{
+                      marginTop: 16,
+                      borderBottomColor: "rgba(0, 0, 0, 0.38)"
+                    }}
+                    inputStyle={{ marginLeft: 10 }}
+                    placeholder={"Crf-a"}
+                    ref={input => (this.CrfaInput = input)}
+                    onSubmitEditing={this.signUp}
+                    onChangeText={Crfa => {
+                      if (/^\d+$/.test(Crfa) || Crfa === "")
+                        this.setState({ Crfa });
+                    }}
+                    errorMessage={
+                      isCrfaValid
+                        ? null
+                        : "Digite apenas os 6 números do seu Crfa"
+                    }
+                  />
+                )}
+
                 <Input
                   leftIcon={
                     <Icon
