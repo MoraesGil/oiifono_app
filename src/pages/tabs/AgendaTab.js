@@ -4,7 +4,7 @@ import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from 'react-native-elements';
 
-import AgendaHome from "pages/Agenda_Home"; 
+import AgendaHome from "pages/Agenda"; 
 // import ButtonsDetails from "../views/buttons_detail";
 
 
