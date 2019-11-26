@@ -1,11 +1,12 @@
 import React from "react";
-import { Platform } from "react-native"; 
+import { Platform } from "react-native";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import TabBarIcon from "./TabBarIcon";
 
 import AgendaTab from "pages/tabs/AgendaTab";
- 
+import PatientsTab from "pages/tabs/PatientsTab";
+import SettingsTab from "pages/tabs/SettingsTab";
 
 const tabNavigator = createBottomTabNavigator(
   {
@@ -23,8 +24,8 @@ const tabNavigator = createBottomTabNavigator(
       })
     },
     Patients: {
-      screen: AgendaTab,
-      path: "/agenda",
+      screen: PatientsTab,
+      path: "/patients",
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: "Pacientes",
         tabBarIcon: ({ tintColor, focused }) => (
@@ -36,8 +37,8 @@ const tabNavigator = createBottomTabNavigator(
       })
     },
     Settings: {
-      screen: AgendaTab,
-      path: "/agenda",
+      screen: SettingsTab,
+      path: "/settings",
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: "Ajustes",
         tabBarIcon: ({ tintColor, focused }) => (
@@ -47,20 +48,15 @@ const tabNavigator = createBottomTabNavigator(
           />
         )
       })
-    }
-
-    // PatientsStack,
-    // SettingsStack
+    } 
   },
   {
-    initialRouteName: "Agenda",
-    animationEnabled: false,
-    swipeEnabled: true,
-    // Android's default option displays tabBars on top, but iOS is bottom
-    tabBarPosition: "bottom",
+    // initialRouteName: "Agenda",
+    animationEnabled: true,
+    swipeEnabled: true, 
+    tabBarPosition: Platform.OS === "ios" ? "bottom" : "top",
     tabBarOptions: {
-      activeTintColor: "#e91e63",
-      // Android's default showing of icons is false whereas iOS is true
+      activeTintColor: "#e91e63", 
       showIcon: true
     }
   }

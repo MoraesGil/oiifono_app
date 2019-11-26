@@ -138,7 +138,7 @@ export default class AgendaScreen extends Component {
               size="medium"
               source={{
                 uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"
+                  person.picture
               }}
             />
           </View>
@@ -152,18 +152,14 @@ export default class AgendaScreen extends Component {
               }}
             >
               <View style={[grid.row, grid.spaced, grid.centerH]}>
-                {this.iconsTemplate(person)}
-                 
-                  
-
+                {this.iconsTemplate(person)}   
                   <Tooltip popover={<Text> Idade: {person.age} </Text>}>
                     <Text>{person.birthdate}</Text>
-                  </Tooltip>
-                 
+                  </Tooltip>                 
               </View>
 
               <View style={grid.row}>
-                <Text>Paciente mais legal do mundo</Text>
+                <Text>{person.name}</Text>
               </View>
             </View>
           </View>
@@ -194,10 +190,7 @@ export default class AgendaScreen extends Component {
         }}
         onDayPress={day => {
           console.log("selected day", day);
-        }}
-        onDayLongPress={day => {
-          console.log("long press day", day);
-        }}
+        }} 
       />
     );
   }
@@ -212,6 +205,7 @@ export default class AgendaScreen extends Component {
           const numItems = Math.floor(Math.random() * 5);
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
+              picture:"https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
               name: "Fulaninho de souza",
               birthdate: "24/12/1990",
               age: Math.floor(Math.random() * 100),

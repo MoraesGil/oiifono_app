@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import OptionsMenu from "react-native-options-menu";
 import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from 'react-native-elements';
@@ -18,21 +18,33 @@ const AgendaTabView = ({ navigation }) => (
 //     navigation={navigation}
 //   />
 // );
-
+ 
 const AgendaTab = createStackNavigator(
   {
     Agenda: {
       screen: AgendaTabView,
       path: "/",
-      navigationOptions: ({ navigation }) => ({ 
+      navigationOptions: ({ navigation }) => ({
         title: "Agenda",
         headerRight: (
-          <Icon
-            name="menu"
-            size={30}
-            type="entypo"
-            containerStyle={{ marginRight: 10 }}
-            // onPress={navigation.toggleDrawer}
+          <OptionsMenu
+            customButton={
+              <Icon
+                name="menu"
+                size={30}
+                type="entypo"
+                containerStyle={{ marginRight: 10 }}
+              />
+            }
+            buttonStyle={{
+              width: 32,
+              height: 8,
+              margin: 7.5,
+              resizeMode: "contain"
+            }}
+            destructiveIndex={1}
+            options={["Novo agendamento", "Cancelar"]}
+            actions={[this.scheduler,()=>{return}]}
           />
         )
       })
