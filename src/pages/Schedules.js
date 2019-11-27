@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
-
+import moment from "moment";
 import { Agenda } from "react-native-calendars";
 import { SwipeRow } from "react-native-swipe-list-view";
 import { ListItem, Avatar, Icon, Tooltip } from "react-native-elements";
 import { LocaleConfig } from "react-native-calendars";
 import { Ionicons } from "@expo/vector-icons";
- 
+
 import grid from "@/constants/grid";
 import ptBr from "@/constants/calendar_ptBr";
 import colors from "@/constants/Colors";
@@ -16,15 +16,10 @@ const WINDOW_WIDTH = Dimensions.get("window").width;
 LocaleConfig.locales["br"] = ptBr;
 LocaleConfig.defaultLocale = "br";
 
-export default class AgendaScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: {}
-    };
-  } 
+export default function Schedules({ navigation }) {
+  const [schedules, setSchedule] = useState({});
 
-  iconsTemplate = person => {
+  function iconsTemplate(person) {
     return (
       <View style={[grid.row, grid.containerMini]}>
         <Tooltip
@@ -85,18 +80,14 @@ export default class AgendaScreen extends Component {
         )}
       </View>
     );
-  };
+  }
 
-  itemTemplate = i => {
+  function itemTemplate(i) {
     return (
       <SwipeRow leftOpenValue={150} rightOpenValue={-150}>
         <View style={styles.standaloneRowBack}>
-          <Text>
-          
-          </Text>
-          <Text>
-          
-          </Text>
+          <Text></Text>
+          <Text></Text>
         </View>
 
         <ListItem
@@ -106,13 +97,13 @@ export default class AgendaScreen extends Component {
           key={i}
           chevron
           bottomDivider
-          title={this.personTemplate(i)}
+          title={personTemplate(i)}
         />
       </SwipeRow>
     );
-  };
+  }
 
-  personTemplate(person) {
+  function personTemplate(person) {
     return (
       <View>
         <View style={grid.row}>
@@ -137,8 +128,7 @@ export default class AgendaScreen extends Component {
               rounded
               size="medium"
               source={{
-                uri:
-                  person.picture
+                uri: person.picture
               }}
             />
           </View>
@@ -152,10 +142,10 @@ export default class AgendaScreen extends Component {
               }}
             >
               <View style={[grid.row, grid.spaced, grid.centerH]}>
-                {this.iconsTemplate(person)}   
-                  <Tooltip popover={<Text> Idade: {person.age} </Text>}>
-                    <Text>{person.birthdate}</Text>
-                  </Tooltip>                 
+                {iconsTemplate(person)}
+                <Tooltip popover={<Text> Idade: {person.age} </Text>}>
+                  <Text>{person.birthdate}</Text>
+                </Tooltip>
               </View>
 
               <View style={grid.row}>
@@ -168,70 +158,11 @@ export default class AgendaScreen extends Component {
     );
   }
 
-  render() {
-    return (
-      <Agenda
-        minDate={"2010-05-10"}
-        maxDate={"2030-05-30"}
-        items={this.state.items}
-        loadItemsForMonth={this.loadItems.bind(this)}
-        selected={"2019-10-13"}
-        renderItem={this.renderItem.bind(this)}
-        renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowHasChanged={this.rowHasChanged.bind(this)}
-        renderKnob={() => {
-          return (
-            <Icon
-              name="angle-double-down"
-              type="font-awesome"
-              style={grid.containerMini}
-            />
-          );
-        }}
-        onDayPress={day => {
-          console.log("selected day", day);
-        }} 
-      />
-    );
+  function renderItem(item) {
+    return itemTemplate(item);
   }
 
-  loadItems(day) {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              picture:"https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-              name: "Fulaninho de souza",
-              birthdate: "24/12/1990",
-              age: Math.floor(Math.random() * 100),
-              birthday: Math.floor(Math.random() * j) % 2,
-              confirmed: Math.floor(Math.random() * j) % 3,
-              miss: Math.floor(Math.random() * j) % 5,
-              disability:
-                Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-              sex: numItems > 3 ? "m" : "f"
-            });
-          }
-        }
-      } //console.log(this.state.items);
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {
-        newItems[key] = this.state.items[key];
-      });
-      this.setState({ items: newItems });
-    }, 1000); // console.log(`Load Items for ${day.year}-${day.month}`);
-  }
-
-  renderItem(item) {
-    return this.itemTemplate(item);
-  }
-
-  renderEmptyDate() {
+  function renderEmptyDate() {
     return (
       <View style={styles.emptyDate}>
         <Text>Ninguém pra hoje !!!</Text>
@@ -239,14 +170,53 @@ export default class AgendaScreen extends Component {
     );
   }
 
-  rowHasChanged(r1, r2) {
+  function rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
   }
 
-  timeToString(time) {
-    const date = new Date(time);
-    return date.toISOString().split("T")[0];
+  function daysRange() {
+    let days = { ...schedules };
+    for (let i = -30; i <= 60; i++) {
+      const strTime = moment()
+        .add(i, "days")
+        .format("YYYY-MM-DD");
+      if (!days[strTime]) days = { ...days, [strTime]: [] };
+    }
+    return days;
   }
+
+  function loadItems() { 
+    setSchedule(daysRange());
+  }
+
+  return (
+    <Agenda
+      minDate={moment()
+        .subtract(3, "M")
+        .format("YYYY-MM-DD")}
+      maxDate={moment()
+        .add(9, "M")
+        .format("YYYY-MM-DD")}
+      items={schedules}
+      loadItemsForMonth={loadItems}
+      selected={moment().format("YYYY-MM-DD")}
+      renderItem={renderItem}
+      renderEmptyDate={renderEmptyDate}
+      rowHasChanged={rowHasChanged}
+      renderKnob={() => {
+        return (
+          <Icon
+            name="angle-double-down"
+            type="font-awesome"
+            style={grid.containerMini}
+          />
+        );
+      }}
+      onDayPress={day => {
+        console.log("selected day", day);
+      }}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
