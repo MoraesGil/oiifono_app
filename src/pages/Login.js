@@ -58,8 +58,8 @@ class LoginScreen extends Component {
     this.login = this.login.bind(this);
     this.signUp = this.signUp.bind(this);
 
-    AsyncStorage.getItem("auth").then(auth => {
-      if (auth) {
+    AsyncStorage.getItem("token").then(token => {
+      if (token) {
         this.props.navigation.navigate("Home");
       }
     });
@@ -100,10 +100,14 @@ class LoginScreen extends Component {
       api
         .post("/login", { email, password })
         .then(res => {
-          const { user, access_token, token_type, expires_in } = res.data;
-          const auth = { user, access_token, token_type, expires_in };
+          const { user, access_token, expires_in } = res.data; 
 
-          AsyncStorage.setItem("auth", user);
+          AsyncStorage.multiSet([
+            ["@oiiFono:token", access_token],
+            ["@oiiFono:expires_in", expires_in],
+            ["@oiiFono:user", JSON.stringify(user)],
+          ]);
+
         })
         .catch(e => {
           Alert.alert(
