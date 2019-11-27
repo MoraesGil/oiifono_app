@@ -2,15 +2,11 @@ import React from "react";
 import OptionsMenu from "react-native-options-menu";
 import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 
-import AgendaHome from "pages/Agenda"; 
+import Schedules from "pages/Schedules";
+
 // import ButtonsDetails from "../views/buttons_detail";
-
-
-const AgendaTabView = ({ navigation }) => (
-  <AgendaHome navigation={navigation} />
-);
 
 // const ButtonsDetailTabView = ({ navigation }) => (
 //   <ButtonsDetails
@@ -18,14 +14,14 @@ const AgendaTabView = ({ navigation }) => (
 //     navigation={navigation}
 //   />
 // );
- 
-const AgendaTab = createStackNavigator(
+
+const SchedulesTab = createStackNavigator(
   {
-    Agenda: {
-      screen: AgendaTabView,
+    Schedules: {
+      screen: ({ navigation }) => <Schedules navigation={navigation} />,
       path: "/",
       navigationOptions: ({ navigation }) => ({
-        title: "Agenda",
+        title: "Schedules",
         headerRight: (
           <OptionsMenu
             customButton={
@@ -44,7 +40,12 @@ const AgendaTab = createStackNavigator(
             }}
             destructiveIndex={1}
             options={["Novo agendamento", "Cancelar"]}
-            actions={[this.scheduler,()=>{return}]}
+            actions={[
+              this.scheduler,
+              () => {
+                return;
+              }
+            ]}
           />
         )
       })
@@ -60,4 +61,4 @@ const AgendaTab = createStackNavigator(
   config
 );
 
-export default AgendaTab;
+export default SchedulesTab;
