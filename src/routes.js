@@ -4,7 +4,7 @@ import Login from 'pages/Login';
 import Home from "components/MainTabNavigator";  
 const Routes = createAppContainer(
   createSwitchNavigator({
-    Login,
+    // Login,
     Home
   })
 );
