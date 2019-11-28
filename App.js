@@ -32,16 +32,16 @@ export default function App() {
   };
 
   if (!isReady) {
-    return (
-      <Provider store={store}>
-        <AppLoading
+    return <AppLoading
           startAsync={loadAssetsAsync}
           onFinish={() => setIsReady(true)}
           onError={console.warn}
-        />
-      </Provider>
-    );
+        />;
   }
 
-  return <Routes />;
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
 }
