@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const accessToken = await AsyncStorage.getItem("token");
+const accessToken = async () => await AsyncStorage.getItem("token");
 
 const api = axios.create({
   baseUrl: "http://10.9.8.16:3000/api",
