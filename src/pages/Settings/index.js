@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View } from "react-native";
+import styles from "./styles" 
 
 export default function Settings() {
   return <Text>settings</Text>;
