@@ -11,6 +11,8 @@ import grid from "@/constants/grid";
 import ptBr from "@/constants/calendar_ptBr";
 import colors from "@/constants/Colors";
 
+import { useSelector } from 'react-redux'
+
 const WINDOW_WIDTH = Dimensions.get("window").width;
 
 LocaleConfig.locales["br"] = ptBr;
@@ -18,25 +20,26 @@ LocaleConfig.defaultLocale = "br";
 
 export default function Schedules({ navigation }) {
   const [schedules, setSchedule] = useState({});
+  const _schedules = useSelector(state => state.data.schedules.items);
 
-  function iconsTemplate(person) {
+  function iconsTemplate(i) {
     return (
       <View style={[grid.row, grid.containerMini]}>
         <Tooltip
           popover={
-            <Text> {person.sex == "m" ? "Masculino" : "Feminino"} </Text>
+            <Text> {i.person.sex == "m" ? "Masculino" : "Feminino"} </Text>
           }
         >
           <Ionicons
             style={grid.containerMini2x}
-            name={person.sex == "m" ? "md-man" : "md-woman"}
+            name={i.person.sex == "m" ? "md-man" : "md-woman"}
             size={26}
-            color={person.sex == "m" ? colors.male : colors.female}
+            color={i.person.sex == "m" ? colors.male : colors.female}
           />
         </Tooltip>
 
-        {person.disability != false && (
-          <Tooltip popover={<Text> {person.disability} </Text>}>
+        {i.person.disability != false && (
+          <Tooltip popover={<Text> {i.person.disability} </Text>}>
             <Icon
               style={grid.containerMini2x}
               name="wheelchair"
@@ -46,7 +49,7 @@ export default function Schedules({ navigation }) {
           </Tooltip>
         )}
 
-        {person.confirmed != false && (
+        {i.person.confirmed != false && (
           <Tooltip popover={<Text> Confirmado </Text>}>
             <Icon
               style={grid.containerMini2x}
@@ -57,8 +60,8 @@ export default function Schedules({ navigation }) {
           </Tooltip>
         )}
 
-        {person.miss != false && (
-          <Tooltip popover={<Text> Faltou </Text>}>
+        {i.person.absenced_by != false && (
+          <Tooltip popover={<Text> {i.absenced_by || "Faltou e não justificou"} </Text>}>
             <Icon
               style={grid.containerMini2x}
               name="asterisk"
@@ -68,7 +71,7 @@ export default function Schedules({ navigation }) {
           </Tooltip>
         )}
 
-        {person.birthday != false && (
+        {i.person.birthday != false && (
           <Tooltip popover={<Text> Aniversariante </Text>}>
             <Icon
               style={grid.containerMini2x}
@@ -84,10 +87,10 @@ export default function Schedules({ navigation }) {
 
   function itemTemplate(i) {
     return (
-      <SwipeRow leftOpenValue={150} rightOpenValue={-150}>
+      <SwipeRow leftOpenValue={75} rightOpenValue={-75}>
         <View style={styles.standaloneRowBack}>
-          <Text></Text>
-          <Text></Text>
+          <Text>Faltou</Text>
+          <Text>Confirmar</Text>
         </View>
 
         <ListItem
@@ -103,7 +106,7 @@ export default function Schedules({ navigation }) {
     );
   }
 
-  function personTemplate(person) {
+  function personTemplate(i) {
     return (
       <View>
         <View style={grid.row}>
@@ -111,7 +114,12 @@ export default function Schedules({ navigation }) {
             <View style={[grid.row, grid.centered, grid.spaced]}>
               <Tooltip
                 style={grid.containerMini}
-                popover={<Text> 12 : 30 - 13 : 00 </Text>}
+                popover={
+                  <Text>
+                    {" "}
+                    {i.start_at} - {i.end_at}{" "}
+                  </Text>
+                }
               >
                 <View style={[grid.row, grid.centerH]}>
                   <Icon
@@ -120,7 +128,7 @@ export default function Schedules({ navigation }) {
                     style={grid.containerMini}
                   />
 
-                  <Text style={grid.containerMini}>12:30</Text>
+                  <Text style={grid.containerMini}>{i.start_at} </Text>
                 </View>
               </Tooltip>
             </View>
@@ -128,7 +136,7 @@ export default function Schedules({ navigation }) {
               rounded
               size="medium"
               source={{
-                uri: person.picture
+                uri: i.person.picture
               }}
             />
           </View>
@@ -142,14 +150,14 @@ export default function Schedules({ navigation }) {
               }}
             >
               <View style={[grid.row, grid.spaced, grid.centerH]}>
-                {iconsTemplate(person)}
-                <Tooltip popover={<Text> Idade: {person.age} </Text>}>
-                  <Text>{person.birthdate}</Text>
+                {iconsTemplate(i)}
+                <Tooltip popover={<Text> Idade: {i.person.age} </Text>}>
+                  <Text>{i.person.birthdate}</Text>
                 </Tooltip>
               </View>
 
               <View style={grid.row}>
-                <Text>{person.name}</Text>
+                <Text>{i.person.name}</Text>
               </View>
             </View>
           </View>
@@ -179,14 +187,14 @@ export default function Schedules({ navigation }) {
     for (let i = -30; i <= 60; i++) {
       const strTime = moment()
         .add(i, "days")
-        .format("YYYY-MM-DD");
+        .format("YYYY-MM-DD");  
       if (!days[strTime]) days = { ...days, [strTime]: [] };
     }
     return days;
   }
 
-  function loadItems() { 
-    setSchedule(daysRange());
+  function loadItems() {  
+    setSchedule({...daysRange(),..._schedules});
   }
 
   return (
