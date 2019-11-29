@@ -12,7 +12,7 @@ import ptBr from "@/constants/calendar_ptBr";
 LocaleConfig.locales["br"] = ptBr;
 LocaleConfig.defaultLocale = "br";
 
-import StatusIcon from '@/components'
+import StatusIcon from "components/StatusIcon.js";
 
 
 export default function Schedules({ navigation }) {
@@ -21,22 +21,17 @@ export default function Schedules({ navigation }) {
 
   function statusBar(schedule) {
     return (
-      <View style={[grid.row, grid.containerMini]}>  
-        {schedule.person.disability != false && (
-          StatusIcon("desabilities")
-        )}
-
-        {schedule.person.confirmed != false && (
-          StatusIcon("confirmed")
-        )}
-
-        {schedule.person.absenced_by != false && (
-          StatusIcon("absenced",schedule.person.absenced_by)
-        )}
-
-        {schedule.person.birthday != false && (
-          StatusIcon("birthday")
-        )}
+      <View style={[grid.row]}>
+        {StatusIcon("gender", schedule.person.gender)}
+        
+        {schedule.person.disability &&
+          StatusIcon("desability", schedule.person.disability)}
+        
+        {schedule.confirmed && StatusIcon("confirmed")}
+        
+        {schedule.absenced_by &&
+          StatusIcon("absenced", schedule.absenced_by)}
+        {schedule.person.birthday != false && StatusIcon("birthday")}
       </View>
     );
   }
@@ -67,14 +62,14 @@ export default function Schedules({ navigation }) {
       <Tooltip
         style={grid.containerMini}
         popover={
-          <Text> 
-            {schedule.start_at} {" - "} {schedule.end_at} 
+          <Text>
+            {schedule.start_at} {" - "} {schedule.end_at}
           </Text>
         }
       >
         <View style={[grid.row, grid.centerH]}>
-          <Icon name="clock-o" type="font-awesome" style={grid.containerMini} />  
-          <Text style={grid.containerMini}>{i.start_at} </Text>
+          <Icon name="clock-o" type="font-awesome" style={grid.containerMini} />
+          <Text style={grid.containerMini}>{schedule.start_at} </Text>
         </View>
       </Tooltip>
     );
@@ -86,7 +81,7 @@ export default function Schedules({ navigation }) {
         <View style={grid.row}>
           <View style={grid.centered}>
             <View style={[grid.row, grid.centered, grid.spaced]}>
-            clockRange(i)
+            {clockRange(i)}
             </View>
             <Avatar
               rounded

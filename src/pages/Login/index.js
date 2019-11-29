@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Input, Button, Icon } from "react-native-elements";
 import logo from "assets/logo.png";
-import api from "../services/api"; 
+import api from "@/services/api"; 
 import styles from "./styles"
 
 const BG_IMAGE = require("assets/bg_login.jpg");

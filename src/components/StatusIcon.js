@@ -1,37 +1,28 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Text } from "react-native";
 import { Icon, Tooltip } from "react-native-elements";
 import colors from "@/constants/Colors";
 import grid from "@/constants/grid";
 
+function gender(gender) {
+  return (
+    <Tooltip
+      popover={<Text> {gender == "m" ? "Masculino" : "Feminino"} </Text>}
+    >
+      <Icon
+        style={{ marginRight: 20, marginLeft: 26 }}
+        name={gender == "m" ? "male" : "female"}
+        type="font-awesome"
+        color={gender == "m" ? colors.male : colors.female}
+      />
+    </Tooltip>
+  );
+} 
 
-function sex(sex) {
-  <Tooltip popover={<Text> {sex == "m" ? "Masculino" : "Feminino"} </Text>}>
-    <Ionicons
-      style={grid.containerMini2x}
-      name={i.person.sex == "m" ? "md-man" : "md-woman"}
-      size={26}
-      color={i.person.sex == "m" ? colors.male : colors.female}
-    />
-  </Tooltip>;
-}
-
-function sex(sex) {
-  <Tooltip popover={<Text> {sex == "m" ? "Masculino" : "Feminino"} </Text>}>
-    <Ionicons
-      style={grid.containerMini2x}
-      name={i.person.sex == "m" ? "md-man" : "md-woman"}
-      size={26}
-      color={i.person.sex == "m" ? colors.male : colors.female}
-    />
-  </Tooltip>;
-}
-
-function desabilities(disability) {
+function desability(disability) {
   return (
     <Tooltip popover={<Text> {disability} </Text>}>
-      <Icon
-        style={grid.containerMini2x}
+      <Icon 
         name="wheelchair"
         color={colors.disability}
         type="font-awesome"
@@ -43,8 +34,7 @@ function desabilities(disability) {
 function confirmed() {
   return (
     <Tooltip popover={<Text> Confirmado </Text>}>
-      <Icon
-        style={grid.containerMini2x}
+      <Icon 
         name="thumbs-o-up"
         color={colors.ok}
         type="font-awesome"
@@ -58,8 +48,7 @@ function absenced(absenced_by) {
     <Tooltip
       popover={<Text> {absenced_by || "Faltou e não justificou"} </Text>}
     >
-      <Icon
-        style={grid.containerMini2x}
+      <Icon 
         name="thumbs-o-down"
         color={colors.danger}
         type="font-awesome"
@@ -71,8 +60,7 @@ function absenced(absenced_by) {
 function birthday() {
   return (
     <Tooltip popover={<Text> Aniversariante </Text>}>
-      <Icon
-        style={grid.containerMini2x}
+      <Icon 
         name="birthday-cake"
         type="font-awesome"
         color="red"
@@ -82,8 +70,8 @@ function birthday() {
 }
 
 const status = {
-  desabilities,
-  sex,
+  desability,
+  gender,
   confirmed,
   absenced,
   birthday

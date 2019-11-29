@@ -5,7 +5,7 @@ const initialState = {
       {
         start_at: "12:00",
         end_at: "13:00",
-        confirmed: false,
+        confirmed: true,
         absenced_by: "Ficou Doente",
         person: {
           id: 1,
@@ -16,7 +16,7 @@ const initialState = {
           birthday: Math.floor(Math.random()) % 2,
           age: 29,
           disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-          sex: "m"
+          gender: "m"
         }
       }
     ]
