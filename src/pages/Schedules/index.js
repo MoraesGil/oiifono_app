@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { SwipeRow } from "react-native-swipe-list-view";
-import { ListItem, Avatar, Icon, Tooltip } from "react-native-elements";
+import { ListItem, Avatar, Icon, Tooltip, Button } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
@@ -41,42 +41,57 @@ export default function Schedules({ navigation }) {
       </View>
     );
   }
+  
+ 
 
   function renderItem(schedule) {
     return (
-      <SwipeRow leftOpenValue={75} rightOpenValue={-160}>
-        <View style={{ ...styles.standaloneRowBack, ...styles.row }}>
-          {/* left */}
+      <SwipeRow leftOpenValue={75} rightOpenValue={-75}>
+        <View style={styles.rowBack}>
           <View>
             {schedule.absenced_by == null && !schedule.attended && (
-              <Text>Faltou</Text>
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.absenceBtn]}
+                onPress={() => alert("faltou")}
+              >
+                <Text style={styles.absenceBtnText}> Faltou</Text>
+              </TouchableOpacity>
             )}
 
             {schedule.absenced_by != null && !schedule.attended && (
-              <Text>Reagendar</Text>
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.rescheduleBtn]}
+                onPress={() => alert("reagendar")}
+              >
+                <Text style={styles.rescheduleBtnText}> Reagendar</Text>
+              </TouchableOpacity>
             )}
           </View>
-          {/* right */}
+
           <View>
-            <View style={{...styles.row,...styles.centerH}}>
-              <View>
-                {schedule.absenced_by == null && !schedule.attended && (
-                  <Text>Evoluir Paciente</Text>
-                )}
-              </View>
-              <View>
-                {schedule.absenced_by == null &&
-                  !schedule.confirmed &&
-                  !schedule.attended && <Text>Confirmar</Text>}
-              </View>
-            </View>
+            {schedule.absenced_by == null &&
+              !schedule.confirmed &&
+              !schedule.attended && (
+                <TouchableOpacity
+                  style={[styles.backRightBtn, styles.confirmBtn]}
+                  onPress={() => alert("confirmar")}
+                >
+                  <Text style={styles.confirmBtnText}> Confirmar</Text>
+                </TouchableOpacity>
+              )}
+
+            {schedule.absenced_by == null && !schedule.attended && (
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.attendBtn]}
+                onPress={() => alert("evoluir")}
+              >
+                <Text style={styles.attendBtnText}> Evoluir</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 
         <ListItem
-          style={{
-            paddingRight: 2
-          }}
           key={schedule}
           chevron
           bottomDivider
@@ -100,7 +115,11 @@ export default function Schedules({ navigation }) {
         }
       >
         <View style={[styles.row, styles.centerH]}>
-          <Icon name="clock-o" type="font-awesome" style={styles.containerMini} />
+          <Icon
+            name="clock-o"
+            type="font-awesome"
+            style={styles.containerMini}
+          />
           <Text style={styles.containerMini}>{schedule.start_at} </Text>
         </View>
       </Tooltip>
@@ -161,19 +180,20 @@ export default function Schedules({ navigation }) {
     return r1.name !== r2.name;
   }
 
-  function daysRange() {
+  function daysRange(day) {
     let days = { ...schedules };
+
     for (let i = -30; i <= 60; i++) {
-      const strTime = moment()
+      const strTime = moment(day.timestamp)
         .add(i, "days")
         .format("YYYY-MM-DD");
-      if (!days[strTime]) days = { ...days, [strTime]: [] };
+      if (!days[strTime]) days = { ...days, [strTime]: {} };
     }
     return days;
   }
 
-  function loadItems() {
-    setSchedule({ ...daysRange(), ..._schedules });
+  function loadItems(day) {
+    setSchedule({ ...daysRange(day), ..._schedules });
   }
 
   return (
@@ -205,4 +225,3 @@ export default function Schedules({ navigation }) {
     />
   );
 }
- 

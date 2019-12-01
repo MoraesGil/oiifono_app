@@ -17,13 +17,54 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30
   },
-  standaloneRowBack: {
+  backTextWhite: {
+    color: "#FFF"
+  },
+  rowBack: {
     alignItems: "center",
+    backgroundColor: "#DDD",
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 15
+    justifyContent: "space-between"
+  },
+  backRightBtn: {
+    ...{
+      alignItems: "center",
+      bottom: 0,
+      justifyContent: "center",
+      top: 0,
+      width: 75
+    },
+    ...grid.container
+  },
+
+  absenceBtn: {
+    backgroundColor: colors.dangerBackground
+  },
+  absenceBtnText: {
+    color: colors.dangerText
+  },
+
+  rescheduleBtn: {
+    backgroundColor: colors.infoBackground
+  },
+  rescheduleBtnText: {
+    color: colors.infoText
+  },
+
+  confirmBtn: {
+    backgroundColor: colors.primaryBackground
+  },
+  confirmBtnText: {
+    color: colors.primaryText
+  },
+
+  attendBtn: {
+    backgroundColor: colors.successBackground
+  },
+  attendBtnText: {
+    color: colors.successText
   }
 });
 
-export default { ...grid, ...formStyles, ...styles };
+export default { ...grid, ...formStyles, ...styles};
