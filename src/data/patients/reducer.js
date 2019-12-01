@@ -1,18 +1,16 @@
-import * as actionTypes from "./actionTypes";
-
 const initialState = {
-  items: [
-    {
+  items: {
+    "1": {
       id: 1,
       name: "Johh Smith",
       picture: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-      birthdate: "24/12/1990",
+      birthdate: "24/12/1991",
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "m"
+      gender: "m"
     },
-    {
+    "2": {
       id: 2,
       name: "Sarah Parker",
       picture:
@@ -21,9 +19,9 @@ const initialState = {
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "f"
+      gender: "f"
     },
-    {
+    "3": {
       id: 3,
       name: "Paul Allen",
       picture: "https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg",
@@ -31,20 +29,20 @@ const initialState = {
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "m"
+      gender: "m"
     },
-    {
-      name: "Terry Andrews",
+    "4": {
       id: 4,
+      name: "Terry Andrews",
       picture:
         "https://s3.amazonaws.com/uifaces/faces/twitter/talhaconcepts/128.jpg",
       birthdate: "24/12/1990",
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "m"
+      gender: "m"
     },
-    {
+    "5": {
       id: 5,
       name: "Andy Vitale",
       picture:
@@ -53,9 +51,9 @@ const initialState = {
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "m"
+      gender: "m"
     },
-    {
+    "6": {
       id: 6,
       name: "Katy Friedson",
       picture:
@@ -64,21 +62,13 @@ const initialState = {
       birthday: Math.floor(Math.random()) % 2,
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      sex: "f"
+      gender: "f"
     }
-  ]
+  }
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.UPDATE:
-      return {
-        items: {}
-      };
-    case actionTypes.EMPTY:
-      return {
-        items: {}
-      };
     default:
       return state;
   }

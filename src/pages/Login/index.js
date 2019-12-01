@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import { 
+import {
   View,
-  ImageBackground, 
+  ImageBackground,
   LayoutAnimation,
   UIManager,
   KeyboardAvoidingView,
@@ -14,12 +14,11 @@ import {
 } from "react-native";
 import { Input, Button, Icon } from "react-native-elements";
 import logo from "assets/logo.png";
-import api from "@/services/api"; 
-import styles from "./styles"
+import api from "@/services/api";
+import styles from "./styles";
 
 const BG_IMAGE = require("assets/bg_login.jpg");
 
-// Enable LayoutAnimation on Android
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -38,6 +37,7 @@ TabSelector.propTypes = {
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
+    console.log(styles);
 
     this.state = {
       Crfa: "",
@@ -47,7 +47,8 @@ class LoginScreen extends Component {
       isLoading: false,
       isEmailValid: true,
       isPasswordValid: true,
-      isConfirmationValid: true
+      isConfirmationValid: true,
+      errorsMessages: {}
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -70,7 +71,7 @@ class LoginScreen extends Component {
       isPasswordValid: true,
       isConfirmationValid: true,
       isCrfaValid: true,
-      errorsMessages:{}
+      errorsMessages: {}
     });
   }
 
@@ -96,14 +97,13 @@ class LoginScreen extends Component {
       api
         .post("/login", { email, password })
         .then(res => {
-          const { user, access_token, expires_in } = res.data; 
+          const { user, access_token, expires_in } = res.data;
 
           AsyncStorage.multiSet([
             ["@oiiFono:token", access_token],
             ["@oiiFono:expires_in", expires_in],
-            ["@oiiFono:user", JSON.stringify(user)],
+            ["@oiiFono:user", JSON.stringify(user)]
           ]);
-
         })
         .catch(e => {
           Alert.alert(
@@ -145,9 +145,9 @@ class LoginScreen extends Component {
       this.state.isCrfaValid
     ) {
       this.setState({ isLoading: true });
-      
-      const password_confirmation = passwordConfirmation
-      const register = Crfa
+
+      const password_confirmation = passwordConfirmation;
+      const register = Crfa;
       api
         .post("/register", { email, password, password_confirmation, register })
         .then(res => {
@@ -164,7 +164,7 @@ class LoginScreen extends Component {
                 !error.response.data.errors.email || this.emailInput.shake(),
               isPasswordValid:
                 !error.response.data.errors.password ||
-                this.passwordInput.shake(), 
+                this.passwordInput.shake(),
               isConfirmationValid:
                 !error.response.data.errors.password_confirmation ||
                 this.confirmationInput.shake(),
@@ -198,7 +198,8 @@ class LoginScreen extends Component {
       email,
       password,
       passwordConfirmation,
-      Crfa
+      Crfa,
+      errorsMessages
     } = this.state;
     const isLoginPage = selectedCategory === 0;
     const isSignUpPage = selectedCategory === 1;
@@ -284,11 +285,7 @@ class LoginScreen extends Component {
                     keyboardType="numeric"
                     returnKeyType="next"
                     blurOnSubmit={true}
-                    containerStyle={{
-                      marginTop: 16,
-                      borderBottomColor: "rgba(0, 0, 0, 0.38)"
-                    }}
-                    inputStyle={{ marginLeft: 10 }}
+                    inputStyle={styles.inputWithIcon}
                     placeholder={"Crf-a"}
                     ref={input => (this.CrfaInput = input)}
                     onSubmitEditing={this.signUp}
@@ -324,20 +321,21 @@ class LoginScreen extends Component {
                   autoCorrect={false}
                   keyboardType="email-address"
                   returnKeyType="next"
-                  inputStyle={{ marginLeft: 10 }}
+                  inputStyle={styles.inputWithIcon}
                   placeholder={"Email"}
-                  containerStyle={{
-                    borderBottomColor: "rgba(0, 0, 0, 0.38)"
-                  }}
+                  containerStyle={styles.inputContainer}
                   ref={input => (this.emailInput = input)}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   onChangeText={email => this.setState({ email })}
                   errorMessage={
-                    isEmailValid ? null : (errorsMessages.email
-                        ? "Este e-mail já está sendo usado."
-                        : "Digite um e-mail válido.")
+                    isEmailValid
+                      ? null
+                      : errorsMessages.email
+                      ? "Este e-mail já está sendo usado."
+                      : "Digite um e-mail válido."
                   }
                 />
+
                 <Input
                   leftIcon={
                     <Icon
@@ -355,11 +353,8 @@ class LoginScreen extends Component {
                   secureTextEntry={true}
                   returnKeyType={isSignUpPage ? "next" : "done"}
                   blurOnSubmit={true}
-                  containerStyle={{
-                    marginTop: 16,
-                    borderBottomColor: "rgba(0, 0, 0, 0.38)"
-                  }}
-                  inputStyle={{ marginLeft: 10 }}
+                  containerStyle={styles.inputContainer}
+                  inputStyle={styles.inputWithIcon}
                   placeholder={"Senha"}
                   ref={input => (this.passwordInput = input)}
                   onSubmitEditing={() =>
@@ -387,11 +382,8 @@ class LoginScreen extends Component {
                     keyboardType="default"
                     returnKeyType={"done"}
                     blurOnSubmit={true}
-                    containerStyle={{
-                      marginTop: 16,
-                      borderBottomColor: "rgba(0, 0, 0, 0.38)"
-                    }}
-                    inputStyle={{ marginLeft: 10 }}
+                    containerStyle={styles.inputContainer}
+                    inputStyle={styles.inputWithIcon}
                     placeholder={"Confirme a senha"}
                     ref={input => (this.confirmationInput = input)}
                     onSubmitEditing={this.signUp}
@@ -411,7 +403,7 @@ class LoginScreen extends Component {
                   activeOpacity={0.8}
                   title={isLoginPage ? "LOGIN" : "Registrar"}
                   onPress={isLoginPage ? this.login : this.signUp}
-                  titleStyle={styles.loginTextButton}
+                  titleStyle={styles.submitButton}
                   loading={isLoading}
                   disabled={isLoading}
                 />
@@ -424,4 +416,4 @@ class LoginScreen extends Component {
   }
 }
 
-export default withNavigation(LoginScreen); 
+export default withNavigation(LoginScreen);

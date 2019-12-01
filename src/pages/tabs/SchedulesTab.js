@@ -1,64 +1,51 @@
 import React from "react";
-import OptionsMenu from "react-native-options-menu";
 import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "react-native-elements";
+import { TouchableOpacity } from "react-native";
 
 import Schedules from "pages/Schedules";
 
-// import ButtonsDetails from "../views/buttons_detail";
+const SchedulesTabView = ({ navigation }) => (
+  <Schedules navigation={navigation} />
+);
 
-// const ButtonsDetailTabView = ({ navigation }) => (
-//   <ButtonsDetails
-//     banner={`${navigation.state.params.name}s Profile`}
-//     navigation={navigation}
-//   />
-// );
+import ScheduleForm from "pages/ScheduleForm";
+
+const ScheduleFormTabView = ({ navigation }) => (
+  <ScheduleForm navigation={navigation} />
+);
 
 const SchedulesTab = createStackNavigator(
   {
     Schedules: {
-      screen: ({ navigation }) => <Schedules navigation={navigation} />,
+      screen: SchedulesTabView,
       path: "/",
       navigationOptions: ({ navigation }) => ({
-        title: "Schedules",
+        title: "Agendamentos",
         headerRight: (
-          <OptionsMenu
-            customButton={
-              <Icon
-                name="menu"
-                size={30}
-                type="entypo"
-                containerStyle={{ marginRight: 10 }}
-              />
-            }
-            buttonStyle={{
-              width: 32,
-              height: 8,
-              margin: 7.5,
-              resizeMode: "contain"
-            }}
-            destructiveIndex={1}
-            options={["Novo agendamento", "Cancelar"]}
-            actions={[
-              this.scheduler,
-              () => {
-                return;
-              }
-            ]}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Schedule_Form")}
+          >
+            <Icon
+              containerStyle={{ marginRight: 15 }}
+              name="calendar-plus-o"
+              type="font-awesome"
+            />
+          </TouchableOpacity>
         )
       })
+    },
+    Schedule_Form: {
+      screen: ScheduleFormTabView,
+      path: "/schedule_form"
     }
-    // Button_Detail: {
-    //   screen: ButtonsDetailTabView,
-    //   path: "/buttons_detail",
-    //   navigationOptions: {
-    //     title: "Buttons Detail"
-    //   }
-    // }
   },
-  config
+  {
+    initialRouteName: "Schedules",
+    animationEnabled: true,
+    swipeEnabled: true
+  }
 );
 
 export default SchedulesTab;
