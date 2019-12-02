@@ -10,7 +10,7 @@ import SettingsTab from "pages/tabs/SettingsTab";
 
 const tabNavigator = createBottomTabNavigator(
   {
-    Agenda: {
+    Schedules: {
       screen: SchedulesTab,
       path: "/schedules",
       navigationOptions: ({ navigation }) => ({
@@ -51,7 +51,7 @@ const tabNavigator = createBottomTabNavigator(
     }
   },
   {
-    // initialRouteName: "Agenda",
+    initialRouteName: "Schedules",
     animationEnabled: true,
     swipeEnabled: true,
     tabBarPosition: Platform.OS === "ios" ? "bottom" : "top",

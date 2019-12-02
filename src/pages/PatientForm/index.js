@@ -16,12 +16,12 @@ import {
   withKeyboardAwareScrollView
 } from "react-native-dropdown-autocomplete";
 
-export default function Schedule({ navigation }) {
-  const [schedule, setSchedule] = useState(navigation.getParam("schedule") || {}); 
+export default function PatientForm({ navigation }) {
+ 
 
   return (
     <View style={styles.container}>
-      <Text>{schedule.id}</Text>
+      <Text>patient form </Text>
     </View>
   );
 }

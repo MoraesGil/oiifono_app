@@ -1,67 +1,51 @@
-import React from "react";
-import OptionsMenu from "react-native-options-menu";
+import React from "react"; 
+import { TouchableOpacity } from "react-native";
 import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "react-native-elements";
 
 import Patients from "pages/Patients";
-// import ButtonsDetails from "../views/buttons_detail";
+import PatientForm from "pages/PatientForm";
+import PatientDetail from "pages/PatientDetail";
+ 
 
 const PatientsTabView = ({ navigation }) => (
   <Patients navigation={navigation} />
 );
 
-// const ButtonsDetailTabView = ({ navigation }) => (
-//   <ButtonsDetails
-//     banner={`${navigation.state.params.name}s Profile`}
-//     navigation={navigation}
-//   />
-// );
-
+const PatientFormTabView = ({ navigation }) => (
+  <PatientForm navigation={navigation} />
+);
+const PatientDetailTabView = ({ navigation }) => (
+  <PatientDetail navigation={navigation} />
+);
+ 
 const PatientsTab = createStackNavigator(
   {
-    Agenda: {
+    patients: {
       screen: PatientsTabView,
       path: "/",
       navigationOptions: ({ navigation }) => ({
-        title: "Agenda",
+        title: "Pacientes",
         headerRight: (
-          <OptionsMenu
-            customButton={
-              <Icon
-                name="menu"
-                size={30}
-                type="entypo"
-                containerStyle={{ marginRight: 10 }}
-              />
-            }
-            buttonStyle={{
-              width: 32,
-              height: 8,
-              margin: 7.5,
-              resizeMode: "contain"
-            }}
-            destructiveIndex={1}
-            options={["Adicionar", "Cancelar"]}
-            actions={[
-              () => {
-                return;
-              },
-              () => {
-                return;
-              }
-            ]}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("patient_form")}>
+            <Icon
+              containerStyle={{ marginRight: 15 }}
+              name="user-plus"
+              type="font-awesome"
+            />
+          </TouchableOpacity>
         )
       })
+    }, 
+    patient_form: {
+      screen: PatientFormTabView,
+      path: "/patient_form"
+    },
+    patientDetail: {
+      screen: PatientDetailTabView,
+      path: "/patientDetail"
     }
-    // Button_Detail: {
-    //   screen: ButtonsDetailTabView,
-    //   path: "/buttons_detail",
-    //   navigationOptions: {
-    //     title: "Buttons Detail"
-    //   }
-    // }
   },
   config
 );

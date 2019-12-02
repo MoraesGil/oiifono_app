@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { SwipeRow } from "react-native-swipe-list-view";
-import { ListItem, Avatar, Icon, Tooltip, Button } from "react-native-elements";
+import { ListItem, Avatar, Icon, Tooltip } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
@@ -220,7 +220,7 @@ export default function Schedules({ navigation }) {
         );
       }}
       onDayPress={day => {
-        console.log("selected day", day);
+        console.log("load schedules by this day", day);
       }}
     />
   );
