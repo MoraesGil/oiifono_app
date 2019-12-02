@@ -36,9 +36,8 @@ TabSelector.propTypes = {
 
 class LoginScreen extends Component {
   constructor(props) {
-    super(props);
-    console.log(styles);
-
+    super(props);  
+    
     this.state = {
       Crfa: "",
       email: "",
@@ -53,9 +52,9 @@ class LoginScreen extends Component {
 
     this.selectCategory = this.selectCategory.bind(this);
     this.login = this.login.bind(this);
-    this.signUp = this.signUp.bind(this);
+    this.signUp = this.signUp.bind(this); 
 
-    AsyncStorage.getItem("token").then(token => {
+    AsyncStorage.getItem("@oiiFono:token").then(token => {
       if (token) {
         this.props.navigation.navigate("Home");
       }
@@ -152,7 +151,11 @@ class LoginScreen extends Component {
         .post("/register", { email, password, password_confirmation, register })
         .then(res => {
           const { user } = res.data;
-          AsyncStorage.setItem("user", user);
+           AsyncStorage.multiSet([
+             ["@oiiFono:token", access_token],
+             ["@oiiFono:expires_in", expires_in],
+             ["@oiiFono:user", JSON.stringify(user)]
+           ]);
         })
         .catch(e => {
           if (error.response) {
