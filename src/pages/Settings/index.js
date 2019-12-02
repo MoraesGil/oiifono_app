@@ -31,7 +31,7 @@ export default function Settings({ navigation }) {
       <View style={{ flex: 1, alignItems: "center", marginTop: 30 }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Schedules", { user });
+            navigation.navigate("Availabilities", { user });
           }}
         >
           <Image
