@@ -1,5 +1,5 @@
 import React from "react"; 
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "react-native-elements";
@@ -27,6 +27,7 @@ const PatientsTab = createStackNavigator(
       path: "/",
       navigationOptions: ({ navigation }) => ({
         title: "Pacientes",
+        headerBackTitle: null,
         headerRight: (
           <TouchableOpacity onPress={() => navigation.navigate("patient_form")}>
             <Icon
@@ -37,17 +38,30 @@ const PatientsTab = createStackNavigator(
           </TouchableOpacity>
         )
       })
-    }, 
+    },
     patient_form: {
       screen: PatientFormTabView,
-      path: "/patient_form"
+      path: "/patient_form",
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: () => {
+          const patient = navigation.getParam("patient");           
+          return <Text>{patient ? patient.name : "Novo Paciente"}</Text>;           
+        }
+      })
     },
     patientDetail: {
       screen: PatientDetailTabView,
-      path: "/patientDetail"
+      path: "/patientDetail",
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: "Ficha Paciente"
+      })
     }
   },
-  config
+  {
+    initialRouteName: "patients",
+    animationEnabled: true,
+    swipeEnabled: true
+  }
 );
 
 export default PatientsTab;

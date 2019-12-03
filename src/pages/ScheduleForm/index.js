@@ -1,20 +1,11 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
    
 import {
-  View,
-  KeyboardAvoidingView,
-  Platform, 
+  View, 
   Text
 } from "react-native";
-import { Input, Icon} from "react-native-elements";
-
-import api from "@/services/api";
-import styles from "./styles";
-
-import {
-  Autocomplete,
-  withKeyboardAwareScrollView
-} from "react-native-dropdown-autocomplete";
+   
+import styles from "./styles"; 
 
 export default function Schedule({ navigation }) {
   const [schedule, setSchedule] = useState(navigation.getParam("schedule") || {}); 

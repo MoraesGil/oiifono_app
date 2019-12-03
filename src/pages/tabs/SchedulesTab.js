@@ -23,6 +23,7 @@ const SchedulesTab = createStackNavigator(
       path: "/",
       navigationOptions: ({ navigation }) => ({
         title: "Agendamentos",
+        headerBackTitle: null,
         headerRight: (
           <TouchableOpacity
             onPress={() => navigation.navigate("Schedule_Form")}
@@ -38,7 +39,10 @@ const SchedulesTab = createStackNavigator(
     },
     Schedule_Form: {
       screen: ScheduleFormTabView,
-      path: "/schedule_form"
+      path: "/schedule_form",
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: "Agendamento"
+      })
     }
   },
   {
