@@ -1,3 +1,5 @@
+import weekDays from "@/constants/weekDays";
+
 const initialState = {
   token: "",
   expires_in: "",
@@ -6,9 +8,33 @@ const initialState = {
     email: "",
     person: {
       id: 3,
-      name: "Paul Allena",
-      picture: "https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg",
-      crfa: "191817"
+      name: "Valeria Caldeira dos Santos",
+      picture: "",
+      crfa: "219789",
+      availabilities: {
+        [weekDays.seg]: [
+          { start: "07:00", end: "12:00" },
+          { start: "16:00", end: "20:00" }
+        ],
+        [weekDays.ter]: [
+          { start: "07:00", end: "12:00" },
+          { start: "16:00", end: "20:00" }
+        ],
+        [weekDays.qua]: [
+          { start: "07:00", end: "12:00" },
+          { start: "16:00", end: "20:00" }
+        ],
+        [weekDays.qui]: [
+          { start: "07:00", end: "12:00" },
+          { start: "16:00", end: "20:00" }
+        ],
+        [weekDays.sex]: [
+          { start: "07:00", end: "12:00" },
+          { start: "16:00", end: "20:00" }
+        ],
+        [weekDays.sab]: [{ start: "07:00", end: "11:00"}],
+        [weekDays.dom]: [{ start: "", end: "" }]
+      }
     }
   }
 };
