@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Text, View, Picker } from "react-native";
-import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";  
+import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
 
 import styles from "./styles";
-import weekDays from "@/constants/weekDays";
+import weekDays from "@/constants/weekDays"; 
 
 export default function Availabilities({ navigation }) {
   //  const user = navigation.getParam("user");
@@ -11,6 +11,8 @@ export default function Availabilities({ navigation }) {
   const [weekDay, setWeekDay] = useState(0);
   const [start_at, setStart_at] = useState(0);
   const [end_at, setEnd_at] = useState(0);
+  
+ 
 
   const availabilities = {
     [weekDays.seg]: [
@@ -62,25 +64,11 @@ export default function Availabilities({ navigation }) {
         bottomDivider
       />
     );
-  }
+  } 
 
   return (
     <View style={styles.container}>
-      <DatePicker
-        style={{ width: 200 }}
-        date={"20:00"}
-        mode="time"
-        format="HH:mm"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        minuteInterval={10}
-        onDateChange={time => {
-          console.log(time);
-        }}
-      />
-      <View style={[styles.containerMini, { marginBottom: 10 }]}>
-        <Button title="Adicionar horário" onPress={handleAddBtn} />
-      </View>
+       
       <Divider style={{ backgroundColor: "#ccc" }} />
       <View>
         <Picker
