@@ -130,7 +130,7 @@ class LoginScreen extends Component {
     this.setState({
       isLoading: false,
       isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-      isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+      isPasswordValid: password.length >= 6 || this.passwordInput.shake(),
       isCrfaValid: Crfa.length == 6 || this.CrfaInput.shake(),
       isConfirmationValid:
         password === passwordConfirmation || this.confirmationInput.shake()
