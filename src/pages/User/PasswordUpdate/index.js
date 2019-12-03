@@ -48,7 +48,7 @@ export default function PasswordUpdate({ navigation }) {
   }
 
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, styles.containerMini]}>
       <Input
         leftIcon={
           <Icon
@@ -129,6 +129,12 @@ export default function PasswordUpdate({ navigation }) {
           buttonStyle={styles.button}
           title="Atualizar senha"
           onPress={savePasswordHandle}
+        />
+        <Button
+          buttonStyle={[styles.button, styles.cancelButton]}
+          titleStyle={styles.cancelText}
+          title="Cancelar"
+          onPress={() => navigation.goBack()}
         />
       </View>
     </View>

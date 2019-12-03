@@ -16,47 +16,50 @@ export default function Settings({ navigation }) {
   }
 
   return (
-    <ScrollView style={[styles.container]}>
-      <ListItem
-        chevron
-        onPress={() => {
-          navigation.navigate("UserForm", { user });
-        }}
-        title={
-          <View style={styles.centered}>
-            <Avatar
-              rounded
-              size="large"
-              title={initialsLetterName(user.person.name)}
-              source={{ uri: user.person.picture || null }}
-            />
-            <Text>{user.person.name}</Text>
-            <Text>CRF-a: {user.person.crfa}</Text>
-          </View>
-        }
-        bottomDivider
-      />
-      <View style={styles.centered}>
-        <TouchableOpacity
+    <View style={[styles.container]}>
+      <ScrollView style={[styles.container]}>
+        <ListItem
+          chevron
           onPress={() => {
-            navigation.navigate("Availabilities", { user });
+            navigation.navigate("ProfileUpdate", { user });
           }}
-        >
-          <Image
-            source={agendaDemo}
-            resizeMode="cover"
-            style={{
-              shadowColor: "#fff",
-              shadowOffset: {
-                width: 0,
-                height: 1
-              },
-              shadowOpacity: 0.5,
-              shadowRadius: 7.0
+          title={
+            <View style={styles.centered}>
+              <Avatar
+                rounded
+                size="large"
+                title={initialsLetterName(user.person.name)}
+                source={{ uri: user.person.picture || null }}
+              />
+              <Text>{user.person.name}</Text>
+              <Text>CRF-a: {user.person.crfa}</Text>
+            </View>
+          }
+          bottomDivider
+        />
+        <View style={styles.centered}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Availabilities", { user });
             }}
-          />
-        </TouchableOpacity>
-      </View>
+          >
+            <Image
+              source={agendaDemo}
+              resizeMode="cover"
+              style={{
+                borderColor: "#ccc",
+                shadowColor: "#ccc",
+                shadowOffset: {
+                  width: 0,
+                  height: 1
+                },
+                shadowOpacity: 0.5,
+                shadowRadius: 7.0
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
       <View style={[styles.bottomContainer, styles.containerMini]}>
         <Button
           buttonStyle={styles.button}
@@ -66,11 +69,12 @@ export default function Settings({ navigation }) {
           title="Alterar Senha"
         />
         <Button
-          buttonStyle={styles.button}
+          buttonStyle={[styles.button, styles.cancelButton]}
+          titleStyle={styles.cancelText}
           onPress={() => alert("logout")}
           title="Sair da conta"
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }
