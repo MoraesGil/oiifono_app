@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
+import colors from "@/constants/Colors";
 
 export default StyleSheet.create({
   formContainer: {
@@ -21,5 +22,16 @@ export default StyleSheet.create({
   },
   inputContainer: {
     marginTop: 16
+  },
+  button: {
+    marginBottom: 10,
+    marginTop: 10
+  },
+  cancelButton: {
+    backgroundColor: colors.dangerBackground,
+    borderColor: colors.dangerBorder
+  },
+  cancelText: {
+    color: colors.dangerText
   }
 });
