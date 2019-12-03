@@ -79,9 +79,7 @@ export default function Schedule({ navigation }) {
         leftAvatar={{ source: { uri: patient.picture } }}
         title={patient.name}
         subtitle={personTemplate(patient)}
-        bottomDivider
-        onEndReached={this.loadMore}
-        onEndReachedThreshold={0.1}
+        bottomDivider 
       />
     );
   }
