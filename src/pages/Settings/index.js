@@ -1,34 +1,42 @@
-import React, { Component, useState } from "react"; 
-import { View, Image, TouchableOpacity } from "react-native"; 
+import React from "react"; 
+import { View, Image, TouchableOpacity, ScrollView, Text } from "react-native"; 
 import { useSelector } from "react-redux";
-import { Button, ListItem } from "react-native-elements";
-
-import api from "@/services/api";
-
+import { Button, ListItem, Avatar } from "react-native-elements";
+ 
 import styles from "./styles";
 import agendaDemo from "assets/agendaDemo.png";
-
-import {
-  Autocomplete,
-  withKeyboardAwareScrollView
-} from "react-native-dropdown-autocomplete";
-
+ 
 export default function Settings({ navigation }) {
   const user = useSelector(state => state.data.auth.user);
 
+  function initialsLetterName(name){
+    let first = name.split(' ')[0][0]
+    let last = name.split(' ').slice(-1).join(' ')[0]
+    return (first+last).toUpperCase()
+  }
+
   return (
-    <View style={[styles.container]}>
+    <ScrollView style={[styles.container]}>
       <ListItem
         chevron
         onPress={() => {
           navigation.navigate("UserForm", { user });
         }}
-        leftAvatar={{ source: { uri: user.person.picture } }}
-        title={user.person.name}
-        subtitle={"CRF-a: " + user.person.crfa}
+        title={
+          <View style={styles.centered}>
+            <Avatar
+              rounded
+              size="large"
+              title={initialsLetterName(user.person.name)}
+              source={{ uri: user.person.picture || null }}
+            />
+            <Text>{user.person.name}</Text>
+            <Text>CRF-a: {user.person.crfa}</Text>
+          </View>
+        }
         bottomDivider
       />
-      <View style={{ flex: 1, alignItems: "center", marginTop: 30 }}>
+      <View style={styles.centered}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Availabilities", { user });
@@ -36,6 +44,7 @@ export default function Settings({ navigation }) {
         >
           <Image
             source={agendaDemo}
+            resizeMode="cover"
             style={{
               shadowColor: "#fff",
               shadowOffset: {
@@ -48,12 +57,11 @@ export default function Settings({ navigation }) {
           />
         </TouchableOpacity>
       </View>
-
       <View style={[styles.bottomContainer, styles.containerMini]}>
         <Button
           buttonStyle={styles.button}
           onPress={() => {
-            navigation.navigate("UserPasswordForm", { user });
+            navigation.navigate("PasswordUpdate", { user });
           }}
           title="Alterar Senha"
         />
@@ -63,6 +71,6 @@ export default function Settings({ navigation }) {
           title="Sair da conta"
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }

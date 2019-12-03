@@ -4,11 +4,16 @@ import formStyles from "@/constants/formStyles";
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    flex: 1,
     justifyContent: "flex-end"
   },
   button: {
     marginBottom: 10
+  },
+  centered: {
+    flex: 1,
+    alignItems: "center",
+    marginBottom: 5,
+    marginTop: 5
   }
 });
 

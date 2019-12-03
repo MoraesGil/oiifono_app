@@ -1,31 +1,37 @@
 import React from "react";
-import OptionsMenu from "react-native-options-menu";
-import config from "@/constants/stack";
 import { createStackNavigator } from "react-navigation-stack";
-import { Icon } from "react-native-elements";
-import { TouchableOpacity } from "react-native";
 
 import Settings from "pages/Settings";
-import Availabilities from "pages/Availabilities";  
+import Availabilities from "pages/User/Availabilities";
+import PasswordUpdate from "pages/User/PasswordUpdate";
 
- 
 const SettingsTabView = ({ navigation }) => (
   <Settings navigation={navigation} />
 );
 
- 
 const SettingsTab = createStackNavigator(
   {
     Settings: {
       screen: SettingsTabView,
       path: "/",
       navigationOptions: ({ navigation }) => ({
+        headerBackTitle: null,
         title: "Configurações da conta"
       })
     },
     Availabilities: {
       screen: Availabilities,
-      path: "/availabilities"
+      path: "/availabilities",
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: "Horarios de atendimento"
+      })
+    },
+    PasswordUpdate: {
+      screen: PasswordUpdate,
+      path: "/passwordUpdate",
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: "Atualizar senha"
+      })
     }
   },
   {
