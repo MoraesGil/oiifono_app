@@ -1,3 +1,10 @@
+//Actions
+
+
+// Action creators
+
+
+//Reducer
 const initialState = {
   items: {
     "1": {

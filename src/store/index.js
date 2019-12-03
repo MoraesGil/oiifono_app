@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from 'redux';
  
-import { reducer as dataReducer } from '@/data/reducer';
+import { reducer as ducksReducer } from './ducks'
 // import { reducer as servicesReducer } from '@/services/reducer'; 
 
 const appReducer = combineReducers({
 	// services: servicesReducer,
-	data: dataReducer,
+	data: ducksReducer,
 });
  
 const store = createStore(

@@ -1,5 +1,11 @@
-import weekDays from "@/constants/weekDays";
+//Actions
 
+
+// Action creators
+
+
+//Reducer
+import weekDays from "@/constants/weekDays";
 const initialState = {
   token: "",
   expires_in: "",

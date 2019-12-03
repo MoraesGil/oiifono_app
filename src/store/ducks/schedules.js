@@ -1,13 +1,8 @@
-function daysRange() {
-  let days = { ...schedules };
-  for (let i = -30; i <= 60; i++) {
-    const strTime = moment()
-      .add(i, "days")
-      .format("YYYY-MM-DD");
-    if (!days[strTime]) days = { ...days, [strTime]: [] };
-  }
-  return days;
-} 
+//Actions
+
+// Action creators
+
+//Reducer
 
 const initialState = {
   items: {
@@ -35,7 +30,7 @@ const initialState = {
         person_id: 2
       }
     ],
-    "2019-12-02": [ 
+    "2019-12-02": [
       {
         id: 5,
         date: " 2019-12-01",
@@ -76,7 +71,19 @@ const initialState = {
 };
 
 export const reducer = (state = initialState, action) => {
-  switch (action.type) { 
+  switch (action.type) {
+    case "ADD_SCHEDULE":
+      return {
+        ...state,
+        items: {
+          ...state.items[action.schedule.date],
+          [action.schedule.date]: [
+            ...state.items[action.schedule.date],
+            action.schedule
+          ]
+        }
+      };
+
     default:
       return state;
   }
