@@ -23,8 +23,8 @@ const initialState = {
         { week_day: 2, start_at: "16:00", end_at: "20:00" },
         { week_day: 3, start_at: "07:00", end_at: "12:00" },
         { week_day: 3, start_at: "16:00", end_at: "20:00" },
-        { week_day: 5, start_at: "07:00", end_at: "12:00" },
-        { week_day: 0, start_at: "16:00", end_at: "20:00" },
+        { week_day: 4, start_at: "07:00", end_at: "12:00" },
+        { week_day: 4, start_at: "16:00", end_at: "20:00" },
         { week_day: 5, start_at: "07:00", end_at: "12:00" },
         { week_day: 5, start_at: "16:00", end_at: "20:00" },
         { week_day: 6, start_at: "07:00", end_at: "11:00" }

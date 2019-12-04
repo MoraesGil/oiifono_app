@@ -10,11 +10,12 @@ import {
 } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
-import { weekDays } from "@/constants/weekDays"; 
+import { weekDays, shortWeekDays } from "@/constants/weekDays"; 
 
 export default function Availabilities({ navigation }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
 
+  const _shortWeekDays = Object.keys(shortWeekDays).reverse();
   const { user } = useSelector(state => state.data.auth.user);
   const { availabilities } = useSelector(state => state.data.auth.user.person);  
   const [weekDay, setWeekDay] = useState(0);    
@@ -37,24 +38,35 @@ export default function Availabilities({ navigation }) {
   function saveHandle() {}
 
   function renderItem(item) {
+    const availability = item.item;
+     
+    //  return <View></View>
     return (
       <ListItem
         rightIcon={
-          <Icon
-            name="id-card"
-            type="font-awesome"
-            color="rgba(0, 0, 0, 0.38)"
-            size={25}
-            style={{ backgroundColor: "transparent" }}
+          <Button
+            type="clear"
+            icon={
+              <Icon
+                name="times"
+                type="font-awesome"
+                color="rgba(0, 0, 0, 0.38)"
+                size={20}
+                style={{ color: "red", backgroundColor: "transparent" }}
+              />
+            }
+            onPress={() => handleDeleteBtn(availability)}
           />
         }
         title={
-          <View>
-            <Badge value="Seg." status="primary" />
-            <Text>
-              {item.start} - {item.end}
+          <View style={[styles.container, styles.row]}>
+            <Badge
+              value={_shortWeekDays[availability.week_day]}                 
+              status="primary"
+            />
+            <Text style={{ marginLeft: 10 }}>
+              {availability.start_at} - {availability.end_at}
             </Text>
-            <Button title="Adicionar horário" onPress={handleDeleteBtn(item)} />
           </View>
         }
         bottomDivider
@@ -66,7 +78,7 @@ export default function Availabilities({ navigation }) {
     <View style={styles.container}>
       <View style={styles.containerMini}>
         <Picker
-          style={{ height: 130, backgroundColor: "#bbbbb1", marginBottom: 10 }}
+          style={{ height: 130, backgroundColor: "#b8daff", marginBottom: 10 }}
           itemStyle={{ height: 130 }}
           mode="dialog"
           selectedValue={weekDay}
@@ -81,7 +93,9 @@ export default function Availabilities({ navigation }) {
         </Picker>
 
         <View style={[styles.row, styles.spaced]}>
-          <View style={[styles.row, styles.centerH]}>
+          <View
+            style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
+          >
             <Icon
               name="hourglass-start"
               type="font-awesome"
@@ -92,7 +106,7 @@ export default function Availabilities({ navigation }) {
             <Picker
               style={{
                 height: 50,
-                width: SCREEN_WIDTH * 0.4,  
+                width: SCREEN_WIDTH * 0.4
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
@@ -108,11 +122,13 @@ export default function Availabilities({ navigation }) {
             </Picker>
           </View>
 
-          <View style={[styles.row, styles.centerH]}>
+          <View
+            style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
+          >
             <Picker
               style={{
                 height: 50,
-                width: SCREEN_WIDTH * 0.4,  
+                width: SCREEN_WIDTH * 0.4
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
@@ -143,11 +159,11 @@ export default function Availabilities({ navigation }) {
         />
       </View>
       <Divider style={{ backgroundColor: "#ccc" }} />
-      {/* <FlatList
-        keyExtractor={item => item.toString()}
+      <FlatList
+        keyExtractor={item => JSON.stringify(item)}
         data={availabilities}
         renderItem={renderItem}
-      /> */}
+      />
     </View>
   );
 }
