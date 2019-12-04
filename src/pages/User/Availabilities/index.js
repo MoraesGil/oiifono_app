@@ -5,25 +5,39 @@ import {
   Badge,
   Button,
   Divider,
-  Icon,
-  Input
+  Icon 
 } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
-import { weekDays, shortWeekDays } from "@/constants/weekDays"; 
+import { weekDays, shortWeekDays } from "@/constants/weekDays";
 
 export default function Availabilities({ navigation }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
 
   const _shortWeekDays = Object.keys(shortWeekDays).reverse();
   const { user } = useSelector(state => state.data.auth.user);
-  const { availabilities } = useSelector(state => state.data.auth.user.person);  
-  const [weekDay, setWeekDay] = useState(0);    
-  const [range, setRange] = useState({
-    start_at: "",
-    end_at: ""
+  const { availabilities } = useSelector(state => state.data.auth.user.person);
+  const [weekDay, setWeekDay] = useState("");
+
+  const [timeRange, setTimeRange] = useState({
+    start_index: 0,
+    end_index: 0
   });
-   
+
+  const hoursOfDay = hourPicker(6, 20);
+
+  function hourPicker(min = null, max = null) {
+    min = Math.round(min);
+    max = Math.round(max);
+    max = max < 23 ? max : 23;
+    let items = [];
+    for (i = min; i <= (max || 23); i++) {
+      items[moment({ hour: i }).format("HH:mm")] = i;
+      if (i < max && i < 24)
+        items[moment({ hour: i, minute: 30 }).format("HH:mm")] = i + 0.5;
+    }
+    return Object.keys(items);
+  }
 
   function handleDeleteBtn(item) {
     console.log("deleted");
@@ -35,12 +49,12 @@ export default function Availabilities({ navigation }) {
     console.log(weekDay);
   }
 
-  function saveHandle() {}
+  function addHandle() {
+    console.log(timeRange);
+  }
 
   function renderItem(item) {
     const availability = item.item;
-     
-    //  return <View></View>
     return (
       <ListItem
         rightIcon={
@@ -103,6 +117,7 @@ export default function Availabilities({ navigation }) {
               size={25}
               style={{ backgroundColor: "transparent" }}
             />
+            // start picker
             <Picker
               style={{
                 height: 50,
@@ -110,14 +125,14 @@ export default function Availabilities({ navigation }) {
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={weekDay}
-              onValueChange={key => {
-                setWeekDay(key);
+              selectedValue={hoursOfDay[timeRange.start_index]}
+              onValueChange={index => {
+                setTimeRange({ start_index: index, end_index: 0 });
               }}
             >
               <Picker.Item label="Hora Inicial" value="" />
-              {Object.values(weekDays).map((key, i) => (
-                <Picker.Item key={i} label={key} value={weekDays[key]} />
+              {hoursOfDay.map((key, i) => (
+                <Picker.Item key={i} label={key} value={i} />
               ))}
             </Picker>
           </View>
@@ -125,6 +140,7 @@ export default function Availabilities({ navigation }) {
           <View
             style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
           >
+            // end picker
             <Picker
               style={{
                 height: 50,
@@ -132,14 +148,15 @@ export default function Availabilities({ navigation }) {
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={weekDay}
+              selectedValue={hoursOfDay[timeRange.end_index]}
               onValueChange={key => {
-                setWeekDay(key);
+                setTimeRange({ ...timeRange, end_index: key });
               }}
             >
               <Picker.Item label="Hora Final" value="" />
-              {Object.values(weekDays).map((key, i) => (
-                <Picker.Item key={i} label={key} value={weekDays[key]} />
+              {hoursOfDay.map((key, i) => (
+                if(i>)
+                <Picker.Item key={i} label={key} value={i} />
               ))}
             </Picker>
             <Icon
@@ -155,13 +172,13 @@ export default function Availabilities({ navigation }) {
         <Button
           buttonStyle={[styles.button, { marginTop: 10 }]}
           title="Adicionar Disponibilidade"
-          onPress={saveHandle}
+          onPress={addHandle}
         />
       </View>
       <Divider style={{ backgroundColor: "#ccc" }} />
       <FlatList
         keyExtractor={item => JSON.stringify(item)}
-        data={availabilities}
+        data={availabilities.filter((a)=> a.week_day == weekDay)}
         renderItem={renderItem}
       />
     </View>
