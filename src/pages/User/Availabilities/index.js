@@ -25,7 +25,7 @@ export default function Availabilities({ navigation }) {
   });
    
 
-  function handleDeleteBtn() {
+  function handleDeleteBtn(item) {
     console.log("deleted");
     console.log(item);
   }
@@ -59,12 +59,12 @@ export default function Availabilities({ navigation }) {
           />
         }
         title={
-          <View style={[styles.container, styles.row]}>
+          <View style={[styles.container, styles.row, styles.centerH]}>
             <Badge
-              value={_shortWeekDays[availability.week_day]}                 
+              value={_shortWeekDays[availability.week_day]}
               status="primary"
             />
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 16 }}>
               {availability.start_at} - {availability.end_at}
             </Text>
           </View>
