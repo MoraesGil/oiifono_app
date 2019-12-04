@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Text, View, Picker, FlatList, Dimensions } from "react-native";
+import moment from "moment";
 import {
-  ListItem,
-  Badge,
-  Button,
-  Divider,
-  Icon 
-} from "react-native-elements";
+  Text,
+  View,
+  Picker,
+  FlatList,
+  Dimensions,
+  Platform
+} from "react-native";
+import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
 import { weekDays, shortWeekDays } from "@/constants/weekDays";
@@ -20,8 +22,8 @@ export default function Availabilities({ navigation }) {
   const [weekDay, setWeekDay] = useState("");
 
   const [timeRange, setTimeRange] = useState({
-    start_index: 0,
-    end_index: 0
+    start_index: "",
+    end_index: ""
   });
 
   const hoursOfDay = hourPicker(6, 20);
@@ -92,17 +94,18 @@ export default function Availabilities({ navigation }) {
     <View style={styles.container}>
       <View style={styles.containerMini}>
         <Picker
-          style={{ height: 130, backgroundColor: "#b8daff", marginBottom: 10 }}
-          itemStyle={{ height: 130 }}
+          style={[
+            Platform.OS === "ios" ? { height: 130 } : null,
+            { backgroundColor: "#b8daff", marginBottom: 10 }
+          ]}
+          itemStyle={{ textAlign: "center", height: 130 }}
           mode="dialog"
           selectedValue={weekDay}
-          onValueChange={key => {
-            setWeekDay(key);
-          }}
+          onValueChange={key => setWeekDay(key)}
         >
           <Picker.Item label="Escolha um dia na semana..." value="" />
-          {Object.values(weekDays).map((key, i) => (
-            <Picker.Item key={i} label={key} value={weekDays[key]} />
+          {Object.values(weekDays).map((label, i) => (
+            <Picker.Item key={i} label={label} value={i} />
           ))}
         </Picker>
 
@@ -117,7 +120,7 @@ export default function Availabilities({ navigation }) {
               size={25}
               style={{ backgroundColor: "transparent" }}
             />
-            // start picker
+
             <Picker
               style={{
                 height: 50,
@@ -125,9 +128,9 @@ export default function Availabilities({ navigation }) {
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={hoursOfDay[timeRange.start_index]}
+              selectedValue={timeRange.start_index}
               onValueChange={index => {
-                setTimeRange({ start_index: index, end_index: 0 });
+                setTimeRange({ start_index: index, end_index: "" });
               }}
             >
               <Picker.Item label="Hora Inicial" value="" />
@@ -140,7 +143,6 @@ export default function Availabilities({ navigation }) {
           <View
             style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
           >
-            // end picker
             <Picker
               style={{
                 height: 50,
@@ -148,16 +150,18 @@ export default function Availabilities({ navigation }) {
               }}
               itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={hoursOfDay[timeRange.end_index]}
+              selectedValue={timeRange.end_index}
               onValueChange={key => {
                 setTimeRange({ ...timeRange, end_index: key });
               }}
             >
               <Picker.Item label="Hora Final" value="" />
-              {hoursOfDay.map((key, i) => (
-                if(i>)
-                <Picker.Item key={i} label={key} value={i} />
-              ))}
+              {hoursOfDay.map(
+                (key, i) =>
+                  i > timeRange.start_index && (
+                    <Picker.Item key={i} label={key} value={i} />
+                  )
+              )}
             </Picker>
             <Icon
               name="hourglass-end"
@@ -170,6 +174,11 @@ export default function Availabilities({ navigation }) {
         </View>
 
         <Button
+          disabled={
+            weekDay === "" ||
+            timeRange.start_index === "" ||
+            timeRange.end_index === ""
+          }
           buttonStyle={[styles.button, { marginTop: 10 }]}
           title="Adicionar Disponibilidade"
           onPress={addHandle}
@@ -178,7 +187,7 @@ export default function Availabilities({ navigation }) {
       <Divider style={{ backgroundColor: "#ccc" }} />
       <FlatList
         keyExtractor={item => JSON.stringify(item)}
-        data={availabilities.filter((a)=> a.week_day == weekDay)}
+        data={availabilities.filter(a => a.week_day == weekDay)}
         renderItem={renderItem}
       />
     </View>
