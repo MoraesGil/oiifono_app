@@ -12,8 +12,7 @@ export default StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignSelf: "stretch",
-    flex: 1
+    alignSelf: "stretch", 
   },
   centered: {
     alignItems: "center",

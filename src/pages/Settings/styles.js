@@ -2,13 +2,7 @@ import { StyleSheet } from "react-native";
 import grid from "@/constants/grid";
 import formStyles from "@/constants/formStyles";
 
-const styles = StyleSheet.create({
-  bottomContainer: {
-    justifyContent: "flex-end"
-  },
-  button: {
-    marginBottom: 10
-  },
+const styles = StyleSheet.create({  
   centered: {
     flex: 1,
     alignItems: "center",

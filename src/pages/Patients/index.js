@@ -20,7 +20,7 @@ export default function Schedule({ navigation }) {
 
   function statusBar(person) {
     return (
-      <View style={[styles.row]}>
+      <View style={[styles.container, styles.row]}>
         {StatusIcon("gender", person.gender)}
 
         {person.disability && StatusIcon("desability", person.disability)}

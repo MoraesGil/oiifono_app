@@ -24,8 +24,7 @@ export default StyleSheet.create({
     marginTop: 16
   },
   button: {
-    marginBottom: 10,
-    marginTop: 10
+    marginBottom: 10
   },
   cancelButton: {
     backgroundColor: colors.dangerBackground,
@@ -33,5 +32,8 @@ export default StyleSheet.create({
   },
   cancelText: {
     color: colors.dangerText
+  },
+  bottomContainer: {
+    justifyContent: "flex-end"
   }
 });

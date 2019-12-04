@@ -4,8 +4,7 @@
 // Action creators
 
 
-//Reducer
-import weekDays from "@/constants/weekDays";
+//Reducer 
 const initialState = {
   token: "",
   expires_in: "",
@@ -17,30 +16,19 @@ const initialState = {
       name: "Valeria Caldeira dos Santos",
       picture: "",
       crfa: "219789",
-      availabilities: {
-        [weekDays.seg]: [
-          { start: "07:00", end: "12:00" },
-          { start: "16:00", end: "20:00" }
-        ],
-        [weekDays.ter]: [
-          { start: "07:00", end: "12:00" },
-          { start: "16:00", end: "20:00" }
-        ],
-        [weekDays.qua]: [
-          { start: "07:00", end: "12:00" },
-          { start: "16:00", end: "20:00" }
-        ],
-        [weekDays.qui]: [
-          { start: "07:00", end: "12:00" },
-          { start: "16:00", end: "20:00" }
-        ],
-        [weekDays.sex]: [
-          { start: "07:00", end: "12:00" },
-          { start: "16:00", end: "20:00" }
-        ],
-        [weekDays.sab]: [{ start: "07:00", end: "11:00"}],
-        [weekDays.dom]: [{ start: "", end: "" }]
-      }
+      availabilities: [
+        { week_day: 1, start_at: "07:00", end_at: "12:00" },
+        { week_day: 1, start_at: "16:00", end_at: "20:00" },
+        { week_day: 2, start_at: "07:00", end_at: "12:00" },
+        { week_day: 2, start_at: "16:00", end_at: "20:00" },
+        { week_day: 3, start_at: "07:00", end_at: "12:00" },
+        { week_day: 3, start_at: "16:00", end_at: "20:00" },
+        { week_day: 5, start_at: "07:00", end_at: "12:00" },
+        { week_day: 0, start_at: "16:00", end_at: "20:00" },
+        { week_day: 5, start_at: "07:00", end_at: "12:00" },
+        { week_day: 5, start_at: "16:00", end_at: "20:00" },
+        { week_day: 6, start_at: "07:00", end_at: "11:00" }
+      ]
     }
   }
 };
@@ -51,3 +39,4 @@ export const reducer = (state = initialState, action) => {
       return state;
   }
 };
+ 

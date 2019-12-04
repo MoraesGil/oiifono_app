@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { Button, Input, Icon } from "react-native-elements";
 
 import styles from "./styles";
@@ -124,7 +124,7 @@ export default function PasswordUpdate({ navigation }) {
         errorMessage={errors.password_confirmation}
       />
 
-      <View style={[styles.container, styles.containerMini]}>
+      <View style={[styles.bottomContainer, styles.containerMini]}>
         <Button
           buttonStyle={styles.button}
           title="Atualizar senha"

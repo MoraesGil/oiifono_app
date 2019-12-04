@@ -1,43 +1,28 @@
 import React, { useState } from "react";
-import { Text, View, Picker } from "react-native";
-import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
-
+import { Text, View, Picker, FlatList, Dimensions } from "react-native";
+import {
+  ListItem,
+  Badge,
+  Button,
+  Divider,
+  Icon,
+  Input
+} from "react-native-elements";
+import { useSelector } from "react-redux";
 import styles from "./styles";
-import weekDays from "@/constants/weekDays"; 
+import { weekDays } from "@/constants/weekDays"; 
 
 export default function Availabilities({ navigation }) {
-  //  const user = navigation.getParam("user");
-  // const availabilities = user.person.availabilities;
-  const [weekDay, setWeekDay] = useState(0);
-  const [start_at, setStart_at] = useState(0);
-  const [end_at, setEnd_at] = useState(0);
-  
- 
+  const SCREEN_WIDTH = Dimensions.get("window").width;
 
-  const availabilities = {
-    [weekDays.seg]: [
-      { start: "07:00", end: "12:00" },
-      { start: "16:00", end: "20:00" }
-    ],
-    [weekDays.ter]: [
-      { start: "07:00", end: "12:00" },
-      { start: "16:00", end: "20:00" }
-    ],
-    [weekDays.qua]: [
-      { start: "07:00", end: "12:00" },
-      { start: "16:00", end: "20:00" }
-    ],
-    [weekDays.qui]: [
-      { start: "07:00", end: "12:00" },
-      { start: "16:00", end: "20:00" }
-    ],
-    [weekDays.sex]: [
-      { start: "07:00", end: "12:00" },
-      { start: "16:00", end: "20:00" }
-    ],
-    [weekDays.sab]: [{ start: "07:00", end: "11:00" }],
-    [weekDays.dom]: [{ start: "", end: "" }]
-  };
+  const { user } = useSelector(state => state.data.auth.user);
+  const { availabilities } = useSelector(state => state.data.auth.user.person);  
+  const [weekDay, setWeekDay] = useState(0);    
+  const [range, setRange] = useState({
+    start_at: "",
+    end_at: ""
+  });
+   
 
   function handleDeleteBtn() {
     console.log("deleted");
@@ -49,9 +34,20 @@ export default function Availabilities({ navigation }) {
     console.log(weekDay);
   }
 
-  function renderItem() {
+  function saveHandle() {}
+
+  function renderItem(item) {
     return (
       <ListItem
+        rightIcon={
+          <Icon
+            name="id-card"
+            type="font-awesome"
+            color="rgba(0, 0, 0, 0.38)"
+            size={25}
+            style={{ backgroundColor: "transparent" }}
+          />
+        }
         title={
           <View>
             <Badge value="Seg." status="primary" />
@@ -64,24 +60,94 @@ export default function Availabilities({ navigation }) {
         bottomDivider
       />
     );
-  } 
+  }
 
   return (
     <View style={styles.container}>
-       
-      <Divider style={{ backgroundColor: "#ccc" }} />
-      <View>
+      <View style={styles.containerMini}>
         <Picker
+          style={{ height: 130, backgroundColor: "#bbbbb1", marginBottom: 10 }}
+          itemStyle={{ height: 130 }}
           mode="dialog"
           selectedValue={weekDay}
-          onValueChange={key => setWeekDay(key)}
+          onValueChange={key => {
+            setWeekDay(key);
+          }}
         >
-          {Object.keys(weekDays).map((key, i) => (
+          <Picker.Item label="Escolha um dia na semana..." value="" />
+          {Object.values(weekDays).map((key, i) => (
             <Picker.Item key={i} label={key} value={weekDays[key]} />
           ))}
         </Picker>
+
+        <View style={[styles.row, styles.spaced]}>
+          <View style={[styles.row, styles.centerH]}>
+            <Icon
+              name="hourglass-start"
+              type="font-awesome"
+              color="rgba(0, 0, 0, 0.38)"
+              size={25}
+              style={{ backgroundColor: "transparent" }}
+            />
+            <Picker
+              style={{
+                height: 50,
+                width: SCREEN_WIDTH * 0.4,  
+              }}
+              itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
+              mode="dialog"
+              selectedValue={weekDay}
+              onValueChange={key => {
+                setWeekDay(key);
+              }}
+            >
+              <Picker.Item label="Hora Inicial" value="" />
+              {Object.values(weekDays).map((key, i) => (
+                <Picker.Item key={i} label={key} value={weekDays[key]} />
+              ))}
+            </Picker>
+          </View>
+
+          <View style={[styles.row, styles.centerH]}>
+            <Picker
+              style={{
+                height: 50,
+                width: SCREEN_WIDTH * 0.4,  
+              }}
+              itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
+              mode="dialog"
+              selectedValue={weekDay}
+              onValueChange={key => {
+                setWeekDay(key);
+              }}
+            >
+              <Picker.Item label="Hora Final" value="" />
+              {Object.values(weekDays).map((key, i) => (
+                <Picker.Item key={i} label={key} value={weekDays[key]} />
+              ))}
+            </Picker>
+            <Icon
+              name="hourglass-end"
+              type="font-awesome"
+              color="rgba(0, 0, 0, 0.38)"
+              size={25}
+              style={{ backgroundColor: "transparent", marginRight: 10 }}
+            />
+          </View>
+        </View>
+
+        <Button
+          buttonStyle={[styles.button, { marginTop: 10 }]}
+          title="Adicionar Disponibilidade"
+          onPress={saveHandle}
+        />
       </View>
       <Divider style={{ backgroundColor: "#ccc" }} />
+      {/* <FlatList
+        keyExtractor={item => item.toString()}
+        data={availabilities}
+        renderItem={renderItem}
+      /> */}
     </View>
   );
 }

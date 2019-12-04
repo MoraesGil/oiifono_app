@@ -26,7 +26,7 @@ export default function Schedules({ navigation }) {
   function statusBar(schedule) {
     const person = _patients[schedule.person_id];
     return (
-      <View style={[styles.row]}>
+      <View style={[styles.container,styles.row]}>
         {StatusIcon("gender", person.gender)}
 
         {person.disability && StatusIcon("desability", person.disability)}
@@ -114,7 +114,7 @@ export default function Schedules({ navigation }) {
           </Text>
         }
       >
-        <View style={[styles.row, styles.centerH]}>
+        <View style={[styles.container, styles.row, styles.centerH]}>
           <Icon
             name="clock-o"
             type="font-awesome"
@@ -131,9 +131,16 @@ export default function Schedules({ navigation }) {
 
     return (
       <View>
-        <View style={styles.row}>
+        <View style={[styles.container, styles.row]}>
           <View style={styles.centered}>
-            <View style={[styles.row, styles.centered, styles.spaced]}>
+            <View
+              style={[
+                styles.container,
+                styles.row,
+                styles.centered,
+                styles.spaced
+              ]}
+            >
               {clockRange(i)}
             </View>
             <Avatar
@@ -144,7 +151,7 @@ export default function Schedules({ navigation }) {
               }}
             />
           </View>
-          <View style={styles.row}>
+          <View style={[styles.container, styles.row]}>
             <View
               style={{
                 alignSelf: "stretch",
@@ -152,13 +159,20 @@ export default function Schedules({ navigation }) {
                 paddingLeft: 10
               }}
             >
-              <View style={[styles.row, styles.spaced, styles.centerH]}>
+              <View
+                style={[
+                  styles.container,
+                  styles.row,
+                  styles.spaced,
+                  styles.centerH
+                ]}
+              >
                 {statusBar(i)}
                 <Tooltip popover={<Text> Idade: {person.age} </Text>}>
                   <Text>{person.birthdate}</Text>
                 </Tooltip>
               </View>
-              <View style={styles.row}>
+              <View style={[styles.container, styles.row]}>
                 <Text>{person.name}</Text>
               </View>
             </View>
@@ -206,7 +220,8 @@ export default function Schedules({ navigation }) {
         .format("YYYY-MM-DD")}
       items={schedules}
       loadItemsForMonth={loadItems}
-      selected={moment().format("YYYY-MM-DD")}
+      // selected={moment().format("YYYY-MM-DD")}
+      selected={"2019-12-01"}
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
