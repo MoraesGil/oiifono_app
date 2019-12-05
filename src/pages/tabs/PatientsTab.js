@@ -1,12 +1,11 @@
 import React from "react"; 
-import { TouchableOpacity, Text } from "react-native";
-import config from "@/constants/stack";
+import { TouchableOpacity, Text } from "react-native"; 
 import { createStackNavigator } from "react-navigation-stack";
 import { Icon } from "react-native-elements";
 
 import Patients from "pages/Patients";
-import PatientForm from "pages/PatientForm";
-import PatientDetail from "pages/PatientDetail";
+import PatientForm from "pages/Patients/FormPatient";
+import PatientDetail from "pages/Patients/DetailPatient";
  
 
 const PatientsTabView = ({ navigation }) => (
