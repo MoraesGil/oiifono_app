@@ -1,4 +1,4 @@
-export const shortWeekDays = {
+export const shortWeekDaysKeys = {
   dom: 0,
   seg: 1,
   ter: 2,
@@ -8,12 +8,22 @@ export const shortWeekDays = {
   sab: 6
 };
 
+export const shortWeekDaysValues = {
+  0:"dom",
+  1:"seg",
+  2:"ter",
+  3:"qua",
+  4:"qui",
+  5:"sex",
+  6:"sab"
+};
+
 export const weekDays = {
-  [shortWeekDays.dom]: "Domingo",
-  [shortWeekDays.seg]: "Segunda",
-  [shortWeekDays.ter]: "Terça",
-  [shortWeekDays.qua]: "Quarta",
-  [shortWeekDays.qui]: "Quinta",
-  [shortWeekDays.sex]: "Sexta",
-  [shortWeekDays.sab]: "Sabado"
+  [shortWeekDaysKeys.dom]: "Domingo",
+  [shortWeekDaysKeys.seg]: "Segunda",
+  [shortWeekDaysKeys.ter]: "Terça",
+  [shortWeekDaysKeys.qua]: "Quarta",
+  [shortWeekDaysKeys.qui]: "Quinta",
+  [shortWeekDaysKeys.sex]: "Sexta",
+  [shortWeekDaysKeys.sab]: "Sabado"
 };

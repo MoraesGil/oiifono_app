@@ -32,7 +32,7 @@ export default function Settings({ navigation }) {
                 source={{ uri: user.person.picture || null }}
               />
               <Text>{user.person.name}</Text>
-              <Text>CRF-a: {user.person.crfa}</Text>
+              <Text>CRF-a: {user.person.doctor.crfa}</Text>
             </View>
           }
           bottomDivider

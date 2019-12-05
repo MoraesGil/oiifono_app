@@ -5,19 +5,17 @@ import {
   View,
   Picker,
   FlatList,
-  Dimensions,
-  Platform
+  Dimensions
 } from "react-native";
 import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
-import { weekDays, shortWeekDays } from "@/constants/weekDays";
+import { weekDays, shortWeekDaysValues } from "@/constants/weekDays";
 
 export default function Availabilities({ navigation }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
 
-  const _shortWeekDays = Object.keys(shortWeekDays).reverse();
-  const { user } = useSelector(state => state.data.auth.user);
+  const _shortWeekDays = shortWeekDaysValues; 
   const { availabilities } = useSelector(state => state.data.auth.user.person);
   const [weekDay, setWeekDay] = useState("");
 
@@ -94,10 +92,7 @@ export default function Availabilities({ navigation }) {
     <View style={styles.container}>
       <View style={styles.containerMini}>
         <Picker
-          style={[
-            Platform.OS === "ios" ? { height: 130 } : null,
-            { backgroundColor: "#b8daff", marginBottom: 10 }
-          ]}
+          style={{ backgroundColor: "#b8daff", marginBottom: 10 }}
           itemStyle={{ textAlign: "center", height: 130 }}
           mode="dialog"
           selectedValue={weekDay}
@@ -156,12 +151,11 @@ export default function Availabilities({ navigation }) {
               }}
             >
               <Picker.Item label="Hora Final" value="" />
-              {hoursOfDay.map(
-                (key, i) =>
-                  i > timeRange.start_index && (
-                    <Picker.Item key={i} label={key} value={i} />
-                  )
-              )}
+              {hoursOfDay
+                .filter((h, i) => i > timeRange.start_index)
+                .map((key, i) => (
+                  <Picker.Item key={i} label={key} value={i} />
+                ))}
             </Picker>
             <Icon
               name="hourglass-end"
@@ -184,7 +178,15 @@ export default function Availabilities({ navigation }) {
           onPress={addHandle}
         />
       </View>
-      <Divider style={{ backgroundColor: "#ccc" }} />
+      <Divider style={{ backgroundColor: "#ccc" }} /> 
+      {weekDay !== "" &&
+        availabilities.filter(a => a.week_day == weekDay).length <= 0 && (
+          <Text
+            style={{ fontSize: 20, textAlign: "center", fontWeight: "bold" }}
+          >
+            Não tem nenhum horário para {weekDays[weekDay]}
+          </Text>
+        )}
       <FlatList
         keyExtractor={item => JSON.stringify(item)}
         data={availabilities.filter(a => a.week_day == weekDay)}

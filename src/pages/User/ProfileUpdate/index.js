@@ -1,36 +1,22 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Input, Icon } from "react-native-elements";
-
+import { useSelector } from "react-redux";
 import styles from "./styles";
 
 export default function ProfileUpdate({ navigation }) {
-  const user = navigation.getParam("user");
+  const user = navigation.getParam("user") || useSelector(state => state.data.auth.user);;
 
   const [profile, setProfile] = useState({
     name: user.person.name,
-    crfa: user.person.crfa
+    crfa: user.person.doctor.crfa,
+    cnpj: user.person.company.cnpj,
+    ie: user.person.company.ie
   });
 
   const [errors, setErros] = useState({});
 
-  function saveHandle() {}
-
-  function validate() {
-    let validation = errors;
-
-    // if (password.password.length < 6)
-    //   validation = {
-    //     ...validation,
-    //     ...{ password: "Minimo 6 caracteres" }
-    //   };
-
-    setErros({
-      ...errors,
-      ...validation
-    });
-    return validation === {};
-  }
+  function saveHandle() {} 
 
   return (
     <View style={styles.container}>
