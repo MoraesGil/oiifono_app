@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from "react-native";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-
 export default StyleSheet.create({
   container: {
     flex: 1
@@ -12,7 +11,7 @@ export default StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignSelf: "stretch", 
+    alignSelf: "stretch"
   },
   centered: {
     alignItems: "center",
@@ -36,5 +35,7 @@ export default StyleSheet.create({
   pright: {
     justifyContent: "flex-end",
     alignItems: "center"
-  } 
+  },
+  divider: { backgroundColor: "#ccc" },
+  p10: { padding: 10 }
 });

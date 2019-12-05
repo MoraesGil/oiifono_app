@@ -2,7 +2,8 @@ import React, { useState } from "react";
    
 import {
   View, 
-  Text
+  Text,
+  ScrollView
 } from "react-native";
    
 import styles from "./styles"; 

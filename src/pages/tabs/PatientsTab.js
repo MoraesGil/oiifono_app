@@ -43,8 +43,8 @@ const PatientsTab = createStackNavigator(
       path: "/patient_form",
       navigationOptions: ({ navigation }) => ({
         headerTitle: () => {
-          const patient = navigation.getParam("patient");           
-          return <Text>{patient ? patient.name : "Novo Paciente"}</Text>;           
+          const patient = navigation.getParam("patient");
+          return <Text>{patient ? patient.name : "Novo Paciente"}</Text>;
         }
       })
     },

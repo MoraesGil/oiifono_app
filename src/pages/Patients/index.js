@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Text, View, FlatList, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
-import { ListItem, Avatar, Tooltip } from "react-native-elements";
+import { ListItem } from "react-native-elements";
 
 import styles from "./styles";
 import StatusIcon from "components/StatusIcon.js";
 
-export default function Patients({ navigation }) {
+export default function Patients({ navigation }) {  
   const _patients = useSelector(state => state.data.patients.items);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -14,8 +14,9 @@ export default function Patients({ navigation }) {
     last_page: 4
   });
 
+
   function handlePatient(patient) {
-    navigation.navigate("patientDetail", { patient });
+    navigation.navigate("patientDetail", { patient_id: patient.id});
   }
 
   function statusBar(person) {
