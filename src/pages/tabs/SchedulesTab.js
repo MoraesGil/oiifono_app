@@ -10,7 +10,7 @@ const SchedulesTabView = ({ navigation }) => (
   <Schedules navigation={navigation} />
 );
 
-import ScheduleForm from "pages/ScheduleForm";
+import ScheduleForm from "pages/Schedules/ScheduleForm";
 
 const ScheduleFormTabView = ({ navigation }) => (
   <ScheduleForm navigation={navigation} />
