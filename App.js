@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Routes from "./src/routes";
+import Routes from "./src/navigation/RootNavigator";
 
 import AppLoading from "components/AppLoading";
 import vectorFonts from "@/helpers/vector-fonts";

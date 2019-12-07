@@ -2,7 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
-import TabBarIcon from "./TabBarIcon";
+import TabBarIcon from "../components/TabBarIcon";
 
 import SchedulesTab from "pages/tabs/SchedulesTab";
 import PatientsTab from "pages/tabs/PatientsTab";
@@ -50,8 +50,8 @@ const tabNavigator = createBottomTabNavigator(
       })
     }
   },
-  {
-    initialRouteName: "Schedules",
+  { 
+    initialRouteName: "Patients",
     animationEnabled: true,
     swipeEnabled: true,
     tabBarPosition: Platform.OS === "ios" ? "bottom" : "top",
@@ -62,6 +62,6 @@ const tabNavigator = createBottomTabNavigator(
   }
 );
 
-tabNavigator.path = "";
+tabNavigator.path = ""; 
 
 export default tabNavigator;

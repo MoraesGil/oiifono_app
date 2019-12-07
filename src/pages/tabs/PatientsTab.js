@@ -7,7 +7,6 @@ import Patients from "pages/Patients";
 import PatientForm from "pages/Patients/FormPatient";
 import PatientDetail from "pages/Patients/DetailPatient";
  
-
 const PatientsTabView = ({ navigation }) => (
   <Patients navigation={navigation} />
 );
@@ -56,11 +55,22 @@ const PatientsTab = createStackNavigator(
       })
     }
   },
-  {
+  { 
     initialRouteName: "patients",
     animationEnabled: true,
     swipeEnabled: true
   }
-);
+);  
+
+PatientsTab.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible
+  };
+};
 
 export default PatientsTab;
