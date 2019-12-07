@@ -25,9 +25,7 @@ const SchedulesTab = createStackNavigator(
         title: "Agendamentos",
         headerBackTitle: null,
         headerRight: (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Schedule_Form")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("ScheduleForm")}>
             <Icon
               containerStyle={{ marginRight: 15 }}
               name="calendar-plus-o"
@@ -37,11 +35,13 @@ const SchedulesTab = createStackNavigator(
         )
       })
     },
-    Schedule_Form: {
+    ScheduleForm: {
       screen: ScheduleFormTabView,
-      path: "/schedule_form",
+      path: "/ScheduleForm",
       navigationOptions: ({ navigation }) => ({
-        headerTitle: (navigation.getParam("schedule_id") ? "Atualizar": "Novo" ) + " agendamento"
+        headerTitle:
+          (navigation.getParam("schedule_id") ? "Atualizar" : "Novo") +
+          " agendamento"
       })
     }
   },
