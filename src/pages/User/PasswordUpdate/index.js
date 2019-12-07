@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
-import { Button, Input, Icon } from "react-native-elements";
+import { View, ScrollView, SafeAreaView } from "react-native";
+import { Button, Input, Icon, } from "react-native-elements";
 
 import styles from "./styles";
 
@@ -48,7 +48,7 @@ export default function PasswordUpdate({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, styles.containerMini]}>
+    <SafeAreaView style={[styles.container, styles.containerMini]}>
       <ScrollView style={styles.container}>
         <Input
           leftIcon={
@@ -139,6 +139,6 @@ export default function PasswordUpdate({ navigation }) {
           onPress={() => navigation.goBack()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

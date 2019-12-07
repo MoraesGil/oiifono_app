@@ -1,6 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { Button, Input, Icon, Divider, CheckBox } from "react-native-elements";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
 import styles from "./styles";
 
@@ -18,7 +18,7 @@ export default function FormPatient({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, styles.containerMini]}>
+    <SafeAreaView style={[styles.container, styles.containerMini]}>
       <ScrollView style={styles.container}>
         <View style={[styles.container, styles.center]}>
           <View style={styles.row}>
@@ -145,6 +145,6 @@ export default function FormPatient({ navigation }) {
           onPress={() => navigation.goBack()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

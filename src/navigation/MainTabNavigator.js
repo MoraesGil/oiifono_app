@@ -50,8 +50,8 @@ const tabNavigator = createBottomTabNavigator(
       })
     }
   },
-  { 
-    initialRouteName: "Patients",
+  {
+    initialRouteName: "Schedules",
     animationEnabled: true,
     swipeEnabled: true,
     tabBarPosition: Platform.OS === "ios" ? "bottom" : "top",

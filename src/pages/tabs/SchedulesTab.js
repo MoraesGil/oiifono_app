@@ -41,7 +41,7 @@ const SchedulesTab = createStackNavigator(
       screen: ScheduleFormTabView,
       path: "/schedule_form",
       navigationOptions: ({ navigation }) => ({
-        headerTitle: "Agendamento"
+        headerTitle: (navigation.getParam("schedule_id") ? "Atualizar": "Novo" ) + " agendamento"
       })
     }
   },

@@ -41,21 +41,21 @@ const PatientsTab = createStackNavigator(
       screen: PatientFormTabView,
       path: "/patient_form",
       navigationOptions: ({ navigation }) => ({
-        headerTitle: () => {
-          const patient = navigation.getParam("patient");
-          return <Text>{patient ? patient.name : "Novo Paciente"}</Text>;
-        }
+        headerTitle: navigation.getParam("patient_id")
+          ? "Atualizar dados"
+          : "Novo Paciente"
       })
     },
     patientDetail: {
       screen: PatientDetailTabView,
       path: "/patientDetail",
       navigationOptions: ({ navigation }) => ({
+        headerBackTitle: null,
         headerTitle: "Ficha Paciente"
       })
     }
   },
-  { 
+  {
     initialRouteName: "patients",
     animationEnabled: true,
     swipeEnabled: true

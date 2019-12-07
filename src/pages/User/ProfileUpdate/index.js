@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { Button, Input, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
@@ -19,7 +19,7 @@ export default function ProfileUpdate({ navigation }) {
   function saveHandle() {} 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <Input
           label="CRF-a"
@@ -88,6 +88,6 @@ export default function ProfileUpdate({ navigation }) {
           onPress={() => navigation.goBack()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

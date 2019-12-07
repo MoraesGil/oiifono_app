@@ -5,7 +5,8 @@ import {
   View,
   Picker,
   FlatList,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 } from "react-native";
 import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
@@ -15,7 +16,7 @@ import { weekDays, shortWeekDaysValues } from "@/constants/weekDays";
 export default function Availabilities({ navigation }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
 
-  const _shortWeekDays = shortWeekDaysValues; 
+  const _shortWeekDays = shortWeekDaysValues;
   const { availabilities } = useSelector(state => state.data.auth.user.person);
   const [weekDay, setWeekDay] = useState("");
 
@@ -89,96 +90,93 @@ export default function Availabilities({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerMini}>
-        <Picker
-          style={{ backgroundColor: "#b8daff", marginBottom: 10 }}
-          itemStyle={{ textAlign: "center", height: 130 }}
-          mode="dialog"
-          selectedValue={weekDay}
-          onValueChange={key => setWeekDay(key)}
-        >
-          <Picker.Item label="Escolha um dia na semana..." value="" />
-          {Object.values(weekDays).map((label, i) => (
-            <Picker.Item key={i} label={label} value={i} />
-          ))}
-        </Picker>
+    <SafeAreaView style={styles.container}>
+      <Picker
+        style={styles.p10}
+        itemStyle={{ textAlign: "center", height: 130 }}
+        mode="dialog"
+        selectedValue={weekDay}
+        onValueChange={key => setWeekDay(key)}
+      >
+        <Picker.Item label="Escolha um dia na semana..." value="" />
+        {Object.values(weekDays).map((label, i) => (
+          <Picker.Item key={i} label={label} value={i} />
+        ))}
+      </Picker>
 
-        <View style={[styles.row, styles.spaced]}>
-          <View
-            style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
+      <View style={[styles.row, styles.center]}>
+        <View style={[styles.row, styles.centerH, styles.p10]}>
+          <Icon
+            name="hourglass-start"
+            type="font-awesome"
+            color="rgba(0, 0, 0, 0.38)"
+            size={25}
+            style={{ backgroundColor: "transparent" }}
+            containerStyle={{ position: "absolute", left: 15 }}
+          />
+
+          <Picker
+            style={{
+              height: 50,
+              width: SCREEN_WIDTH * 0.4
+            }}
+            itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
+            mode="dialog"
+            selectedValue={timeRange.start_index}
+            onValueChange={index => {
+              setTimeRange({ start_index: index, end_index: "" });
+            }}
           >
-            <Icon
-              name="hourglass-start"
-              type="font-awesome"
-              color="rgba(0, 0, 0, 0.38)"
-              size={25}
-              style={{ backgroundColor: "transparent" }}
-            />
-
-            <Picker
-              style={{
-                height: 50,
-                width: SCREEN_WIDTH * 0.4
-              }}
-              itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
-              mode="dialog"
-              selectedValue={timeRange.start_index}
-              onValueChange={index => {
-                setTimeRange({ start_index: index, end_index: "" });
-              }}
-            >
-              <Picker.Item label="Hora Inicial" value="" />
-              {hoursOfDay.map((key, i) => (
-                <Picker.Item key={i} label={key} value={i} />
-              ))}
-            </Picker>
-          </View>
-
-          <View
-            style={[styles.row, styles.centerH, { backgroundColor: "#b8daff" }]}
-          >
-            <Picker
-              style={{
-                height: 50,
-                width: SCREEN_WIDTH * 0.4
-              }}
-              itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
-              mode="dialog"
-              selectedValue={timeRange.end_index}
-              onValueChange={key => {
-                setTimeRange({ ...timeRange, end_index: key });
-              }}
-            >
-              <Picker.Item label="Hora Final" value="" />
-              {hoursOfDay
-                .filter((h, i) => i > timeRange.start_index)
-                .map((key, i) => (
-                  <Picker.Item key={i} label={key} value={i} />
-                ))}
-            </Picker>
-            <Icon
-              name="hourglass-end"
-              type="font-awesome"
-              color="rgba(0, 0, 0, 0.38)"
-              size={25}
-              style={{ backgroundColor: "transparent", marginRight: 10 }}
-            />
-          </View>
+            <Picker.Item label="Hora Inicial" value="" />
+            {hoursOfDay.map((key, i) => (
+              <Picker.Item key={i} label={key} value={i} />
+            ))}
+          </Picker>
         </View>
 
-        <Button
-          disabled={
-            weekDay === "" ||
-            timeRange.start_index === "" ||
-            timeRange.end_index === ""
-          }
-          buttonStyle={[styles.button, { marginTop: 10 }]}
-          title="Adicionar Disponibilidade"
-          onPress={addHandle}
-        />
+        <View style={[styles.row, styles.centerH, styles.p10]}>
+          <Icon
+            name="hourglass-end"
+            type="font-awesome"
+            color="rgba(0, 0, 0, 0.38)"
+            size={25}
+            style={{ backgroundColor: "transparent" }}
+            containerStyle={{ position: "absolute", left: 15 }}
+          />
+          <Picker
+            style={{
+              height: 50,
+              width: SCREEN_WIDTH * 0.4
+            }}
+            itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
+            mode="dialog"
+            selectedValue={timeRange.end_index}
+            onValueChange={key => {
+              setTimeRange({ ...timeRange, end_index: key });
+            }}
+          >
+            <Picker.Item label="Hora Final" value="" />
+            {hoursOfDay
+              .filter((h, i) => i > timeRange.start_index)
+              .map((key, i) => (
+                <Picker.Item key={i} label={key} value={i} />
+              ))}
+          </Picker>
+        </View>
       </View>
-      <Divider style={{ backgroundColor: "#ccc" }} /> 
+
+      <Button
+        disabled={
+          weekDay === "" ||
+          timeRange.start_index === "" ||
+          timeRange.end_index === ""
+        }
+        buttonStyle={[styles.button, { marginTop: 10 }]}
+        title="Adicionar Disponibilidade"
+        onPress={addHandle}
+      />
+
+      <Divider style={{ backgroundColor: "#ccc" }} />
       {weekDay !== "" &&
         availabilities.filter(a => a.week_day == weekDay).length <= 0 && (
           <Text
@@ -192,6 +190,6 @@ export default function Availabilities({ navigation }) {
         data={availabilities.filter(a => a.week_day == weekDay)}
         renderItem={renderItem}
       />
-    </View>
+    </SafeAreaView>
   );
 }

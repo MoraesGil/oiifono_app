@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { Text, ListItem, Avatar, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";

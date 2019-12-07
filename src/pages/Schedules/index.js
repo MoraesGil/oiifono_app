@@ -20,7 +20,7 @@ export default function Schedules({ navigation }) {
   const _patients = useSelector(state => state.data.patients.items);
 
   function handleSchedule(schedule) {
-    navigation.navigate("Schedule_Form", { schedule });
+    navigation.navigate("Schedule_Form", { schedule_id:schedule.id });
   }
 
   function statusBar(schedule) {
