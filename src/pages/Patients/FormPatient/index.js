@@ -8,7 +8,7 @@ export default function FormPatient({ navigation }) {
   const _patient = useSelector(
     state => state.data.patients.items[navigation.getParam("patient_id")]
   );  
-  
+
   const [errors, setErros] = useState({});
   const [patient, setPatient] = useState(_patient || {gender:"m"});
 
@@ -85,7 +85,7 @@ export default function FormPatient({ navigation }) {
             setPatient({ ...patient, ...{ disability: input } })
           }
           errorMessage={errors.name}
-          placeholder="opticional"
+          placeholder="opicional"
         />
         <Divider style={styles.divider} />
         <Input
@@ -107,7 +107,7 @@ export default function FormPatient({ navigation }) {
           inputStyle={styles.inputWithIcon}
           onChangeText={input => setPatient({ ...patient, ...{ rg: input } })}
           errorMessage={errors.rg}
-          placeholder="opticional"
+          placeholder="opicional"
         />
         <Input
           leftIcon={
@@ -128,7 +128,7 @@ export default function FormPatient({ navigation }) {
           inputStyle={styles.inputWithIcon}
           onChangeText={input => setPatient({ ...patient, ...{ cpf: input } })}
           errorMessage={errors.cpf}
-          placeholder="opticional"
+          placeholder="opicional"
         />
       </ScrollView>
 
