@@ -7,7 +7,8 @@ import styles from "./styles";
 export default function FormPatient({ navigation }) {
   const _patient = useSelector(
     state => state.data.patients.items[navigation.getParam("patient_id")]
-  );
+  );  
+  
   const [errors, setErros] = useState({});
   const [patient, setPatient] = useState(_patient || {gender:"m"});
 

@@ -152,7 +152,7 @@ export default function DetailPatient({ navigation }) {
                   }}
                   onPress={() => console.log("Works!")}
                 />
-                <Text style={styles.insideBox}>Terapias</Text>
+                <Text style={styles.insideBox}>Terapia</Text>
               </View>
             </View>
           </View>
