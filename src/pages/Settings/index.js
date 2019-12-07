@@ -24,7 +24,7 @@ export default function Settings({ navigation }) {
             navigation.navigate("ProfileUpdate", { user });
           }}
           title={
-            <View style={styles.centered}>
+            <View style={styles.center}>
               <Avatar
                 rounded
                 size="large"
@@ -37,7 +37,7 @@ export default function Settings({ navigation }) {
           }
           bottomDivider
         />
-        <View style={styles.centered}>
+        <View style={styles.center}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Availabilities", { user });

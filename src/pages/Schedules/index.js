@@ -132,12 +132,12 @@ export default function Schedules({ navigation }) {
     return (
       <View>
         <View style={[styles.container, styles.row]}>
-          <View style={styles.centered}>
+          <View style={styles.center}>
             <View
               style={[
                 styles.container,
                 styles.row,
-                styles.centered,
+                styles.center,
                 styles.spaced
               ]}
             >

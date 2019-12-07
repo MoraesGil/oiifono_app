@@ -1,15 +1,15 @@
 import React, { Component, useState } from "react";
-
-import { View, Text } from "react-native";
-
+import { Button, Input, Icon, Divider, CheckBox } from "react-native-elements";
+import { View, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import styles from "./styles";
 
 export default function FormPatient({ navigation }) {
   const _patient = useSelector(
-    state => state.data.patients.items[navigation.getParam("patient_id") || 1]
+    state => state.data.patients.items[navigation.getParam("patient_id")]
   );
-
-  const [patient, setPatient] = useState(_patient || {});
+  const [errors, setErros] = useState({});
+  const [patient, setPatient] = useState(_patient || {gender:"m"});
 
   function saveChangesHandle(){
     console.log('saveChangesHandle')
@@ -19,6 +19,28 @@ export default function FormPatient({ navigation }) {
   return (
     <View style={[styles.container, styles.containerMini]}>
       <ScrollView style={styles.container}>
+        <View style={[styles.container, styles.center]}>
+          <View style={styles.row}>
+            <CheckBox
+              center
+              title="Masculino"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={patient.gender == "m"}
+              containerStyle={styles.genderCheckContainer}
+              onPress={() => setPatient({ ...patient, ...{ gender: "m" } })}
+            />
+            <CheckBox
+              center
+              title="Feminino"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={patient.gender == "f"}
+              containerStyle={styles.genderCheckContainer}
+              onPress={() => setPatient({ ...patient, ...{ gender: "f" } })}
+            />
+          </View>
+        </View>
         <Input
           leftIcon={
             <Icon
@@ -33,12 +55,12 @@ export default function FormPatient({ navigation }) {
           value={patient.name}
           autoCapitalize="none"
           autoCorrect={false}
-          secureTextEntry={true}
           returnKeyType="next"
           blurOnSubmit={true}
           inputStyle={styles.inputWithIcon}
           onChangeText={input => setPatient({ ...patient, ...{ name: input } })}
           errorMessage={errors.name}
+          placeholder="Obrigatório"
         />
 
         <Input
@@ -55,7 +77,6 @@ export default function FormPatient({ navigation }) {
           value={patient.disability}
           autoCapitalize="none"
           autoCorrect={false}
-          secureTextEntry={true}
           returnKeyType="next"
           blurOnSubmit={true}
           inputStyle={styles.inputWithIcon}
@@ -63,6 +84,7 @@ export default function FormPatient({ navigation }) {
             setPatient({ ...patient, ...{ disability: input } })
           }
           errorMessage={errors.name}
+          placeholder="opticional"
         />
         <Divider style={styles.divider} />
         <Input
@@ -79,12 +101,12 @@ export default function FormPatient({ navigation }) {
           value={patient.rg}
           autoCapitalize="none"
           autoCorrect={false}
-          secureTextEntry={true}
           returnKeyType="next"
           blurOnSubmit={true}
           inputStyle={styles.inputWithIcon}
           onChangeText={input => setPatient({ ...patient, ...{ rg: input } })}
           errorMessage={errors.rg}
+          placeholder="opticional"
         />
         <Input
           leftIcon={
@@ -97,22 +119,22 @@ export default function FormPatient({ navigation }) {
             />
           }
           label="CPF"
-          value={patient.rg}
+          value={patient.cpf}
           autoCapitalize="none"
           autoCorrect={false}
-          secureTextEntry={true}
           returnKeyType="next"
           blurOnSubmit={true}
           inputStyle={styles.inputWithIcon}
           onChangeText={input => setPatient({ ...patient, ...{ cpf: input } })}
           errorMessage={errors.cpf}
+          placeholder="opticional"
         />
       </ScrollView>
 
       <View style={[styles.bottomContainer, styles.containerMini]}>
         <Button
           buttonStyle={styles.button}
-          title={ patient.id ? "Atualizar" : "Cadastrar"}
+          title={patient.id ? "Atualizar" : "Cadastrar"}
           onPress={saveChangesHandle}
         />
         <Button

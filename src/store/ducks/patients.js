@@ -16,13 +16,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "m",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      } 
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     },
     "2": {
       id: 2,
@@ -34,13 +36,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "f",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      }
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     },
     "3": {
       id: 3,
@@ -51,13 +55,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "m",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      }
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     },
     "4": {
       id: 4,
@@ -69,13 +75,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "m",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      }
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     },
     "5": {
       id: 5,
@@ -87,13 +95,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "m",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      }
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     },
     "6": {
       id: 6,
@@ -105,13 +115,15 @@ const initialState = {
       age: 29,
       disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
       gender: "f",
+      rg:"11.111.111-3",
+      cpf:"191.393.198-09",
       addresses:[1,2,3],
-      contacts:[],
-      relatives:[],
-      hospitalization:{
-        start_at:"05/12/2019",
-        healthPlan_id:1
-      }
+      contacts:[1,2,3],
+      relatives:[
+        {id:1,name: "Maria mae", contact:"(18)999901301"}
+      ],
+      hospitalization: "05/12/2019",
+      healthPlan_id:1
     }
   }
 };

@@ -13,7 +13,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignSelf: "stretch"
   },
-  centered: {
+  center: {
     alignItems: "center",
     justifyContent: "center"
   },
@@ -37,5 +37,6 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   divider: { backgroundColor: "#ccc" },
-  p10: { padding: 10 }
+  p10: { padding: 10 },
+  m10: { margin: 10 }
 });

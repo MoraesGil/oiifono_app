@@ -3,7 +3,7 @@ import grid from "@/constants/grid";
 import formStyles from "@/constants/formStyles";
 
 const styles = StyleSheet.create({  
-  centered: {
+  center: {
     flex: 1,
     alignItems: "center",
     marginBottom: 5,

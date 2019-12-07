@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import styles from "./styles";
 
 export default function ProfileUpdate({ navigation }) {
-  const user = navigation.getParam("user") || useSelector(state => state.data.auth.user);;
+  const user = navigation.getParam("user") || useSelector(state => state.data.auth.user);
 
   const [profile, setProfile] = useState({
     name: user.person.name,

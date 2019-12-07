@@ -1,12 +1,11 @@
 import React, { Component, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { Text, ListItem, Avatar, Divider } from "react-native-elements";
+import { Text, ListItem, Avatar, Divider,Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import StatusIcon from "components/StatusIcon.js";
-import styles from "./styles";  
+import styles from "./styles";
 
 export default function DetailPatient({ navigation }) {
-   
   const _patient = useSelector(
     state => state.data.patients.items[navigation.getParam("patient_id") || 1]
   );
@@ -40,19 +39,18 @@ export default function DetailPatient({ navigation }) {
   ];
 
   function contactsTemplate() {
-    
     return (
       <View>
-        {contacts.map((item, i) => ( 
-          <ListItem
-            key={i}
-            title={item.description}
-            leftIcon={{
-              name: item.type == 0 ? "envelope" : "mobile",
-              type: "font-awesome"
-            }}
-            bottomDivider
-          />
+        {contacts.map((item, i) => (
+          <View style={[styles.row, styles.p10, styles.centerH]} key={i}>
+            <Icon
+              name={item.type == 0 ? "envelope" : "mobile"}
+              type="font-awesome"
+              color="rgba(0, 0, 0, 0.38)" 
+              containerStyle={[styles.centerH,{ backgroundColor: "transparent", marginEnd: 15 }]}
+            />
+            <Text>{item.description}</Text>
+          </View>
         ))}
       </View>
     );
@@ -66,7 +64,7 @@ export default function DetailPatient({ navigation }) {
             key={i}
             title={item.name}
             rightTitle={item.contact}
-            rightTitleStyle={{width:150}}
+            rightTitleStyle={{ width: 150 }}
           />
         ))}
       </View>
@@ -77,8 +75,8 @@ export default function DetailPatient({ navigation }) {
     <View style={[styles.container, styles.containerMini]}>
       <ScrollView styles="container">
         <View style={[styles.container, styles.row, styles.p10]}>
-          <View style={[styles.centered]}>
-            <View style={[styles.row, styles.centered, styles.p10]}>
+          <View style={[styles.center]}>
+            <View style={[styles.row, styles.center, styles.p10]}>
               {StatusIcon("gender", patient.gender)}
               {patient.disability &&
                 StatusIcon("desability", patient.disability)}
@@ -99,7 +97,11 @@ export default function DetailPatient({ navigation }) {
                   size="large"
                   activeOpacity={0.7}
                   overlayContainerStyle={styles.menuIconOverlay}
-                  icon={{ name: "user", type: "font-awesome", color: "#CCC" }}
+                  icon={{
+                    name: "line-chart",
+                    type: "font-awesome",
+                    color: "#CCC"
+                  }}
                   onPress={() => console.log("Works!")}
                 />
                 <Text>Evoluções</Text>
@@ -109,10 +111,14 @@ export default function DetailPatient({ navigation }) {
                   size="large"
                   activeOpacity={0.7}
                   overlayContainerStyle={styles.menuIconOverlay}
-                  icon={{ name: "user", type: "font-awesome", color: "#CCC" }}
+                  icon={{
+                    name: "page-export-pdf",
+                    type: "foundation",
+                    color: "#CCC"
+                  }}
                   onPress={() => console.log("Works!")}
                 />
-                <Text>Exportar Ficha</Text>
+                <Text>Exportar</Text>
               </View>
             </View>
             <View style={[styles.row, styles.centerH]}>
@@ -121,33 +127,52 @@ export default function DetailPatient({ navigation }) {
                   size="large"
                   activeOpacity={0.7}
                   overlayContainerStyle={styles.menuIconOverlay}
-                  icon={{ name: "user", type: "font-awesome", color: "#CCC" }}
+                  icon={{
+                    name: "calendar",
+                    type: "font-awesome",
+                    color: "#CCC"
+                  }}
                   onPress={() => console.log("Works!")}
                 />
-                <Text>Evoluções</Text>
+                <Text>Agendamentos</Text>
               </View>
               <View style={[styles.centerH, styles.container]}>
                 <Avatar
                   size="large"
                   activeOpacity={0.7}
                   overlayContainerStyle={styles.menuIconOverlay}
-                  icon={{ name: "user", type: "font-awesome", color: "#CCC" }}
+                  icon={{
+                    name: "stethoscope",
+                    type: "font-awesome",
+                    color: "#CCC"
+                  }}
                   onPress={() => console.log("Works!")}
                 />
-                <Text>Exportar Ficha</Text>
+                <Text>Terapias</Text>
               </View>
             </View>
           </View>
         </View>
         <Divider style={styles.divider} />
-        <View styles={[styles.row, styles.p10]}>
-          <Text h4> Paciente: {patient.name}</Text>
-          <View style={styles.row}>
-            <Text h4> Nascido em : {patient.birthdate}</Text>
-          </View>
-        </View>
+        <Text>Dados pessoais</Text>
+        <ListItem
+          key={0}
+          leftIcon={{ name: "id-card", type: "font-awesome", color: "#CCC" }}
+          title={
+            <View styles={[styles.row, styles.p10]}>
+              <Text> Paciente: {patient.name}</Text>
+              <View style={styles.row}>
+                <Text> Nascido em : {patient.birthdate}</Text>
+              </View>
+            </View>
+          }
+          chevron
+          onPress={() =>
+            navigation.navigate("patient_form", { patient_id: patient.id })
+          }
+        />
         <Divider style={styles.divider} />
-
+        <Text>Endereços</Text>
         <View>
           <ListItem
             leftIcon={{ name: "location-pin", type: "entypo", color: "#CCC" }}
@@ -164,7 +189,9 @@ export default function DetailPatient({ navigation }) {
               </View>
             }
             chevron
-            onPress={() => console.log("join addresslist!")}
+            onPress={() =>
+              navigation.navigate("patient_form", { patient_id: patient.id })
+            }
           />
         </View>
         <Divider style={styles.divider} />
