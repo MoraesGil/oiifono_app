@@ -37,6 +37,7 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   divider: { backgroundColor: "#ccc" },
+  p5: { padding: 5 },
   p10: { padding: 10 },
   m10: { margin: 10 }
 });
