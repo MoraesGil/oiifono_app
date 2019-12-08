@@ -2,19 +2,28 @@ import React, { useState, useMemo } from "react";
 import moment from "moment";
 import { Input, Icon } from "react-native-elements";
 import formStyles from "@/constants/formStyles";
-import { View, Picker, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Picker,
+  Dimensions,
+  TouchableOpacity,
+  Platform
+} from "react-native";
 import styles from "./styles";
 
 export default function RangeTimeInput({
   timeRange,
   onChange,
+  isValid,
   error,
   label,
-  placeholder
+  placeholder,
+  pickerOnly,
 }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
-  const [opened, setOpened] = useState(false);
-  const hoursOfDay = hourPicker(6, 20);     
+  const [opened, setOpened] = useState(pickerOnly || false);
+  const [hoursOfDay, setHoursOfDay] = useState(hourPicker(6, 20));
+
   function hourPicker(min = null, max = null) {
     min = Math.round(min);
     max = Math.round(max);
@@ -26,22 +35,23 @@ export default function RangeTimeInput({
         items[moment({ hour: i, minute: 30 }).format("HH:mm")] = i + 0.5;
     }
     return Object.keys(items);
-  }  
+  }
 
-  const start_index = hoursOfDay.indexOf(timeRange.start_at || "") >= 0 ? hoursOfDay.indexOf(timeRange.start_at) : "";
-  const end_index = hoursOfDay.indexOf(timeRange.end_at || "") >= 0 ? hoursOfDay.indexOf(timeRange.end_at) : "";
+  const startIndex = hoursOfDay.indexOf(timeRange.start_at);
+  const endIndex = hoursOfDay.indexOf(timeRange.end_at);
 
   const timeFormated = useMemo(() => {
-    timeRange.start_at != "" && timeRange.end_at != ""
-      ? timeRange.start_at +
-        " às " +
-        timeRange.end_at
-      : null;
-  }, [timeRange]); 
-
+    let formated =
+      startIndex >= 0 && endIndex >= 0
+        ? timeRange.start_at + " às " + timeRange.end_at
+        : "";
+    if (isValid) isValid(formated !== "");
+    return formated;
+  }, [startIndex, endIndex]); 
+  
   return (
     <View>
-      <TouchableOpacity onPress={() => setOpened(!opened)}>
+      { !pickerOnly &&  <TouchableOpacity onPress={() => setOpened(!opened)}>
         <Input
           placeholder={placeholder}
           pointerEvents="none"
@@ -60,9 +70,9 @@ export default function RangeTimeInput({
           inputStyle={formStyles.inputWithIcon}
           errorMessage={error}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>}
       {opened && (
-        <View style={[styles.row, styles.center]}>
+        <View style={[styles.row, styles.center, styles.spaced]}>
           <View style={[styles.row, styles.centerH, styles.p10]}>
             <Icon
               name="hourglass-start"
@@ -70,21 +80,24 @@ export default function RangeTimeInput({
               color="rgba(0, 0, 0, 0.38)"
               size={25}
               style={{ backgroundColor: "transparent" }}
-              containerStyle={{ position: "absolute", left: 15 }}
+              containerStyle={{
+                ...(Platform.OS === "ios"
+                  ? { position: "absolute", left: 15 }
+                  : {})
+              }}
             />
 
             <Picker
               style={{
-                width: SCREEN_WIDTH * 0.4
+                width: SCREEN_WIDTH * 0.45
               }}
-              itemStyle={{ width: SCREEN_WIDTH * 0.4 }}
-              mode="dialog"
-              selectedValue={start_index}
+              itemStyle={{ width: SCREEN_WIDTH * 0.45 }}
+              selectedValue={startIndex}
               onValueChange={index => {
                 onChange({ start_at: hoursOfDay[index], end_at: "" });
               }}
             >
-              <Picker.Item label="Inicio" value="" />
+              <Picker.Item label="Inicio" value="-1" />
               {hoursOfDay.map((key, i) => (
                 <Picker.Item key={i} label={key} value={i} />
               ))}
@@ -98,26 +111,30 @@ export default function RangeTimeInput({
               color="rgba(0, 0, 0, 0.38)"
               size={25}
               style={{ backgroundColor: "transparent" }}
-              containerStyle={{ position: "absolute", left: 15 }}
+              containerStyle={{
+                ...(Platform.OS === "ios"
+                  ? { position: "absolute", left: 15 }
+                  : {})
+              }}
             />
             <Picker
               style={{
-                width: SCREEN_WIDTH * 0.4
+                width: SCREEN_WIDTH * 0.45
               }}
-              itemStyle={{ width: SCREEN_WIDTH * 0.4 }}
-              mode="dialog"
-              selectedValue={end_index}
+              itemStyle={{ width: SCREEN_WIDTH * 0.45 }}
+              selectedValue={endIndex}
               onValueChange={index => {
                 onChange({ ...timeRange, end_at: hoursOfDay[index] });
               }}
             >
-              <Picker.Item label="Termino" value="" />
-              {start_index !== "" &&
-                hoursOfDay.map((key, i) => {
-                  return i > start_index ? (
+              <Picker.Item label="Termino" value="-1" />
+              {hoursOfDay
+                .map((key, i) => {
+                  return i > startIndex && startIndex >=0 ? (
                     <Picker.Item key={i} label={key} value={i} />
                   ) : null;
-                })}
+                })
+                .filter(e => e != null)}
             </Picker>
           </View>
         </View>

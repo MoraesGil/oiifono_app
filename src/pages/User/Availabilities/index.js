@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import moment from "moment";
+import React, { useState } from "react"; 
 import {
   Text,
   View,
@@ -12,33 +11,16 @@ import { ListItem, Badge, Button, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import styles from "./styles";
 import { weekDays, shortWeekDaysValues } from "@/constants/weekDays";
+import RangeTimeInput from "components/RangeTimeInput";
 
-export default function Availabilities({ navigation }) {
-  const SCREEN_WIDTH = Dimensions.get("window").width;
-
+export default function Availabilities({ navigation }) {  
   const _shortWeekDays = shortWeekDaysValues;
   const { availabilities } = useSelector(state => state.data.auth.user.person);
+
   const [weekDay, setWeekDay] = useState("");
-
-  const [timeRange, setTimeRange] = useState({
-    start_index: "",
-    end_index: ""
-  });
-
-  const hoursOfDay = hourPicker(6, 20);
-
-  function hourPicker(min = null, max = null) {
-    min = Math.round(min);
-    max = Math.round(max);
-    max = max < 23 ? max : 23;
-    let items = [];
-    for (i = min; i <= (max || 23); i++) {
-      items[moment({ hour: i }).format("HH:mm")] = i;
-      if (i < max && i < 24)
-        items[moment({ hour: i, minute: 30 }).format("HH:mm")] = i + 0.5;
-    }
-    return Object.keys(items);
-  }
+  const [isTimePicked, setIsTimePicked] = useState(false); 
+  const [timeRange, setTimeRange] = useState({});
+  
 
   function handleDeleteBtn(item) {
     console.log("deleted");
@@ -46,12 +28,8 @@ export default function Availabilities({ navigation }) {
   }
 
   function handleAddBtn() {
-    console.log("add");
-    console.log(weekDay);
-  }
-
-  function addHandle() {
-    console.log(timeRange);
+    console.log(isTimePicked); 
+    
   }
 
   function renderItem(item) {
@@ -104,76 +82,19 @@ export default function Availabilities({ navigation }) {
         ))}
       </Picker>
 
-      <View style={[styles.row, styles.center]}>
-        <View style={[styles.row, styles.centerH, styles.p10]}>
-          <Icon
-            name="hourglass-start"
-            type="font-awesome"
-            color="rgba(0, 0, 0, 0.38)"
-            size={25}
-            style={{ backgroundColor: "transparent" }}
-            containerStyle={{ position: "absolute", left: 15 }}
-          />
-
-          <Picker
-            style={{
-              height: 50,
-              width: SCREEN_WIDTH * 0.4
-            }}
-            itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
-            mode="dialog"
-            selectedValue={timeRange.start_index}
-            onValueChange={index => {
-              setTimeRange({ start_index: index, end_index: "" });
-            }}
-          >
-            <Picker.Item label="Hora Inicial" value="" />
-            {hoursOfDay.map((key, i) => (
-              <Picker.Item key={i} label={key} value={i} />
-            ))}
-          </Picker>
-        </View>
-
-        <View style={[styles.row, styles.centerH, styles.p10]}>
-          <Icon
-            name="hourglass-end"
-            type="font-awesome"
-            color="rgba(0, 0, 0, 0.38)"
-            size={25}
-            style={{ backgroundColor: "transparent" }}
-            containerStyle={{ position: "absolute", left: 15 }}
-          />
-          <Picker
-            style={{
-              height: 50,
-              width: SCREEN_WIDTH * 0.4
-            }}
-            itemStyle={{ height: 50, width: SCREEN_WIDTH * 0.4 }}
-            mode="dialog"
-            selectedValue={timeRange.end_index}
-            onValueChange={key => {
-              setTimeRange({ ...timeRange, end_index: key });
-            }}
-          >
-            <Picker.Item label="Hora Final" value="" />
-            {hoursOfDay
-              .filter((h, i) => i > timeRange.start_index)
-              .map((key, i) => (
-                <Picker.Item key={i} label={key} value={i} />
-              ))}
-          </Picker>
-        </View>
-      </View>
+      <RangeTimeInput
+        timeRange={timeRange}
+        label="Disponibilidade"
+        placeholder="Seu horario de atendimento"
+        onChange={setTimeRange}
+        isValid={setIsTimePicked}
+      />
 
       <Button
-        disabled={
-          weekDay === "" ||
-          timeRange.start_index === "" ||
-          timeRange.end_index === ""
-        }
+        disabled={weekDay === "" || !isTimePicked}
         buttonStyle={[styles.button, { marginTop: 10 }]}
         title="Adicionar Disponibilidade"
-        onPress={addHandle}
+        onPress={handleAddBtn}
       />
 
       <Divider style={{ backgroundColor: "#ccc" }} />
