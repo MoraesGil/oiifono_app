@@ -35,5 +35,26 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     justifyContent: "flex-end"
+  },
+  input: {
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: "#c7c6c1"
+  },
+  inputLabel: {
+    fontSize: 16,
+    color: "#86939e",
+    fontWeight: "bold"
+  },
+  inputError: {
+    margin: 5,
+    fontSize: 12,
+    color: "#ff190c"
+  },
+  iconContainer: {
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 15
   }
 });

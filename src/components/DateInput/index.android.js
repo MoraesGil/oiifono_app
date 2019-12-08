@@ -1,20 +1,32 @@
-import React, { useMemo } from 'react';
-import { DatePickerAndroid } from 'react-native';
-import { format } from 'date-fns';
-import pt from 'date-fns/locale/pt';
+import React, { useMemo } from "react";
+import { DatePickerAndroid } from "react-native";
+import { format } from "date-fns";
+import pt from "date-fns/locale/pt";
 
 import { Input, Icon } from "react-native-elements";
 import { Container, DateButton } from "./styles";
 import formStyles from "@/constants/formStyles";
 
-export default function DateInput({ date, onChange, error, label }) {
+export default function DateInput({
+  date,
+  onChange,
+  error,
+  label,
+  placeholder,
+  minuteInterval,
+  mode,
+  minDate,
+  maxDate
+}) {
   const dateFormated = useMemo(
     () => format(date, "dd 'de' MMMM 'de' yyyy", { locale: pt }),
     [date]
   );
   async function handleOpenPicker() {
     const { action, year, month, day } = await DatePickerAndroid.open({
-      mode: "spinner",
+      minDate,
+      maxDate,
+      mode: "calendar",
       date
     });
 
@@ -28,6 +40,7 @@ export default function DateInput({ date, onChange, error, label }) {
       <DateButton onPress={handleOpenPicker}>
         <Input
           pointerEvents="none"
+          placeholder={placeholder}
           leftIcon={
             <Icon
               name="calendar"

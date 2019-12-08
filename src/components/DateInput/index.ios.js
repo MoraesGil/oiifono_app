@@ -1,17 +1,36 @@
 import React, { useState, useMemo } from "react";
 import { DatePickerIOS } from "react-native";
-import { format } from "date-fns";
+import { format  as formater} from "date-fns";
 import pt from "date-fns/locale/pt";
 
-import {Input, Icon } from "react-native-elements"; 
+import { Input, Icon } from "react-native-elements";
 import { Container, DateButton } from "./styles";
 import formStyles from "@/constants/formStyles";
 
-export default function DateInput({ date, onChange, error, label}) {
+export default function DateInput({
+  date,
+  onChange,
+  error,
+  label,
+  placeholder,
+  minuteInterval,
+  mode,
+  minDate,
+  maxDate,
+  format,
+}) {
   const [opened, setOpened] = useState(false);
 
+  const defaultFormats = {
+    "date":"dd 'de' MMMM 'de' yyyy",
+    "time":''
+  }
+
   const dateFormated = useMemo(
-    () => format(date, "dd 'de' MMMM 'de' yyyy", { locale: pt }),
+    () =>
+      formater(date, format || defaultFormats[mode || "date"], {
+        locale: pt
+      }),
     [date]
   );
 
@@ -19,6 +38,7 @@ export default function DateInput({ date, onChange, error, label}) {
     <Container>
       <DateButton onPress={() => setOpened(!opened)}>
         <Input
+          placeholder={placeholder}
           pointerEvents="none"
           leftIcon={
             <Icon
@@ -40,10 +60,11 @@ export default function DateInput({ date, onChange, error, label}) {
         <DatePickerIOS
           date={date}
           onDateChange={onChange}
-          minimumDate={new Date()}
-          minuteInterval={60}
+          minimumDate={minDate}
+          maximumDate={maxDate}
+          minuteInterval={minuteInterval}
           locale="pt"
-          mode="date"
+          mode={mode || "date"}
         />
       )}
     </Container>
