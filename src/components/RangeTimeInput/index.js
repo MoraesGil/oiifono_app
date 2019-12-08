@@ -6,20 +6,15 @@ import { View, Picker, Dimensions, TouchableOpacity } from "react-native";
 import styles from "./styles";
 
 export default function RangeTimeInput({
+  timeRange,
   onChange,
   error,
   label,
   placeholder
 }) {
   const SCREEN_WIDTH = Dimensions.get("window").width;
-  const [opened, setOpened] = useState(true);
-  const [timeRange, setTimeRange] = useState({
-    start_index: "",
-    end_index: ""
-  });
-
-  const hoursOfDay = hourPicker(6, 20);
-
+  const [opened, setOpened] = useState(false);
+  const hoursOfDay = hourPicker(6, 20);     
   function hourPicker(min = null, max = null) {
     min = Math.round(min);
     max = Math.round(max);
@@ -31,17 +26,18 @@ export default function RangeTimeInput({
         items[moment({ hour: i, minute: 30 }).format("HH:mm")] = i + 0.5;
     }
     return Object.keys(items);
-  }
+  }  
+
+  const start_index = hoursOfDay.indexOf(timeRange.start_at || "") >= 0 ? hoursOfDay.indexOf(timeRange.start_at) : "";
+  const end_index = hoursOfDay.indexOf(timeRange.end_at || "") >= 0 ? hoursOfDay.indexOf(timeRange.end_at) : "";
 
   const timeFormated = useMemo(() => {
-    console.log(timeRange);
-
-    timeRange.start_index > 0 && timeRange.end_index > 0
-      ? hoursOfDay[timeRange.start_index] +
+    timeRange.start_at != "" && timeRange.end_at != ""
+      ? timeRange.start_at +
         " às " +
-        hoursOfDay[timeRange.end_index]
+        timeRange.end_at
       : null;
-  }, [timeRange]);
+  }, [timeRange]); 
 
   return (
     <View>
@@ -83,12 +79,12 @@ export default function RangeTimeInput({
               }}
               itemStyle={{ width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={timeRange.start_index}
+              selectedValue={start_index}
               onValueChange={index => {
-                setTimeRange({ start_index: index, end_index: "" });
+                onChange({ start_at: hoursOfDay[index], end_at: "" });
               }}
             >
-              <Picker.Item label="Hora Inicial" value="" />
+              <Picker.Item label="Inicio" value="" />
               {hoursOfDay.map((key, i) => (
                 <Picker.Item key={i} label={key} value={i} />
               ))}
@@ -110,15 +106,15 @@ export default function RangeTimeInput({
               }}
               itemStyle={{ width: SCREEN_WIDTH * 0.4 }}
               mode="dialog"
-              selectedValue={timeRange.end_index}
-              onValueChange={key => {
-                setTimeRange({ ...timeRange, end_index: key });
+              selectedValue={end_index}
+              onValueChange={index => {
+                onChange({ ...timeRange, end_at: hoursOfDay[index] });
               }}
             >
-              <Picker.Item label="Hora Final" value="" /> 
-              {timeRange.start_index !== "" &&
+              <Picker.Item label="Termino" value="" />
+              {start_index !== "" &&
                 hoursOfDay.map((key, i) => {
-                  return i > timeRange.start_index ? (
+                  return i > start_index ? (
                     <Picker.Item key={i} label={key} value={i} />
                   ) : null;
                 })}
