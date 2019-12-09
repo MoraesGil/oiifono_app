@@ -6,17 +6,20 @@ import { ListItem } from "react-native-elements";
 import styles from "./styles";
 import StatusIcon from "components/StatusIcon.js";
 
-export default function Patients({ navigation }) {  
+export default function Patients({ navigation }) {
   const _patients = useSelector(state => state.data.patients.items);
+
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current_page: 1,
     last_page: 4
   });
 
-
   function handlePatient(patient) {
-    navigation.navigate("patientDetail", { patient_id: patient.id});
+    if (navigation.getParam("onSelect")) { 
+      navigation.getParam("onSelect")(patient);
+      navigation.goBack();
+    } else navigation.navigate("patientDetail", { patient_id: patient.id });
   }
 
   function statusBar(person) {
@@ -45,8 +48,7 @@ export default function Patients({ navigation }) {
 
   function loadMore() {
     if (loading || pagination.current_page > pagination.last_page) return;
-    console.log("call more");
-    console.log(pagination.current_page);
+
     setLoading(true);
     setTimeout(() => {
       setPagination({
@@ -60,7 +62,6 @@ export default function Patients({ navigation }) {
   }
 
   function renderFooter() {
-    console.log("call load more");
     if (!loading) return null;
     return (
       <View style={styles.loading}>

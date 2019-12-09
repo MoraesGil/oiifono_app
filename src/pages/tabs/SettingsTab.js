@@ -43,7 +43,7 @@ const SettingsTab = createStackNavigator(
     }
   },
   {
-    // initialRouteName: "Availabilities",
+    initialRouteName: "Settings",
     animationEnabled: true,
     swipeEnabled: true
   }

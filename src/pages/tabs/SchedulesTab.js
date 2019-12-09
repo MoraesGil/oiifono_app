@@ -16,6 +16,11 @@ const ScheduleFormTabView = ({ navigation }) => (
   <ScheduleForm navigation={navigation} />
 );
 
+import Patients from "pages/Patients";
+const PatientsTabView = ({ navigation }) => (
+  <Patients navigation={navigation} />
+);
+
 const SchedulesTab = createStackNavigator(
   {
     Schedules: {
@@ -39,9 +44,17 @@ const SchedulesTab = createStackNavigator(
       screen: ScheduleFormTabView,
       path: "/ScheduleForm",
       navigationOptions: ({ navigation }) => ({
+        headerBackTitle: null,
         headerTitle:
-          (navigation.getParam("schedule_id") ? "Atualizar" : "Novo") +
+          (navigation.getParam("schedule") ? "Atualizar" : "Novo") +
           " agendamento"
+      })
+    },
+    patientSelect: {
+      screen: PatientsTabView,
+      path: "/pickerPatient",
+      navigationOptions: ({ navigation }) => ({
+        title: "Selecione o paciente"
       })
     }
   },
