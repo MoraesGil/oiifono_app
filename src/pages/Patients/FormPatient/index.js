@@ -3,18 +3,29 @@ import { Button, Input, Icon, Divider, CheckBox } from "react-native-elements";
 import { View, ScrollView, SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
 import styles from "./styles";
+import DateInput from "components/DateInput";
 
 export default function FormPatient({ navigation }) {
   const _patient = useSelector(
     state => state.data.patients.items[navigation.getParam("patient_id")]
   );  
 
+  const newPatient = {
+    gender: "m",
+    birthdate: new Date()
+  }; 
+  
   const [errors, setErros] = useState({});
-  const [patient, setPatient] = useState(_patient || {gender:"m"});
+  const [patient, setPatient] = useState(_patient || newPatient);
+  const [date, setDate] = useState(new Date());
 
   function saveChangesHandle(){
     console.log('saveChangesHandle')
     console.log(patient)
+  }
+
+  function setBirthdate(newDate){
+    setPatient({ ...patient, ...{ birthdate: newDate } });
   }
 
   return (
@@ -62,6 +73,15 @@ export default function FormPatient({ navigation }) {
           onChangeText={input => setPatient({ ...patient, ...{ name: input } })}
           errorMessage={errors.name}
           placeholder="Obrigatório"
+        />
+
+        <DateInput
+          max={new Date()}
+          date={date}
+          onChange={setDate}
+          error={errors.birthdate}
+          label="Data de nascimento"
+          placeholder="opcional"
         />
 
         <Input
