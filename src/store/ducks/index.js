@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { reducer as authReducer } from "./auth";
 import { reducer as patientsReducer } from "./patients";
-import { reducer as schedulesReducer } from "./schedules";
+import schedules from "./schedules";
 
 export const reducer = combineReducers({
   patients: patientsReducer,
-  schedules: schedulesReducer,
+  schedules,
   auth: authReducer
 });

@@ -77,27 +77,28 @@ const add = (state = INITIAL_STATE, action) => {
 };
 
 const update = (state = INITIAL_STATE, action) => {
-  return { ...state, [action.schedule.id]: action.schedule };  
+  return { ...state, [action.schedule.id]: action.schedule };
 };
 
 const remove = (state = INITIAL_STATE, action) => {
   delete state[action.schedule.id];
   return state;
 };
- 
+
 export default createReducer(INITIAL_STATE, {
   [Types.ADD_SCHEDULE]: add,
   [Types.UPDATE_SCHEDULE]: update,
-  [Types.REMVOE_SCHEDULE]: remove
+  [Types.REMOVE_SCHEDULE]: remove
 });
 
-// case "GET_AGENDA":
-//       return Object.values(state.items).reduce((agenda, schedule) => {
-//         let date = schedule.date.trim();
+export const selectAgenda = state => {
+  return Object.values(state.items).reduce((agenda, schedule) => {
+    let date = schedule.date.trim();
 
-//         if (!Array.isArray(agenda[date])) agenda[date] = [];
+    if (!Array.isArray(agenda[date])) agenda[date] = [];
 
-//         agenda[date].push(schedule);
+    agenda[date].push(schedule);
 
-//         return agenda;
-//       }, {});
+    return agenda;
+  }, {});
+};

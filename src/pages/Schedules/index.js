@@ -40,9 +40,7 @@ export default function Schedules({ navigation }) {
         {person.birthday != false && StatusIcon("birthday")}
       </View>
     );
-  }
-  
- 
+  } 
 
   function renderItem(schedule) {
     return (
