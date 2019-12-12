@@ -15,16 +15,32 @@ LocaleConfig.defaultLocale = "br";
 import StatusIcon from "components/StatusIcon.js";
 
 export default function Schedules({ navigation }) {
-  const [schedules, setSchedule] = useState({});
-  const _schedules = useSelector(state => state.data.schedules.items);
-  const _patients = useSelector(state => state.data.patients.items);
+  const [agenda, setAgenda] = useState({});
+  const _agenda = useSelector(state => state.data.schedules.agenda);
+   
+  function emputyDaysRange(day) {
+    let days = {};
+
+    for (let i = -15; i <= 45; i++) {
+      const strTime = moment(day.timestamp)
+        .add(i, "days")
+        .format("YYYY-MM-DD");
+      if (!days[strTime]) days = { ...days, [strTime]: {} };
+    }
+    return days;
+  }
+
+  function loadItems(day) { 
+    setAgenda({ ...emputyDaysRange(day), ..._agenda });
+  }
+
 
   function handleSchedule(schedule) {
     navigation.navigate("ScheduleForm", { schedule:schedule });
   }
 
   function statusBar(schedule) {
-    const person = _patients[schedule.person_id];
+    const person = schedule.patient;
     return (
       <View style={[styles.container,styles.row]}>
         {StatusIcon("gender", person.gender)}
@@ -125,7 +141,7 @@ export default function Schedules({ navigation }) {
   }
 
   function personTemplate(i) {
-    const person = _patients[i.person_id];
+    const person = i.patient;
 
     return (
       <View>
@@ -190,24 +206,7 @@ export default function Schedules({ navigation }) {
 
   function rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
-  }
-
-  function daysRange(day) {
-    let days = { ...schedules };
-
-    for (let i = -30; i <= 60; i++) {
-      const strTime = moment(day.timestamp)
-        .add(i, "days")
-        .format("YYYY-MM-DD");
-      if (!days[strTime]) days = { ...days, [strTime]: {} };
-    }
-    return days;
-  }
-
-  function loadItems(day) {
-    setSchedule({ ...daysRange(day), ..._schedules });
-  }
-
+  }  
   return (
     <Agenda
       minDate={moment()
@@ -216,10 +215,9 @@ export default function Schedules({ navigation }) {
       maxDate={moment()
         .add(9, "M")
         .format("YYYY-MM-DD")}
-      items={schedules}
+      items={agenda}
       loadItemsForMonth={loadItems}
-      // selected={moment().format("YYYY-MM-DD")}
-      selected={"2019-12-01"}
+      selected={moment().format("YYYY-MM-DD")} 
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
