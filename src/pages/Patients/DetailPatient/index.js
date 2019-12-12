@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { Text, ListItem, Avatar, Divider, Icon } from "react-native-elements";
 import { useSelector } from "react-redux";
 import StatusIcon from "components/StatusIcon.js";
@@ -75,7 +75,7 @@ export default function DetailPatient({ navigation }) {
   }
 
   return (
-    <View>
+    <SafeAreaView>
       <ScrollView>
         <View style={[styles.p5, styles.row]}>
           <View style={[styles.box]}>
@@ -229,6 +229,6 @@ export default function DetailPatient({ navigation }) {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
