@@ -73,6 +73,50 @@ export default function ProfileUpdate({ navigation }) {
           onChangeText={input => setProfile({ ...profile, ...{ name: input } })}
           errorMessage={errors.name}
         />
+
+        <Input
+          leftIcon={
+            <Icon
+              name="id-card"
+              type="font-awesome"
+              color="rgba(0, 0, 0, 0.38)"
+              size={25}
+              style={{ backgroundColor: "transparent" }}
+            />
+          }
+          label="CPF"
+          value={profile.cpf}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+          blurOnSubmit={true}
+          inputStyle={styles.inputWithIcon}
+          onChangeText={input => setProfile({ ...profile, ...{ cpf: input } })}
+          errorMessage={errors.cpf}
+          placeholder="recomendado"
+        />
+        
+        <Input
+          leftIcon={
+            <Icon
+              name="id-card"
+              type="font-awesome"
+              color="rgba(0, 0, 0, 0.38)"
+              size={25}
+              style={{ backgroundColor: "transparent" }}
+            />
+          }
+          label="CNPJ"
+          value={profile.cnpj}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+          blurOnSubmit={true}
+          inputStyle={styles.inputWithIcon}
+          onChangeText={input => setProfile({ ...profile, ...{ cnpj: input } })}
+          errorMessage={errors.cnpj}
+          placeholder="recomendado"
+        />
       </ScrollView>
 
       <View style={[styles.bottomContainer, styles.containerMini]}>
