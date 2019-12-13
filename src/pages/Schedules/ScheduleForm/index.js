@@ -5,28 +5,27 @@ import { useSelector } from "react-redux";
 import styles, { TouchBtn } from "./styles";
 import DateInput from "components/DateInput";
 import RangeTimeInput from "components/RangeTimeInput";
-import moment from 'moment';
- 
-export default function Form({ navigation }) {  
+import moment from "moment";
+
+export default function Form({ navigation }) {
   const [errors, setErros] = useState({});
   const [schedule, setSchedule] = useState({});
-  const [patient, setPatient] = useState({}); 
+  const [patient, setPatient] = useState({});
   const [date, setDate] = useState(new Date());
   const [timeRange, setTimeRange] = useState({
     start_at: "",
     end_at: ""
-  }); 
+  });
 
-   useEffect(() => {
-     if (navigation.getParam("schedule")) { 
-      setSchedule(navigation.getParam("schedule")); 
-      
+  useEffect(() => {
+    if (navigation.getParam("schedule")) {
+      setSchedule(navigation.getParam("schedule"));
       // const _patient = _patients[_schedule.patient_id];
-      // setDate(new Date(moment(schedule.date).format()));
-     }
-   }, []);
+      setDate(new Date(moment(schedule.date).format()));
+    }
+  }, []);
 
-  function saveChangesHandle() { 
+  function saveChangesHandle() {
     // console.log("saveChangesHandle");
     // console.log(date);
     // console.log(timeRange);
@@ -37,11 +36,7 @@ export default function Form({ navigation }) {
   return (
     <SafeAreaView style={[styles.container, styles.containerMini]}>
       <ScrollView style={styles.container}>
-        <TouchBtn
-          onPress={() =>
-            navigation.navigate("patientSelect", { onSelect: setPatient })
-          }
-        >
+        <TouchBtn onPress={() => alert("abrir select")}>
           <Input
             pointerEvents="none"
             leftIcon={
