@@ -251,7 +251,7 @@ class LoginScreen extends Component {
                     }
                     value={name}
                     autoFocus={true}
-                    maxLength={6}
+                    maxLength={40}
                     keyboardAppearance="light"
                     autoCapitalize="none"
                     autoCorrect={false} 
@@ -286,8 +286,7 @@ class LoginScreen extends Component {
                         style={{ backgroundColor: "transparent" }}
                       />
                     }
-                    value={Crfa}
-                    autoFocus={true}
+                    value={Crfa} 
                     maxLength={6}
                     keyboardAppearance="light"
                     autoCapitalize="none"

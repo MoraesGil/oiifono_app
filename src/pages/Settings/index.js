@@ -1,18 +1,28 @@
-import React from "react"; 
-import { View, Image, TouchableOpacity, ScrollView, Text } from "react-native"; 
+import React from "react";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  AsyncStorage
+} from "react-native";
 import { useSelector } from "react-redux";
 import { Button, ListItem, Avatar } from "react-native-elements";
- 
+
 import styles from "./styles";
 import agendaDemo from "assets/agendaDemo.png";
- 
+
 export default function Settings({ navigation }) {
   const user = useSelector(state => state.data.auth.user);
 
-  function initialsLetterName(name){
-    let first = name.split(' ')[0][0]
-    let last = name.split(' ').slice(-1).join(' ')[0]
-    return (first+last).toUpperCase()
+  function initialsLetterName(name) {
+    let first = name.split(" ")[0][0];
+    let last = name
+      .split(" ")
+      .slice(-1)
+      .join(" ")[0];
+    return (first + last).toUpperCase();
   }
 
   return (
@@ -71,7 +81,10 @@ export default function Settings({ navigation }) {
         <Button
           buttonStyle={[styles.button, styles.cancelButton]}
           titleStyle={styles.cancelText}
-          onPress={() => alert("logout")}
+          onPress={() => {
+            AsyncStorage.clear();
+            navigation.navigate("Login")
+          }}
           title="Sair da conta"
         />
       </View>
