@@ -16,41 +16,15 @@ export default function PasswordUpdate({ navigation }) {
   const [errors, setErros] = useState({});
 
   function savePasswordHandle() {
-    if (validate()) alert("senha atualizada");
+     alert("senha atualizada");
   }
-
-  function validate() {
-    let validation = errors;
-
-    if (password.old_password.length < 6)
-      validation = {
-        ...validation,
-        ...{ old_password: "Informe a senha anterior corretamente" }
-      };
-
-    if (password.password.length < 6)
-      validation = {
-        ...validation,
-        ...{ password: "Minimo 6 caracteres" }
-      };
-
-    if (password.password_confirmation != password.password)
-      validation = {
-        ...validation,
-        ...{ password_confirmation: "Senha não confere" }
-      };
-
-    setErros({
-      ...errors,
-      ...validation
-    });
-    return validation === {};
-  }
+ 
 
   return (
     <SafeAreaView style={[styles.container, styles.containerMini]}>
       <ScrollView style={styles.container}>
         <Input
+          label="Senha antiga"
           leftIcon={
             <Icon
               name="lock"
@@ -75,6 +49,7 @@ export default function PasswordUpdate({ navigation }) {
         />
 
         <Input
+          label="Nova senha"
           leftIcon={
             <Icon
               name="lock"
@@ -99,6 +74,7 @@ export default function PasswordUpdate({ navigation }) {
         />
 
         <Input
+          label="Confirme a senha"
           leftIcon={
             <Icon
               name="lock"
