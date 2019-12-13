@@ -1,7 +1,10 @@
-// import {AsyncStorage} from 'react-native'
-import axios from "axios";
+import {AsyncStorage} from 'react-native'
+import axios from "axios";  
+ 
+const accessToken =  async () => {
+  return await AsyncStorage.getItem("@oiiFono:token");
+};
 
-const accessToken = async () => await AsyncStorage.getItem("token");
 
 const api = axios.create({
   baseURL: "http://10.9.8.16:3000/api",

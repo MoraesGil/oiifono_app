@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withNavigation } from "react-navigation";
+import { StackActions, withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import {
   View,
@@ -36,9 +36,10 @@ TabSelector.propTypes = {
 
 class LoginScreen extends Component {
   constructor(props) {
-    super(props);  
-    
+    super(props);
+
     this.state = {
+      name: "",
       Crfa: "",
       email: "",
       password: "",
@@ -52,11 +53,16 @@ class LoginScreen extends Component {
 
     this.selectCategory = this.selectCategory.bind(this);
     this.login = this.login.bind(this);
-    this.signUp = this.signUp.bind(this); 
+    this.signUp = this.signUp.bind(this);
+    this.checkToken = this.checkToken.bind(this);
 
+    this.checkToken();
+  }
+
+  checkToken() {
     AsyncStorage.getItem("@oiiFono:token").then(token => {
       if (token) {
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Tabs");
       }
     });
   }
@@ -70,6 +76,7 @@ class LoginScreen extends Component {
       isPasswordValid: true,
       isConfirmationValid: true,
       isCrfaValid: true,
+      isNameValid: true,
       errorsMessages: {}
     });
   }
@@ -80,113 +87,74 @@ class LoginScreen extends Component {
   }
 
   async login() {
+    if (this.state.isLoading) return false;
+
     const { email, password } = this.state;
+    const payload = { email, password };
+
     this.setState({ isLoading: true });
-    // setTimeout(() => {
     LayoutAnimation.easeInEaseOut();
     await this.setState({
       isLoading: false,
       isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
       isPasswordValid: password.length >= 6 || this.passwordInput.shake()
     });
-    // }, 500);
+    this.setState({ isLoading: false });
 
     if (this.state.isEmailValid && this.state.isPasswordValid) {
-      this.setState({ isLoading: true });
-      api
-        .post("/login", { email, password })
-        .then(res => {
-          const { user, access_token, expires_in } = res.data;
-
-          AsyncStorage.multiSet([
-            ["@oiiFono:token", access_token],
-            ["@oiiFono:expires_in", expires_in],
-            ["@oiiFono:user", JSON.stringify(user)]
-          ]);
-        })
-        .catch(e => {
-          Alert.alert(
-            "Falha no login",
-            "login ou senha inválidos",
-            [{ text: "OK" }],
-            {
-              cancelable: false
-            }
-          );
-        })
-        .finally(() => {
-          this.setState({ isLoading: false });
-        });
+      try {
+        this.setState({ isLoading: true });
+        const response = await api.post("/login", payload);
+        const { user, access_token, expires_in } = response.data;
+        await AsyncStorage.setItem("@oiiFono:token", access_token);
+      } catch (error) {
+        Alert.alert(
+          "Falha no login",
+          "login ou senha inválidos",
+          [{ text: "OK" }],
+          {
+            cancelable: false
+          }
+        );
+      } finally {
+        this.checkToken();
+        this.setState({ isLoading: false });
+      }
     }
   }
 
-  signUp() {
-    const { email, password, passwordConfirmation, Crfa } = this.state;
+  async signUp() {
+    if (this.state.isLoading) return false;
+    const { name, email, password, passwordConfirmation, Crfa } = this.state;
 
     this.setState({ isLoading: true });
-    // first simulation
-    // setTimeout(() => {
-    LayoutAnimation.easeInEaseOut();
-    this.setState({
-      isLoading: false,
-      isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-      isPasswordValid: password.length >= 6 || this.passwordInput.shake(),
-      isCrfaValid: Crfa.length == 6 || this.CrfaInput.shake(),
-      isConfirmationValid:
-        password === passwordConfirmation || this.confirmationInput.shake()
-    });
-    // }, 1000);
+    const password_confirmation = passwordConfirmation;
+    const register = Crfa;
+    const payload = { name, email, password, password_confirmation, register };
 
-    if (
-      this.state.isEmailValid &&
-      this.state.isPasswordValid &&
-      this.state.isConfirmationValid &&
-      this.state.isCrfaValid
-    ) {
-      this.setState({ isLoading: true });
+    try {
+      const response = await api.post("/register", payload);
+      const { user, access_token, expires_in } = response.data;
+      await AsyncStorage.setItem("@oiiFono:token", access_token);  
+    } catch (e) {
+      this.setState({ errorsMessages: e.response.data.errors });
 
-      const password_confirmation = passwordConfirmation;
-      const register = Crfa;
-      api
-        .post("/register", { email, password, password_confirmation, register })
-        .then(res => {
-          const { user } = res.data;
-           AsyncStorage.multiSet([
-             ["@oiiFono:token", access_token],
-             ["@oiiFono:expires_in", expires_in],
-             ["@oiiFono:user", JSON.stringify(user)]
-           ]);
-        })
-        .catch(e => {
-          if (error.response) {
-            this.setState({
-              isLoading: false,
-              isCrfaValid:
-                !error.response.data.errors.register || this.CrfaInput.shake(),
-              isEmailValid:
-                !error.response.data.errors.email || this.emailInput.shake(),
-              isPasswordValid:
-                !error.response.data.errors.password ||
-                this.passwordInput.shake(),
-              isConfirmationValid:
-                !error.response.data.errors.password_confirmation ||
-                this.confirmationInput.shake(),
-              errorsMessages: error.response.data.errors || {}
-            });
-          } else {
-            Alert.alert(
-              "Erro no servidor",
-              "Aguarde alguns instantes e tente novamente",
-              [{ text: "OK" }],
-              {
-                cancelable: false
-              }
-            );
-          }
-        })
-        .finally(() => {
-          this.setState({ isLoading: false });
-        });
+      this.setState({
+        isLoading: false,
+        isEmailValid:
+          !this.state.errorsMessages.email || this.emailInput.shake(),
+        isPasswordValid:
+          !this.state.errorsMessages.password || this.passwordInput.shake(),
+        isCrfaValid:
+          !this.state.errorsMessages.password || this.CrfaInput.shake(),
+        isNameValid: !this.state.errorsMessages.name || this.NameInput.shake(),
+        isConfirmationValid:
+          password === passwordConfirmation || this.confirmationInput.shake()
+      });
+    } finally { 
+      this.setState({ errorsMessages: {} });
+      this.setState({ isLoading: false });
+      this.checkToken();
     }
   }
 
@@ -198,10 +166,12 @@ class LoginScreen extends Component {
       isPasswordValid,
       isConfirmationValid,
       isCrfaValid,
+      isNameValid,
       email,
       password,
       passwordConfirmation,
       Crfa,
+      name,
       errorsMessages
     } = this.state;
     const isLoginPage = selectedCategory === 0;
@@ -272,6 +242,43 @@ class LoginScreen extends Component {
                   <Input
                     leftIcon={
                       <Icon
+                        name="user"
+                        type="font-awesome"
+                        color="rgba(0, 0, 0, 0.38)"
+                        size={25}
+                        style={{ backgroundColor: "transparent" }}
+                      />
+                    }
+                    value={name}
+                    autoFocus={true}
+                    maxLength={6}
+                    keyboardAppearance="light"
+                    autoCapitalize="none"
+                    autoCorrect={false} 
+                    returnKeyType="next"
+                    blurOnSubmit={true}
+                    containerStyle={styles.inputContainer}
+                    inputStyle={styles.inputWithIcon}
+                    placeholder={"Seu nome"}
+                    ref={input => (this.NameInput = input)}
+                    onSubmitEditing={this.signUp}
+                    onChangeText={name => {
+                      this.setState({ name });
+                    }}
+                    errorMessage={
+                      isNameValid
+                        ? null
+                        : errorsMessages.name
+                        ? errorsMessages.name[0]
+                        : "Seu nome é obrigatório"
+                    }
+                  />
+                )}
+
+                {isSignUpPage && (
+                  <Input
+                    leftIcon={
+                      <Icon
                         name="id-card"
                         type="font-awesome"
                         color="rgba(0, 0, 0, 0.38)"
@@ -288,8 +295,9 @@ class LoginScreen extends Component {
                     keyboardType="numeric"
                     returnKeyType="next"
                     blurOnSubmit={true}
+                    containerStyle={styles.inputContainer}
                     inputStyle={styles.inputWithIcon}
-                    placeholder={"Crf-a"}
+                    placeholder={"CRF-a"}
                     ref={input => (this.CrfaInput = input)}
                     onSubmitEditing={this.signUp}
                     onChangeText={Crfa => {
@@ -301,8 +309,11 @@ class LoginScreen extends Component {
                       isCrfaValid
                         ? null
                         : errorsMessages.register
-                        ? errorsMessages.register[0]
-                        : "Digite apenas os 6 números do seu Crf-a"
+                        ? errorsMessages.register[0].replace(
+                            "register",
+                            "CRF-a"
+                          )
+                        : "Digite apenas os 6 números do seu CRF-a"
                     }
                   />
                 )}
@@ -408,7 +419,6 @@ class LoginScreen extends Component {
                   onPress={isLoginPage ? this.login : this.signUp}
                   titleStyle={styles.submitButton}
                   loading={isLoading}
-                  disabled={isLoading}
                 />
               </View>
             </KeyboardAvoidingView>
