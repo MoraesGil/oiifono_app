@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StackActions, withNavigation } from "react-navigation";
+import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import {
   View,
@@ -135,7 +135,7 @@ class LoginScreen extends Component {
     try {
       const response = await api.post("/register", payload);
       const { user, access_token, expires_in } = response.data;
-      await AsyncStorage.setItem("@oiiFono:token", access_token);  
+      await AsyncStorage.setItem("@oiiFono:token", access_token);
     } catch (e) {
       this.setState({ errorsMessages: e.response.data.errors });
 
@@ -151,7 +151,7 @@ class LoginScreen extends Component {
         isConfirmationValid:
           password === passwordConfirmation || this.confirmationInput.shake()
       });
-    } finally { 
+    } finally {
       this.setState({ errorsMessages: {} });
       this.setState({ isLoading: false });
       this.checkToken();
@@ -254,7 +254,7 @@ class LoginScreen extends Component {
                     maxLength={40}
                     keyboardAppearance="light"
                     autoCapitalize="none"
-                    autoCorrect={false} 
+                    autoCorrect={false}
                     returnKeyType="next"
                     blurOnSubmit={true}
                     containerStyle={styles.inputContainer}
@@ -268,9 +268,7 @@ class LoginScreen extends Component {
                     errorMessage={
                       isNameValid
                         ? null
-                        : errorsMessages.name
-                        ? errorsMessages.name[0]
-                        : "Seu nome é obrigatório"
+                        : errorsMessages.name || "Seu nome é obrigatório"
                     }
                   />
                 )}
@@ -286,7 +284,7 @@ class LoginScreen extends Component {
                         style={{ backgroundColor: "transparent" }}
                       />
                     }
-                    value={Crfa} 
+                    value={Crfa}
                     maxLength={6}
                     keyboardAppearance="light"
                     autoCapitalize="none"
@@ -305,14 +303,12 @@ class LoginScreen extends Component {
                         this.setState({ Crfa });
                     }}
                     errorMessage={
-                      isCrfaValid
+                      isCrfaValid 
                         ? null
-                        : errorsMessages.register
-                        ? errorsMessages.register[0].replace(
-                            "register",
-                            "CRF-a"
-                          )
-                        : "Digite apenas os 6 números do seu CRF-a"
+                        : (
+                            errorsMessages.register ||
+                            "Digite apenas os 6 números do seu CRF-a"
+                          ).replace("register", "CRF-a")
                     }
                   />
                 )}
@@ -343,9 +339,7 @@ class LoginScreen extends Component {
                   errorMessage={
                     isEmailValid
                       ? null
-                      : errorsMessages.email
-                      ? "Este e-mail já está sendo usado."
-                      : "Digite um e-mail válido."
+                      : errorsMessages.email || "Digite um e-mail válido."
                   }
                 />
 
