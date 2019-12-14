@@ -7,7 +7,7 @@ import DateInput from "components/DateInput";
 
 export default function FormPatient({ navigation }) {
   const _patient = useSelector(
-    state => state.data.patients.items[navigation.getParam("patient_id")]
+    state => state.patients.items[navigation.getParam("patient_id")]
   );  
 
   const newPatient = {

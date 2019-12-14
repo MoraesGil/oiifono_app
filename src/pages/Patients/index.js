@@ -7,7 +7,7 @@ import styles from "./styles";
 import StatusIcon from "components/StatusIcon.js";
 
 export default function Patients({ navigation }) {
-  const _patients = useSelector(state => state.data.patients.items);
+  const _patients = useSelector(state => state.patients.items);
 
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({

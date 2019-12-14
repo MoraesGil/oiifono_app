@@ -1,15 +1,7 @@
 import { createStore, combineReducers } from 'redux';
  
-import { reducer as ducksReducer } from './ducks'
-// import { reducer as servicesReducer } from '@/services/reducer'; 
-
-const appReducer = combineReducers({
-	// services: servicesReducer,
-	data: ducksReducer,
-});
+import { reducer as rootReducer } from './ducks'
  
-const store = createStore(
-	appReducer 
-);
+const store = createStore(rootReducer);
  
 export default store;

@@ -14,7 +14,7 @@ import styles from "./styles";
 import agendaDemo from "assets/agendaDemo.png";
 
 export default function Settings({ navigation }) {
-  const user = useSelector(state => state.data.auth.user);
+  const user = useSelector(state => state.auth.user);
 
   function initialsLetterName(name) {
     let first = name.split(" ")[0][0];

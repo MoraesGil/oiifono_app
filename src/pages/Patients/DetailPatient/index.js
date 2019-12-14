@@ -7,7 +7,7 @@ import styles from "./styles";
 
 export default function DetailPatient({ navigation }) {
   const _patient = useSelector(
-    state => state.data.patients.items[navigation.getParam("patient_id") || 1]
+    state => state.patients.items[navigation.getParam("patient_id") || 1]
   );
 
   const [patient, setPatient] = useState(_patient);

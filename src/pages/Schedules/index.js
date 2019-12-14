@@ -11,13 +11,13 @@ import moment from "moment";
 import ptBr from "@/constants/calendar_ptBr";
 LocaleConfig.locales["br"] = ptBr;
 LocaleConfig.defaultLocale = "br";
-
+import { selectAgenda } from "ducks/schedules";
 import StatusIcon from "components/StatusIcon.js";
 
 export default function Schedules({ navigation }) {
   const [agenda, setAgenda] = useState({});
-  const _agenda = useSelector(state => state.data.schedules.agenda);
-   
+  const _agenda = useSelector(selectAgenda);
+
   function emputyDaysRange(day) {
     let days = {};
 
@@ -30,33 +30,30 @@ export default function Schedules({ navigation }) {
     return days;
   }
 
-  function loadItems(day) { 
+  function loadItems(day) {
     setAgenda({ ...emputyDaysRange(day), ..._agenda });
   }
 
-
   function handleSchedule(schedule) {
-    navigation.navigate("ScheduleForm", { schedule:schedule });
+    navigation.navigate("ScheduleForm", { schedule: schedule });
   }
 
   function statusBar(schedule) {
     const person = schedule.patient;
     return (
-      <View style={[styles.container,styles.row]}>
+      <View style={[styles.container, styles.row]}>
         {StatusIcon("gender", person.gender)}
 
         {person.disability && StatusIcon("desability", person.disability)}
 
-        {schedule.confirmed && StatusIcon("confirmed")}
+        {schedule.confirmed === 1 && StatusIcon("confirmed")}
 
         {schedule.absenced_by && StatusIcon("absenced", schedule.absenced_by)}
 
         {schedule.attended && StatusIcon("attended", schedule.attended)}
-
-        {person.birthday != false && StatusIcon("birthday")}
       </View>
     );
-  } 
+  }
 
   function renderItem(schedule) {
     return (
@@ -140,8 +137,8 @@ export default function Schedules({ navigation }) {
     );
   }
 
-  function personTemplate(i) {
-    const person = i.patient;
+  function personTemplate(schedule) {
+    const person = schedule.patient;
 
     return (
       <View>
@@ -155,7 +152,7 @@ export default function Schedules({ navigation }) {
                 styles.spaced
               ]}
             >
-              {clockRange(i)}
+              {clockRange(schedule)}
             </View>
             <Avatar
               rounded
@@ -181,13 +178,21 @@ export default function Schedules({ navigation }) {
                   styles.centerH
                 ]}
               >
-                {statusBar(i)}
-                <Tooltip popover={<Text> Idade: {person.age} </Text>}>
-                  <Text>{person.birthdate}</Text>
-                </Tooltip>
+                {statusBar(schedule)}
               </View>
-              <View style={[styles.container, styles.row]}>
+              <View style={[styles.container]}>
                 <Text>{person.name}</Text>
+                <View style={[styles.row, styles.spaced, styles.centerH]}>
+                  <Text>
+                    Idade:
+                    {moment().diff(person.birthdate, "years")}
+                  </Text>
+
+                  <View style={[styles.row, styles.centerH]}>
+                    {person.birthday && StatusIcon("birthday")}
+                    <Text>{moment(person.birthdate).format("DD/MM/YYYY")}</Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
@@ -206,7 +211,7 @@ export default function Schedules({ navigation }) {
 
   function rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
-  }  
+  }
   return (
     <Agenda
       minDate={moment()
@@ -217,7 +222,7 @@ export default function Schedules({ navigation }) {
         .format("YYYY-MM-DD")}
       items={agenda}
       loadItemsForMonth={loadItems}
-      selected={moment().format("YYYY-MM-DD")} 
+      selected={moment().format("YYYY-MM-DD")}
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
