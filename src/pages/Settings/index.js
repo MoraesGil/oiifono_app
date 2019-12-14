@@ -81,8 +81,8 @@ export default function Settings({ navigation }) {
         <Button
           buttonStyle={[styles.button, styles.cancelButton]}
           titleStyle={styles.cancelText}
-          onPress={() => {
-            AsyncStorage.clear();
+          onPress={async () => {
+            await AsyncStorage.clear();
             navigation.navigate("Login")
           }}
           title="Sair da conta"
