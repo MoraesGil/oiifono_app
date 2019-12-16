@@ -5,7 +5,7 @@ import Tabs from "./MainTabNavigator";
 
 const Routes = createAppContainer(
   createSwitchNavigator({
-    Login,
+    // Login,
     Tabs
   })
 );

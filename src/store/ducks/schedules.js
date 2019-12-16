@@ -40,6 +40,7 @@ const remove = (state = INITIAL_STATE, action) => {
 };
 
 const fetch = (state = INITIAL_STATE, payload) => {  
+  console.log('fetch state') 
   return { ...state,...{list: payload.schedules} };
 };
 

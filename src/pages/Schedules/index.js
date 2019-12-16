@@ -19,7 +19,7 @@ export default function Schedules({ navigation }) {
   const _agenda = useSelector(selectAgenda);
   const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(SchedulesActions.sagaFetchSchedules({ date: "2019-12-15" }));
+    
    
     // dispatch(SchedulesActions.addSchedule());
 
@@ -39,6 +39,7 @@ export default function Schedules({ navigation }) {
   }
 
   function loadItems(day) {
+    dispatch(SchedulesActions.sagaFetchSchedules({ date: "2019-12-15" }));
     setAgenda({ ...emputyDaysRange(day), ..._agenda });
   }
 

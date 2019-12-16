@@ -13,15 +13,14 @@ const ENDPOINTS = {
 
 function* fetchAll(action) {
   try {
-    let response = yield call(api.get, ENDPOINTS.fetch, action.request);
-    yield console.log(response.status);
-    yield console.log(response.data);
-    // const normalizedData = yield normalize(result, schedulesSchema);
-    // const schedules = yield normalizedData.entities.schedule;
-    // yield put(Creators.fetchSchedules(schedules));
-  } catch (e) {
-    yield console.log("error",e);
-    // yield put(updateProfileFailure());
+    let response = yield call(api.get, ENDPOINTS.fetch, action.request);     
+    const normalizedData = yield normalize(response.data, schedulesSchema);
+    const schedules = yield normalizedData.entities.schedule;
+    yield console.log("fetch call");
+    yield put(Creators.fetchSchedules(schedules));
+  } catch (e) { 
+    yield console.log("fetch error");
+    yield put(Creators.RequestFailure(e));
   }
 }
 
