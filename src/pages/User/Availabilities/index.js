@@ -15,7 +15,7 @@ import RangeTimeInput from "components/RangeTimeInput";
 
 export default function Availabilities({ navigation }) {  
   const _shortWeekDays = shortWeekDaysValues;
-  const { availabilities } = useSelector(state => state.auth.user.person);
+  // const { availabilities } = useSelector(state => state.auth.user.person);
 
   const [weekDay, setWeekDay] = useState("");
   const [isTimePicked, setIsTimePicked] = useState(false); 

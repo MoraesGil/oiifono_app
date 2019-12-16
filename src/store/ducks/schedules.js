@@ -2,71 +2,32 @@ import { createActions, createReducer } from "reduxsauce";
 import { createSelector } from "reselect";
 
 const INITIAL_STATE = {
-  list: {
-    1: {
-      id: 1,
-      date: "2019-12-11",
-      start_at: "12:00",
-      end_at: "13:00",
-      confirmed: true,
-      attended: false,
-      parent_id: null,
-      absenced_by: null,
-      patient: {
-        id: 37,
-        name: "Dr. Tomás Martinho Domingues",
-        nickname: null,
-        picture: "https://randomuser.me/api/portraits/med/men/64.jpg",
-        cpf: "29970857608",
-        birthdate: "1972-11-03",
-        gender: "m",
-        rg: "625899819",
-        disabilities: null,
-        deathdate: null
-      }
-    },
-    2: {
-      id: 2,
-      date: "2019-17-11",
-      start_at: "12:00",
-      end_at: "13:00",
-      confirmed: true,
-      attended: false,
-      parent_id: null,
-      absenced_by: null,
-      patient: {
-        id: 37,
-        name: "Dr. Tomás Martinho Domingues",
-        nickname: null,
-        picture: "https://randomuser.me/api/portraits/med/men/64.jpg",
-        cpf: "29970857608",
-        birthdate: "1972-11-03",
-        gender: "m",
-        rg: "625899819",
-        disabilities: null,
-        deathdate: null
-      }
-    }
-  }
+  errors:{},
+  list: {}
 };
 /**
  * Action types & creators
  */
 export const { Types, Creators } = createActions({
-  fetchScheduleSuccess: ["callback"],
+  sagaFetchSchedules: ["request"],
+  sagaAddSchedule: ["request"],
+  sagaUpdateSchedule: ["request"],
+  sagaRemoveSchedule: ["request"],
+  fetchSchedules: ["schedules"],
   addSchedule: ["schedule"],
   updateSchedule: ["schedule"],
   removeSchedule: ["schedule"]
 });
 
-console.log(Creators);
+// console.log(Types);
 /**
  * Handlers
  */
 
 const add = (state = INITIAL_STATE, action) => {
   // return { ...state, [schedule.id]: schedule };
-  return { ...state, [Math.random()]: action.schedule };
+  // return { ...state, [Math.random()]: action.schedule };
+  return state;
 };
 
 const update = (state = INITIAL_STATE, action) => {
@@ -78,15 +39,12 @@ const remove = (state = INITIAL_STATE, action) => {
   return state;
 };
 
-const fetchSuccess = (state = INITIAL_STATE, action) => {
-  console.log("chamou");
-  console.log(action);
-  // state.list = action.schedules
-  return state;
+const fetch = (state = INITIAL_STATE, payload) => {  
+  return { ...state,...{list: payload.schedules} };
 };
 
 export default createReducer(INITIAL_STATE, {
-  [Types.FETCH_SCHEDULE_SUCCESS]: fetchSuccess,
+  [Types.FETCH_SCHEDULES]: fetch,
   [Types.ADD_SCHEDULE]: add,
   [Types.UPDATE_SCHEDULE]: update,
   [Types.REMOVE_SCHEDULE]: remove
@@ -95,10 +53,9 @@ export default createReducer(INITIAL_STATE, {
 /**
  * Selectors
  */
+export const getRoot = state => state.schedules;
 
-export const getSchedules = state => state.schedules;
-
-export const selectAgenda = createSelector(getSchedules, schedules =>
+export const selectAgenda = createSelector(getRoot, schedules =>
   Object.values(schedules.list).reduce((agenda, schedule) => {
     let date = schedule.date.trim();
     if (!Array.isArray(agenda[date])) agenda[date] = [];

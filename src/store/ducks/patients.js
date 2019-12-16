@@ -1,136 +1,58 @@
-//Actions
+import { createActions, createReducer } from "reduxsauce";
+import { createSelector } from "reselect";
 
+const INITIAL_STATE = {
+  errors: {},
+  list: {}
+};
+/**
+ * Action types & creators
+ */
+export const { Types, Creators } = createActions({
+  sagaFetchPatients: ["request"],
+  sagaAddPatient: ["request"],
+  sagaUpdatePatient: ["request"],
+  sagaRemovePatient: ["request"],
+  fetchPatients: ["patients"],
+  addPatient: ["Patient"],
+  updatePatient: ["Patient"],
+  removePatient: ["Patient"]
+});
 
-// Action creators
+// console.log(Types);
+/**
+ * Handlers
+ */
 
-
-//Reducer
-const initialState = {
-  items: {
-    "1": {
-      id: 1,
-      name: "Johh Smith",
-      picture: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-      birthdate: "24/12/1991",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "m",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    },
-    "2": {
-      id: 2,
-      name: "Sarah Parker",
-      picture:
-        "https://s3.amazonaws.com/uifaces/faces/twitter/evagiselle/128.jpg",
-      birthdate: "24/12/1990",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "f",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    },
-    "3": {
-      id: 3,
-      name: "Paul Allen",
-      picture: "https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg",
-      birthdate: "24/12/1990",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "m",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    },
-    "4": {
-      id: 4,
-      name: "Terry Andrews",
-      picture:
-        "https://s3.amazonaws.com/uifaces/faces/twitter/talhaconcepts/128.jpg",
-      birthdate: "24/12/1990",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "m",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    },
-    "5": {
-      id: 5,
-      name: "Andy Vitale",
-      picture:
-        "https://s3.amazonaws.com/uifaces/faces/twitter/andyvitale/128.jpg",
-      birthdate: "24/12/1990",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "m",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    },
-    "6": {
-      id: 6,
-      name: "Katy Friedson",
-      picture:
-        "https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg",
-      birthdate: "24/12/1990",
-      birthday: Math.floor(Math.random()) % 2,
-      age: 29,
-      disability: Math.floor(Math.random() * 80) > 8 ? "Deficiência X" : "",
-      gender: "f",
-      rg:"11.111.111-3",
-      cpf:"191.393.198-09",
-      addresses:[1,2,3],
-      contacts:[1,2,3],
-      relatives:[
-        {id:1,name: "Maria mae", contact:"(18)999901301"}
-      ],
-      hospitalization: "05/12/2019",
-      healthPlan_id:1
-    }
-  }
+const add = (state = INITIAL_STATE, action) => {
+  // return { ...state, [Patient.id]: Patient };
+  // return { ...state, [Math.random()]: action.Patient };
+  return state;
 };
 
-export const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
+const update = (state = INITIAL_STATE, action) => {
+  return { ...state, [action.Patient.id]: action.Patient };
 };
+
+const remove = (state = INITIAL_STATE, action) => {
+  delete state[action.Patient.id];
+  return state;
+};
+
+const fetch = (state = INITIAL_STATE, payload) => {
+  return { ...state, ...{ list: payload.patients } };
+};
+
+export default createReducer(INITIAL_STATE, {
+  [Types.FETCH_PATIENTS]: fetch,
+  [Types.ADD_PATIENT]: add,
+  [Types.UPDATE_PATIENT]: update,
+  [Types.REMOVE_PATIENT]: remove
+});
+
+/**
+ * Selectors
+ */
+export const getRoot = state => state.patients;
+
+ 

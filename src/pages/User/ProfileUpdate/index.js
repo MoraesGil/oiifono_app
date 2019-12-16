@@ -5,14 +5,9 @@ import { useSelector } from "react-redux";
 import styles from "./styles";
 
 export default function ProfileUpdate({ navigation }) {
-  const user = navigation.getParam("user") || useSelector(state => state.auth.user);
+  const user = navigation.getParam("user");
 
-  const [profile, setProfile] = useState({
-    name: user.person.name,
-    crfa: user.person.doctor.crfa,
-    cnpj: user.person.company.cnpj,
-    ie: user.person.company.ie
-  });
+  const [profile, setProfile] = useState(user);
 
   const [errors, setErros] = useState({});
 
@@ -32,7 +27,7 @@ export default function ProfileUpdate({ navigation }) {
               style={{ backgroundColor: "transparent" }}
             />
           }
-          value={profile.crfa}
+          value={profile.register}
           maxLength={6}
           keyboardAppearance="light"
           autoCapitalize="none"
@@ -46,10 +41,10 @@ export default function ProfileUpdate({ navigation }) {
             if (/^\d+$/.test(input) || input === "")
               setProfile({
                 ...profile,
-                ...{ crfa: input }
+                ...{ register: input }
               });
           }}
-          errorMessage={errors.crfa}
+          errorMessage={errors.register}
         />
 
         <Input

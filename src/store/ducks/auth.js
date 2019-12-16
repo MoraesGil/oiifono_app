@@ -1,45 +1,33 @@
-//Actions
+import { createActions, createReducer } from "reduxsauce";
 
-// Action creators
+export const { Types, Creators } = createActions({
+  authLogin: ["token"],
+  authLogout: []
+});
 
-//Reducer
-const initialState = {
-  token: "",
-  expires_in: "",
-  user: {
-    id: 0,
-    email: "",
-    person: {
-      id: 3,
-      name: "Valeria Caldeira dos Santos",
-      picture: "",
-      company: {
-        cnpj: "",
-        ie: ""
-      },
-      doctor: {
-        crfa: "219789"
-      },
-      availabilities: [
-        { id: 1, week_day: 1, start_at: "07:00", end_at: "12:00" },
-        { id: 2, week_day: 1, start_at: "16:00", end_at: "20:00" },
-        { id: 3, week_day: 2, start_at: "07:00", end_at: "12:00" },
-        { id: 4, week_day: 2, start_at: "16:00", end_at: "20:00" },
-        { id: 5, week_day: 3, start_at: "07:00", end_at: "12:00" },
-        { id: 6, week_day: 3, start_at: "16:00", end_at: "20:00" },
-        { id: 7, week_day: 4, start_at: "07:00", end_at: "12:00" },
-        { id: 8, week_day: 4, start_at: "16:00", end_at: "20:00" },
-        { id: 9, week_day: 5, start_at: "07:00", end_at: "12:00" },
-        { id: 11, week_day: 5, start_at: "16:00", end_at: "20:00" },
-        { id: 12, week_day: 6, start_at: "07:00", end_at: "11:00" }
-      ]
-    }
+const INITIAL_STATE = {
+  token:
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6MzAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3NjQ2MDA1MywiZXhwIjoxNTc2NTgwMDUzLCJuYmYiOjE1NzY0NjAwNTMsImp0aSI6ImtoZEc4OGJQeTdnQXZodVoiLCJzdWIiOjMsInBydiI6ImY5MzA3ZWI1ZjI5YzcyYTkwZGJhYWVmMGUyNmYwMjYyZWRlODZmNTUifQ.Lc01tAiCUj3avz49y42pY8ss548YGf0YRkBC8uhE5o4",
+  me: {
+    id: 62,
+    email: "teste@teste.com",
+    name: "Samuel das Neves Sobrinho",
+    picture: "https://randomuser.me/api/portraits/med/men/11.jpg",
+    cnpj: null,
+    ie: null,
+    register: "537474"
   }
 };
 
-export const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
+export default createReducer(INITIAL_STATE, {
+  [Types.AUTH_LOGIN]: login,
+  [Types.AUTH_LOGOUT]: logout
+});
+
+const login = (state = INITIAL_STATE, action) => {
+  return { ...state, ...{ token: payload.token } };
+};
+
+const logout = (state = INITIAL_STATE, action) => {
+  return { ...state, ...{ token: "" } };
 };

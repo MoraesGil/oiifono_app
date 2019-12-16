@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 import { useSelector } from "react-redux";
 import { Button, ListItem, Avatar } from "react-native-elements";
@@ -14,7 +15,7 @@ import styles from "./styles";
 import agendaDemo from "assets/agendaDemo.png";
 
 export default function Settings({ navigation }) {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector(state => state.auth.me);
 
   function initialsLetterName(name) {
     let first = name.split(" ")[0][0];
@@ -24,6 +25,39 @@ export default function Settings({ navigation }) {
       .join(" ")[0];
     return (first + last).toUpperCase();
   }
+
+  function renderBottomButons() {
+    return (
+      <View style={[styles.bottomContainer, styles.containerMini]}>
+        <Button
+          buttonStyle={styles.button}
+          onPress={() => {
+            navigation.navigate("PasswordUpdate", { user });
+          }}
+          title="Alterar Senha"
+        />
+        <Button
+          buttonStyle={[styles.button, styles.cancelButton]}
+          titleStyle={styles.cancelText}
+          onPress={async () => {
+            await AsyncStorage.clear();
+            navigation.navigate("Login");
+          }}
+          title="Sair da conta"
+        />
+      </View>
+    );
+  }
+
+  if (user === null)
+    return (
+      <View style={[styles.container, styles.center, styles.centerH]}>
+        <ScrollView style={[styles.container]}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        </ScrollView>
+        {renderBottomButons()}
+      </View>
+    );
 
   return (
     <View style={[styles.container]}>
@@ -38,11 +72,11 @@ export default function Settings({ navigation }) {
               <Avatar
                 rounded
                 size="large"
-                title={initialsLetterName(user.person.name)}
-                source={{ uri: user.person.picture || null }}
+                title={initialsLetterName(user.name)}
+                source={{ uri: user.picture || null }}
               />
-              <Text>{user.person.name}</Text>
-              <Text>CRF-a: {user.person.doctor.crfa}</Text>
+              <Text>{user.name}</Text>
+              <Text>CRF-a: {user.register}</Text>
             </View>
           }
           bottomDivider
@@ -70,24 +104,7 @@ export default function Settings({ navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <View style={[styles.bottomContainer, styles.containerMini]}>
-        <Button
-          buttonStyle={styles.button}
-          onPress={() => {
-            navigation.navigate("PasswordUpdate", { user });
-          }}
-          title="Alterar Senha"
-        />
-        <Button
-          buttonStyle={[styles.button, styles.cancelButton]}
-          titleStyle={styles.cancelText}
-          onPress={async () => {
-            await AsyncStorage.clear();
-            navigation.navigate("Login")
-          }}
-          title="Sair da conta"
-        />
-      </View>
+      {renderBottomButons()}
     </View>
   );
 }

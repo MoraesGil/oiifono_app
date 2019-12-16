@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View, TouchableOpacity, AsyncStorage } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { SwipeRow } from "react-native-swipe-list-view";
 import { ListItem, Avatar, Icon, Tooltip } from "react-native-elements";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
 
@@ -11,12 +11,20 @@ import moment from "moment";
 import ptBr from "@/constants/calendar_ptBr";
 LocaleConfig.locales["br"] = ptBr;
 LocaleConfig.defaultLocale = "br";
-import { selectAgenda } from "ducks/schedules";
+import { selectAgenda, Creators as SchedulesActions } from "ducks/schedules";
 import StatusIcon from "components/StatusIcon.js";
 
 export default function Schedules({ navigation }) {
   const [agenda, setAgenda] = useState({});
   const _agenda = useSelector(selectAgenda);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // dispatch(SchedulesActions.sagaFetchSchedules({ date: "2019-12-15" }));
+   
+    // dispatch(SchedulesActions.addSchedule());
+
+    return () => {};
+  }, []);
 
   function emputyDaysRange(day) {
     let days = {};
