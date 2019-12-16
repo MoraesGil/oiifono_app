@@ -2,53 +2,57 @@ import { createActions, createReducer } from "reduxsauce";
 import { createSelector } from "reselect";
 
 const INITIAL_STATE = {
-  errors:{},
+  errors: {},
   list: {}
 };
 /**
  * Action types & creators
  */
-export const { Types, Creators } = createActions({
-  sagaFetchSchedules: ["request"],
-  sagaAddSchedule: ["request"],
-  sagaUpdateSchedule: ["request"],
-  sagaRemoveSchedule: ["request"],
-  fetchSchedules: ["schedules"],
-  addSchedule: ["schedule"],
-  updateSchedule: ["schedule"],
-  removeSchedule: ["schedule"]
+export const { Types, Creators } = createActions({    
+  scheduleSetErrors: ["error"],
+  scheduleCleanErrors: null,
+  scheduleFetch: ["itemList"],  
+  scheduleLoadMore: ["itemList"],
+  scheduleUpdateOrAdd: ["item"],
+  scheduleRemove: ["id"]
 });
 
-// console.log(Types);
 /**
  * Handlers
- */
+ */  
+const setErrors = (state = INITIAL_STATE, errors) => {    
+  return state = {...state, errors: errors}  
+};
 
-const add = (state = INITIAL_STATE, action) => {
-  // return { ...state, [schedule.id]: schedule };
-  // return { ...state, [Math.random()]: action.schedule };
+const cleanErrors = (state = INITIAL_STATE) => {    
+  return state = {...state, errors: {}}  
+};
+
+const fetch = (state = INITIAL_STATE, list) => {    
+  return state = {...state, list: list}  
+};
+
+const loadMore = (state = INITIAL_STATE, list) => {    
+  return {...state, list:{...state.list,...list}}  
+};
+
+const updateOrAdd = (state = INITIAL_STATE, item) => {  
+  return {...state, list:{...state.list,...item}}   
+};
+
+const remove = (state = INITIAL_STATE, id) => {
+  delete state.list[id];
   return state;
 };
 
-const update = (state = INITIAL_STATE, action) => {
-  return { ...state, [action.schedule.id]: action.schedule };
-};
-
-const remove = (state = INITIAL_STATE, action) => {
-  delete state[action.schedule.id];
-  return state;
-};
-
-const fetch = (state = INITIAL_STATE, payload) => {  
-  console.log('fetch state') 
-  return { ...state,...{list: payload.schedules} };
-};
-
-export default createReducer(INITIAL_STATE, {
-  [Types.FETCH_SCHEDULES]: fetch,
-  [Types.ADD_SCHEDULE]: add,
-  [Types.UPDATE_SCHEDULE]: update,
-  [Types.REMOVE_SCHEDULE]: remove
+export default createReducer(INITIAL_STATE, {  
+  [Types.SCHEDULE_SET_ERRORS]: setErrors,
+  [Types.SCHEDULE_CLEAN_ERRORS]: cleanErrors,
+  [Types.SCHEDULE_FETCH]: fetch,
+  [Types.SCHEDULE_LOAD_MORE]: loadMore,
+  [Types.SCHEDULE_UPDATE_OR_ADD]: updateOrAdd,
+  [Types.SCHEDULE_REMOVE]: remove,
+   
 });
 
 /**
@@ -56,8 +60,10 @@ export default createReducer(INITIAL_STATE, {
  */
 export const getRoot = state => state.schedules;
 
-export const selectAgenda = createSelector(getRoot, schedules =>
-  Object.values(schedules.list).reduce((agenda, schedule) => {
+export const getList = createSelector(getRoot, schedules => schedules.list);
+
+export const selectAgenda = createSelector(getList, list =>
+  Object.values(list).reduce((agenda, schedule) => {
     let date = schedule.date.trim();
     if (!Array.isArray(agenda[date])) agenda[date] = [];
     agenda[date].push(schedule);

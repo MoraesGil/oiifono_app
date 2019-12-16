@@ -2,7 +2,7 @@ import { createActions, createReducer } from "reduxsauce";
 
 export const { Types, Creators } = createActions({
   authLogin: ["token"],
-  authLogout: []
+  authLogout: null
 });
 
 const INITIAL_STATE = {
