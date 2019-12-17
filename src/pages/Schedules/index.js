@@ -16,20 +16,40 @@ import StatusIcon from "components/StatusIcon.js";
 
 export default function Schedules({ navigation }) {
   const [agenda, setAgenda] = useState({});
-  const _agenda = useSelector(selectAgenda);
+  const [selectedDay, setSelectedDay] = useState("2019-12-15");
+
   const dispatch = useDispatch();
+
   useEffect(() => {
-    
-   
     // dispatch(SchedulesActions.addSchedule());
 
     return () => {};
   }, []);
 
+  function handleSchedule(schedule) {
+    navigation.navigate("ScheduleForm", { schedule: schedule });
+  }
+
+  function handleAbsenced(schedule) {
+    alert("faltou");
+  }
+
+  function handleReschedule(schedule) {
+    alert("reagendar");
+  }
+
+  function handleConfirmSchedule(schedule) {
+    alert("ConfirmarPresença");
+  }
+
+  function handleAttendSchedule(schedule) {
+    alert("Atender agendamento");
+  }
+
   function emputyDaysRange(day) {
     let days = {};
 
-    for (let i = -15; i <= 45; i++) {
+    for (let i = -20; i <= 20; i++) {
       const strTime = moment(day.timestamp)
         .add(i, "days")
         .format("YYYY-MM-DD");
@@ -38,13 +58,10 @@ export default function Schedules({ navigation }) {
     return days;
   }
 
-  function loadItems(day) {
-    dispatch(SchedulesActions.sagaFetchSchedules({ date: "2019-12-15" }));
-    setAgenda({ ...emputyDaysRange(day), ..._agenda });
-  }
-
-  function handleSchedule(schedule) {
-    navigation.navigate("ScheduleForm", { schedule: schedule });
+  function monthChange(day) {
+    console.log("monthChanged");
+    console.log(day);
+    setAgenda(emputyDaysRange(day))
   }
 
   function statusBar(schedule) {
@@ -72,7 +89,7 @@ export default function Schedules({ navigation }) {
             {schedule.absenced_by == null && !schedule.attended && (
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.absenceBtn]}
-                onPress={() => alert("faltou")}
+                onPress={handleAbsenced(schedule)}
               >
                 <Text style={styles.absenceBtnText}> Faltou</Text>
               </TouchableOpacity>
@@ -81,7 +98,7 @@ export default function Schedules({ navigation }) {
             {schedule.absenced_by != null && !schedule.attended && (
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.rescheduleBtn]}
-                onPress={() => alert("reagendar")}
+                onPress={handleReschedule(schedule)}
               >
                 <Text style={styles.rescheduleBtnText}> Reagendar</Text>
               </TouchableOpacity>
@@ -94,7 +111,7 @@ export default function Schedules({ navigation }) {
               !schedule.attended && (
                 <TouchableOpacity
                   style={[styles.backRightBtn, styles.confirmBtn]}
-                  onPress={() => alert("confirmar")}
+                  onPress={handleConfirmSchedule(schedule)}
                 >
                   <Text style={styles.confirmBtnText}> Confirmar</Text>
                 </TouchableOpacity>
@@ -103,9 +120,9 @@ export default function Schedules({ navigation }) {
             {schedule.absenced_by == null && !schedule.attended && (
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.attendBtn]}
-                onPress={() => alert("evoluir")}
+                onPress={}
               >
-                <Text style={styles.attendBtnText}> Evoluir</Text>
+                <Text style={styles.attendBtnText}> Atender</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -210,31 +227,34 @@ export default function Schedules({ navigation }) {
     );
   }
 
-  function renderEmptyDate() {
-    return (
-      <View style={styles.emptyDate}>
-        <Text>Ninguém pra hoje !!!</Text>
-      </View>
-    );
-  }
-
-  function rowHasChanged(r1, r2) {
-    return r1.name !== r2.name;
-  }
   return (
     <Agenda
-      minDate={moment()
+      minDate={moment(selectedDay)
         .subtract(3, "M")
         .format("YYYY-MM-DD")}
-      maxDate={moment()
+      maxDate={moment(selectedDay)
         .add(9, "M")
         .format("YYYY-MM-DD")}
       items={agenda}
-      loadItemsForMonth={loadItems}
-      selected={moment().format("YYYY-MM-DD")}
+      loadItemsForMonth={monthChange}
+      selected={selectedDay}
       renderItem={renderItem}
-      renderEmptyDate={renderEmptyDate}
-      rowHasChanged={rowHasChanged}
+      renderEmptyDate={() => (
+        <View style={styles.emptyDate}>
+          <Text>Ninguém pra hoje !!!</Text>
+        </View>
+      )}
+      // markedDates={{
+      //   "2019-12-08": { textColor: "#666" },
+      //   "2019-12-09": { textColor: "#666" },
+      //   "2019-12-14": { startingDay: true, endingDay: true, color: "blue" },
+      //   "2019-12-21": { startingDay: true, color: "blue" },
+      //   "2019-12-22": { endingDay: true, color: "gray" },
+      //   "2019-12-24": { startingDay: true, color: "gray" },
+      //   "2019-12-25": { color: "gray" },
+      //   "2019-12-26": { endingDay: true, color: "gray" }
+      // }}
+      rowHasChanged={(r1, r2) => r1.id !== r2.id}
       renderKnob={() => {
         return (
           <Icon
