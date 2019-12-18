@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import Routes from "./src/navigation/RootNavigator";
+import createRouter from "./src/navigation/RootNavigator";
 
 import AppLoading from "components/AppLoading";
 import vectorFonts from "@/helpers/vector-fonts";
 import { cacheImages, cacheFonts } from "@/helpers/AssetsCaching";
 
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import store from "@/store";
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
+  const signed = useSelector(state => state.auth.signed);
+  const Routes = createRouter(signed);
 
   const loadAssetsAsync = async () => {
     const imageAssets = cacheImages([

@@ -1,13 +1,17 @@
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 
-import Login from 'pages/Login'; 
-import Tabs from "./MainTabNavigator";    
+import Sign from "pages/Sign";
+import App from "./MainTabNavigator";
 
-const Routes = createAppContainer(
-  createSwitchNavigator({
-    // Login,
-    Tabs
-  })
-);
-
-export default Routes;
+export default (signedIn = false) =>
+  createAppContainer(
+    createSwitchNavigator(
+      {
+        Sign,
+        App
+      },
+      {
+        initialRouteName: signedIn ? "App" : "Sign"
+      }
+    )
+  );

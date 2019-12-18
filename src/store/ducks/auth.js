@@ -1,33 +1,30 @@
-import { createActions, createReducer } from "reduxsauce";
+import { createActions, createReducer } from "reduxsauce"; 
+ 
+const INITIAL_STATE = {
+  token:"",   
+  signed: false,
+  loading: false, 
+  me:{}
+}; 
 
 export const { Types, Creators } = createActions({
-  authLogin: ["token"],
-  authLogout: null
-});
+  authUpdateProfile: ['profile'],
+  authLogin: ["login"],
+  authLogout: null, 
+}); 
 
-const INITIAL_STATE = {
-  token:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6MzAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU3NjQ2MDA1MywiZXhwIjoxNTc2NTgwMDUzLCJuYmYiOjE1NzY0NjAwNTMsImp0aSI6ImtoZEc4OGJQeTdnQXZodVoiLCJzdWIiOjMsInBydiI6ImY5MzA3ZWI1ZjI5YzcyYTkwZGJhYWVmMGUyNmYwMjYyZWRlODZmNTUifQ.Lc01tAiCUj3avz49y42pY8ss548YGf0YRkBC8uhE5o4",
-  me: {
-    id: 62,
-    email: "teste@teste.com",
-    name: "Samuel das Neves Sobrinho",
-    picture: "https://randomuser.me/api/portraits/med/men/11.jpg",
-    cnpj: null,
-    ie: null,
-    register: "537474"
-  }
+const updateProfile = (state = INITIAL_STATE, me) => {
+  return (state = { ...state, me: me });
 };
+const login = (state = INITIAL_STATE, payload) => {
+  return { ...state, ...payload,...{signed: true, loading: false} };
+};  
+const logout = (state = INITIAL_STATE, action) => {
+  return INITIAL_STATE;
+}; 
 
-export default createReducer(INITIAL_STATE, {
+export default createReducer(INITIAL_STATE, { 
+  [Types.AUTH_UPDATE_PROFILE]: updateProfile,
   [Types.AUTH_LOGIN]: login,
   [Types.AUTH_LOGOUT]: logout
 });
-
-const login = (state = INITIAL_STATE, action) => {
-  return { ...state, ...{ token: payload.token } };
-};
-
-const logout = (state = INITIAL_STATE, action) => {
-  return { ...state, ...{ token: "" } };
-};
