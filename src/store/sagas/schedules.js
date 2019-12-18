@@ -1,5 +1,6 @@
 import { Creators as ScheduleActions } from "ducks/schedules";
-import { all, call, put, debounce } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "redux-saga/effects";
+import { createActions } from "reduxsauce";
 import { normalize, schema } from "normalizr";
 import api from "@/services/api";
 import showResponseError from './ErrorCatcher';
@@ -81,9 +82,9 @@ function* remove(action) {
 }
 
 export default all([
-  debounce(1000, Types.SCHEDULE_FETCH_SAGA, fetch),
-  debounce(1000, Types.SCHEDULE_LOAD_MORE_SAGA, loadMore),
-  debounce(1000, Types.SCHEDULE_ADD_SAGA, add),
-  debounce(1000, Types.SCHEDULE_UPDATE_SAGA, update),
-  debounce(1000, Types.SCHEDULE_REMOVE_SAGA, remove)
+  takeLatest(Types.SCHEDULE_FETCH_SAGA, fetch),
+  takeLatest(Types.SCHEDULE_LOAD_MORE_SAGA, loadMore),
+  takeLatest(Types.SCHEDULE_ADD_SAGA, add),
+  takeLatest(Types.SCHEDULE_UPDATE_SAGA, update),
+  takeLatest(Types.SCHEDULE_REMOVE_SAGA, remove)
 ]);
