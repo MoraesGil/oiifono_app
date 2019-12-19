@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import createRouter from "./src/navigation/RootNavigator";
-
+import React, { useState } from "react";  
 import AppLoading from "components/AppLoading";
 import vectorFonts from "@/helpers/vector-fonts";
 import { cacheImages, cacheFonts } from "@/helpers/AssetsCaching";
+import Gate from './AuthGate';
 
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from "@/store";
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
-  const signed = useSelector(state => state.auth.signed);
-  const Routes = createRouter(signed);
-
+  const [isReady, setIsReady] = useState(false);  
+  
   const loadAssetsAsync = async () => {
     const imageAssets = cacheImages([
       require("assets/icon.png"),
@@ -43,7 +40,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <Routes />
+      <Gate />
     </Provider>
   );
 }

@@ -7,11 +7,15 @@ import formStyles from "@/constants/formStyles";
 
 const styles = StyleSheet.create({
   loginContainer: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  logoContainer: {
     marginTop: -10,
     marginLeft: 10,
     marginBottom: 50
   },
-  logo:{
+  logo: {
     shadowColor: "#fff",
     shadowOffset: {
       width: 0,

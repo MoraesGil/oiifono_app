@@ -3,15 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
   ImageBackground,
+  LayoutAnimation,
+  UIManager,
   KeyboardAvoidingView,
   Platform,
-  Image,
-  Alert
+  Image
 } from "react-native";
 import { Input, Button, Icon } from "react-native-elements";
 import logo from "assets/logo.png";
 import styles from "./styles"; 
 const BG_IMAGE = require("assets/bg_login.jpg");
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
 
 const TabSelector = ({ selected }) => {
   return (
@@ -28,7 +32,7 @@ export default function SignIn({ navigation }) {
   const isLoginPage = tab === 0;
   const isSignUpPage = tab === 1;
   const isLoading = useSelector(state => state.auth.loading);
-  const [erros, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const [profile, setProfile] = useState({
     name: "",
@@ -45,6 +49,12 @@ export default function SignIn({ navigation }) {
 
   function handleSignUp() {
     console.log("registrar");
+  }
+
+  function selectCategory(index) {
+    LayoutAnimation.easeInEaseOut(); 
+    setTab(index);
+     
   }
 
   return (
@@ -69,7 +79,7 @@ export default function SignIn({ navigation }) {
                 disabled={isLoading}
                 type="clear"
                 activeOpacity={0.7}
-                onPress={() => setTab(0)}
+                onPress={() => selectCategory(0)}
                 containerStyle={styles.container}
                 titleStyle={[
                   styles.categoryText,
@@ -81,7 +91,7 @@ export default function SignIn({ navigation }) {
                 disabled={isLoading}
                 type="clear"
                 activeOpacity={0.7}
-                onPress={() => setTab(1)}
+                onPress={() => selectCategory(1)}
                 containerStyle={{ flex: 1 }}
                 titleStyle={[
                   styles.categoryText,
