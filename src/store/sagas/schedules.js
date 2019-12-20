@@ -3,7 +3,7 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import { createActions } from "reduxsauce";
 import { normalize, schema } from "normalizr";
 import api from "@/services/api";
-import showResponseError from './ErrorCatcher';
+import showResponseError from "./ErrorCatcher";
 /**
  * Normalized schemas
  */
@@ -22,62 +22,61 @@ export const { Types, Creators } = createActions({
   scheduleAddSaga: ["item"],
   scheduleUpdateSaga: ["id", "item"],
   scheduleRemoveSaga: ["id"]
-});  
-
+});
 
 function* fetch(action) {
   try {
-    let response = yield load(action);
-    yield put(ScheduleActions.fetchSchedules(normalizeSchedules(response.data)));    
-  } catch (error) {
-    showResponseError(error)
-  }
-  
+    let response = yield load(action); 
+    yield put(
+      ScheduleActions.fetchSchedules(normalizeSchedules(response.data))
+    );
+  } catch (error) {}
 }
 
 function* loadMore(action) {
   try {
     let response = yield load(action);
-    yield put(ScheduleActions.scheduleLoadMore(normalizeSchedules(response.data)));    
+    yield put(
+      ScheduleActions.scheduleLoadMore(normalizeSchedules(response.data))
+    );
   } catch (error) {
-    showResponseError(error)
+    showResponseError(error);
   }
 }
 
 function* load(action) {
   try {
     let response = yield call(api.get, "/schedules", action.request);
-    return response
+    return response;
   } catch (error) {
-    showResponseError(error)
+    showResponseError(error);
   }
-  
 }
 
 function* add(action) {
   try {
     let response = yield call(api.post, "/schedules", action.request);
-    return response
+    return response;
   } catch (error) {
-    showResponseError(error)
+    showResponseError(error);
   }
 }
 
 function* update(action) {
   try {
     let response = yield call(api.put, "/schedules", action.request);
-    return response
+    return response;
   } catch (error) {
-    showResponseError(error)
+    showResponseError(error);
   }
 }
 
 function* remove(action) {
   try {
     let response = yield call(api.delete, "/schedules", action.request);
-    return response
+    return response;
   } catch (error) {
-    showResponseError(error)
+    showResponseError(error);
   }
 }
 

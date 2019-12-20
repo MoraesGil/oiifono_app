@@ -12,6 +12,9 @@ import {
 import { Input, Button, Icon } from "react-native-elements";
 import logo from "assets/logo.png";
 import styles from "./styles"; 
+import { Creators as AuthCreators } from "sagas/auth";
+ 
+
 const BG_IMAGE = require("assets/bg_login.jpg");
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -42,9 +45,8 @@ export default function SignIn({ navigation }) {
     password_confirmation: ""
   });
 
-  function handleSignIn() {
-    dispatch(signInRequest(email, password));
-    console.log("entrar", ({ email, password } = profile));
+  function handleSignIn() {  
+    dispatch(AuthCreators.authSignInRequest(profile));  
   }
 
   function handleSignUp() {

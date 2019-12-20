@@ -8,7 +8,8 @@ module.exports = function(api) {
         {
           alias: {
             "@": "./src",
-            "ducks": "./src/store/ducks",
+            ducks: "./src/store/ducks",
+            sagas: "./src/store/sagas",
             pages: "./src/pages",
             views: "./src/views",
             assets: "./src/assets",

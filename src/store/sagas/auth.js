@@ -1,4 +1,4 @@
-import { Creators as ScheduleActions } from "ducks/auth";
+import { Creators as AuthActions } from "ducks/auth";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { createActions } from "reduxsauce";
 import { normalize, schema } from "normalizr";
@@ -12,13 +12,16 @@ export const { Types, Creators } = createActions({
   authSignOutRequest: null
 });
 
-export function* signIn({ payload }) {
-   
+export function* signIn({ request }) {
+  try {
+    let { data } = yield call(api.post, "/login", request); 
+    yield put(AuthActions.authSignIn(data));
+  } catch (error) {
+    Alert.alert("Login ou senha inválidos");
+  }
 }
 
-export function* signUp({ payload }) {
-  
-}
+export function* signUp({ payload }) {}
 
 export function* signOut({ payload }) {}
 
@@ -34,6 +37,5 @@ export function setToken({ payload }) {
 
 export default all([
   // takeLatest('persist/REHYDRATE', setToken),
-  takeLatest(" ", funcion),
-  
+  takeLatest("AUTH_SIGN_IN_REQUEST", signIn)
 ]);
